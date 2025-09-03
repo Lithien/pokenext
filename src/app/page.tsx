@@ -6,7 +6,7 @@ import { fetchPokemons } from '@/lib'
 import { useApi } from '@/hooks/useApi'
 
 const Home = () => {
-  const { data, loading } = useApi(() => fetchPokemons({ limit: 50 }), [])
+  const { data, loading } = useApi(() => fetchPokemons({ limit: 251 }), [])
 
   if (loading) {
     return <Typography variant="h6" align="center">Loading...</Typography>

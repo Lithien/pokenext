@@ -82,3 +82,19 @@ export interface UrlData {
   id: string
   type: string
 }
+
+export interface PokemonFormOption {
+  name: string
+  id: string
+  type: 'form' | 'variety'
+  isDefault?: boolean
+  sprite?: string
+}
+
+
+export interface COLORS {
+  [key: number]: {
+    name: string
+    hex: string
+  }
+}

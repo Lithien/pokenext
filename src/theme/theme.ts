@@ -1,4 +1,5 @@
-// src/theme.ts
+import { createTheme } from '@mui/material/styles'
+
 
 export const typeColors = {
   normal: "#A8A878",
@@ -30,26 +31,45 @@ export const isPokemonType = (type: string): type is PokemonType =>
 export const getColorByType = (type: string): string =>
   isPokemonType(type) ? typeColors[type] : '#09BC8A'
 
-// Material UI Theme
-import { createTheme } from '@mui/material/styles'
-
-export const getDesignTokens = (mode: 'light' | 'dark') => ({
+export const getDesignTokens = (
+  mode: 'light' | 'dark',
+  colors: { primary: string; secondary: string; accent: string }
+) => ({
   palette: {
     mode,
-    ...(mode === 'light'
-      ? {
-        primary: { main: '#ef5350' },
-        background: { default: '#f5f5f5' }
-      }
-      : {
-        primary: { main: '#ef5350' },
-        background: { default: '#121212' }
-      })
+    
+    background: {
+      default: mode === 'light' ? '#f5f5f5' : '#030711',
+    },
   },
   pokedex: {
-    getColorByType
-  }
+    getColorByType,
+    accent: colors.accent || '#C49F3B',
+  },
 })
 
-export const createAppTheme = (mode: 'light' | 'dark') =>
-  createTheme(getDesignTokens(mode))
+export const createAppTheme = (
+  mode: 'light' | 'dark',
+  colors: { primary: string; secondary: string; accent: string }
+) =>
+  createTheme({
+    palette: {
+      mode,
+      primary: {
+        main: colors.primary
+      },
+      secondary: {
+        main: colors.secondary
+      },
+      accent: {
+        main: colors.accent
+      },
+      background: {
+        default: mode === 'light' ? '#f5f5f5' : '#030711',
+      },
+    },
+    pokedex: {
+      getColorByType,
+      
+    },
+  })

@@ -1,4 +1,4 @@
-import { Pokemon, PokemonSpecies, TableProps, TableResponse } from "./types"
+import { EvolutionChain, Pokemon, PokemonSpecies, TableProps, TableResponse } from "./types"
 
 const API_URL = 'https://pokeapi.co/api/v2'
 
@@ -41,6 +41,16 @@ export const fetchPokemonById = async (id: string): Promise<Pokemon> => {
 
 export const fetchPokemonSpecies = async (id: string): Promise<PokemonSpecies> => {
   const response = await fetch(`${API_URL}/pokemon-species/${id}`)
+  
+  if (!response.ok) {
+    throw new Error(`Error fetching data: ${response.statusText}`)
+  }
+
+  return response.json()
+}
+
+export const fetchEvolutionChain = async (id: string): Promise<EvolutionChain> => {
+  const response = await fetch(`${API_URL}/evolution-chain/${id}`)
   
   if (!response.ok) {
     throw new Error(`Error fetching data: ${response.statusText}`)

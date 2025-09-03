@@ -71,7 +71,7 @@ export interface Pokemon {
   order: number
   weight: number
   abilities: PokemonAbility[]
-  forms: NamedAPIResource
+  forms: NamedAPIResource[]
   game_indices: VersionGameIndex[]
   held_items: PokemonHeldItem[]
   location_area_encounters: string
