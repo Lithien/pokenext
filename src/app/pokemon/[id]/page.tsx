@@ -80,12 +80,11 @@ const PokemonDetailPage = () => {
       router.push(`/pokemon/${pokemonId}`)
       setTab(0)
     } else {
-      // Handle case where name does not correspond to a valid Pokémon
       console.warn('Invalid Pokémon name or ID')
     }
   }
   const onRandomize = () => {
-    const randomId = Math.floor(Math.random() * 898) + 1 // Pokémon IDs range from 1 to 898
+    const randomId = Math.floor(Math.random() * 898) + 1
     router.push(`/pokemon/${randomId}`)
     setTab(0)
   }

@@ -13,7 +13,7 @@ export const useThemeStore = create<ThemeState>((set) => ({
   colors: {
     primary: '#2F323F',
     secondary: '#64647C',
-    accent: '#C49F3B'
+    accent: '#FFFFFF'
   },
   setColors: (colors) => set({ colors })
 }))

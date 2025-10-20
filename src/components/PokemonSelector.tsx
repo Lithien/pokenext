@@ -1,5 +1,5 @@
 'use client'
-import { Box, Button, MenuItem, Select, TextField } from '@mui/material'
+import { Box, Button, MenuItem, TextField } from '@mui/material'
 import { Shuffle } from '@mui/icons-material'
 
 export const PokemonSelector = ({
@@ -18,15 +18,11 @@ export const PokemonSelector = ({
   <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
     <TextField value={name} onChange={e => onChangeName(e.target.value)} variant="outlined" size="small" />
     <Box display="flex" gap={1}>
-      <Select value="Dex" size="small" disabled>
-        <MenuItem value="Dex">Dex</MenuItem>
-      </Select>
       <TextField
         type="number"
         value={dexNumber}
         onChange={e => onChangeDex(Number(e.target.value))}
         size="small"
-        inputProps={{ min: 1 }}
       />
     </Box>
     <Button
