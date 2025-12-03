@@ -1,9 +1,8 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
-    domains: ['raw.githubusercontent.com', 'pokeapi.co', 'img.pokemondb.net'],
+    remotePatterns: [new URL('https://raw.githubusercontent.com/'), new URL('https://pokeapi.co/'), new URL('https://img.pokemondb.net/')],
   }
 };
 
