@@ -1,8 +1,9 @@
 'use client'
-import { Box, CardMedia, Container, IconButton, Typography } from '@mui/material'
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
-import { usePokeStore } from '@/store/usePokeStore'
+import { Box, CardMedia, Container, IconButton, Typography } from '@mui/material'
 import { useEffect } from 'react'
+
+import { usePokeStore } from '@/store/usePokeStore'
 import { useThemeStore } from '@/store/useThemeStore'
 import { extractColors } from '@/utils/colorThief'
 

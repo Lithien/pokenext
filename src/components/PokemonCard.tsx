@@ -1,17 +1,18 @@
 'use client'
 
+import { Card, CardContent, CardMedia, Typography } from '@mui/material'
+import Link from 'next/link'
+
 import { NamedAPIResource } from '@/lib/types'
 import { usePokeStore } from '@/store/usePokeStore'
 import { getNumberFromUrl, getPokemonImage } from '@/utils'
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'
-import Link from 'next/link'
 
 export default function PokemonCard({ name, url }: NamedAPIResource) {
   const { isShiny } = usePokeStore()
   const pokemonId = getNumberFromUrl(url)
   
   return (
-    <Link href={`/pokemon/${pokemonId}`} style={{ textDecoration: 'none' }}>
+    <Link href={`/pokemon/${name}`} style={{ textDecoration: 'none' }}>
       <Card sx={{ maxWidth: 400, margin: 1 }}>
         <CardMedia
           component="img"

@@ -1,10 +1,11 @@
 'use client'
 import { Box, Typography } from '@mui/material'
+import { useState } from 'react'
+
 import { PokemonImageHeader } from './PokemonImageHeader'
+import { PokemonInfoSection } from './PokemonInfoSection'
 import { PokemonSelector } from './PokemonSelector'
 import { PokemonTabs } from './PokemonTabs'
-import { PokemonInfoSection } from './PokemonInfoSection'
-import { useState } from 'react'
 
 export const PokemonDetailPage = ({ pokemon }: { pokemon: any }) => {
   const [tab, setTab] = useState(0)

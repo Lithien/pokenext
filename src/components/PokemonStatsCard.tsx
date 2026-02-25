@@ -1,32 +1,26 @@
 'use client'
 
-import { Box, Typography, IconButton, Select, MenuItem, useMediaQuery, useTheme } from '@mui/material'
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
+import { Box, Typography, IconButton, Select, MenuItem, useMediaQuery, useTheme } from '@mui/material'
+
 import { VersionGameIndex } from '@/lib/types'
 
 
 interface PokemonDetailStatsSectionProps {
-  shinyMode: boolean
-  onToggleShiny: () => void
   onPlayCry: () => void
   selectedGame: string
   onChangeGame: (game: string) => void
   gameOptions: VersionGameIndex[]
   flavorText: string
-  backgroundImageUrl: string
   statsComponent: React.ReactNode
 }
 
 export const PokemonDetailStatsSection = ({
-  shinyMode,
-  onToggleShiny,
   onPlayCry,
   selectedGame,
   onChangeGame,
   gameOptions,
   flavorText,
-  backgroundImageUrl,
   statsComponent
 }: PokemonDetailStatsSectionProps) => {
   const theme = useTheme()
@@ -46,30 +40,10 @@ export const PokemonDetailStatsSection = ({
         color: theme.palette.text.primary
       }}
     >
-      {/* Imagen de fondo translúcida */}
-      <Box
-        sx={{
-          position: 'absolute',
-          inset: 0,
-          backgroundImage: `url(${backgroundImageUrl})`,
-          backgroundRepeat: 'no-repeat',
-          backgroundSize: 'contain',
-          backgroundPosition: 'center',
-          opacity: 0.05,
-          filter: 'brightness(0)',
-          zIndex: 0
-        }}
-      />
 
       {/* Columna izquierda: descripción */}
       <Box sx={{ flex: 1, zIndex: 1 }}>
         <Box display="flex" gap={2} alignItems="center" mb={2}>
-          <IconButton
-            color={shinyMode ? 'warning' : 'default'}
-            onClick={onToggleShiny}
-          >
-            <AutoAwesomeIcon />
-          </IconButton>
           <IconButton onClick={onPlayCry}>
             <VolumeUpIcon />
           </IconButton>

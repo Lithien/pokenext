@@ -5,6 +5,7 @@ import {
   Typography,
   LinearProgress,
 } from '@mui/material'
+
 import { PokemonStat } from '@/lib/types'
 import { formatStatName, getStatColor } from '@/utils'
 

@@ -1,29 +1,50 @@
-import { dirname } from "path";
-import { fileURLToPath } from "url";
-import { FlatCompat } from "@eslint/eslintrc";
+import js from "@eslint/js"
+import { defineConfig } from "eslint/config"
+import importPlugin from "eslint-plugin-import"
+import pluginReact from "eslint-plugin-react"
+import globals from "globals"
+import tseslint from "typescript-eslint"
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-const compat = new FlatCompat({
-  baseDirectory: __dirname,
-});
-
-const eslintConfig = [
-  ...compat.extends("next/core-web-vitals", "next/typescript"),
+export default defineConfig([
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  pluginReact.configs.flat.recommended,
   {
+    files: ["**/*.{js,ts,jsx,tsx}"], languageOptions: {
+      globals: globals.browser, parser: tseslint.parser, parserOptions: { ecmaVersion: "latest", sourceType: "module" }
+    },
+    plugins: { import: importPlugin, react: pluginReact, "@typescript-eslint": tseslint.plugin },
     rules: {
-      'react/react-in-jsx-scope': 'off',
-      '@typescript-eslint/strict-boolean-expressions': 'off',
-      '@typescript-eslint/explicit-function-return-type': 'off',
-      '@typescript-eslint/no-require-imports': 'off',
-      'no-unexpected-multiline': 'off',
-      '@typescript-eslint/no-unused-expressions': 'off',
-      'react/jsx-no-comment-textnodes': 'off',
-      '@typescript-eslint/no-explicit-any': 'off',
-      'react-hooks/exhaustive-deps': 'off',
+      "react/react-in-jsx-scope": "off",
+      "@typescript-eslint/strict-boolean-expressions": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/no-require-imports": "warn",
+      "no-unexpected-multiline": "warn",
+      "@typescript-eslint/no-unused-expressions": "warn",
+      "react/jsx-no-comment-textnodes": "off",
+      "@typescript-eslint/no-explicit-any": "off",
+      "import/order": [
+        "error",
+        {
+          groups: [
+            "builtin",
+            "external",
+            "internal",
+            "parent",
+            "sibling",
+            "index",
+            "object",
+            "type"
+          ],
+          "newlines-between": "always",
+          alphabetize: {
+            order: "asc",
+            caseInsensitive: true
+          }
+        }
+      ]
     }
-  }
-];
-
-export default eslintConfig;
+  },
+  { ignores: ["**/node_modules/**", "**/.next/**", "**/out/**"] },
+  { settings: { react: { version: "detect" } } },
+])

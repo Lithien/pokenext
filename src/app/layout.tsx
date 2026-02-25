@@ -1,6 +1,10 @@
-import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
+
+import type { Metadata } from "next";
+
 import "./globals.css";
+import { PokedexHeader } from "@/components/PokemonHeader";
+import QueryProvider from "@/providers/QueryProvider";
 import ThemeRegistry from "@/theme/theme-provider";
 
 const geistSans = Geist({
@@ -28,7 +32,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <ThemeRegistry>{children}</ThemeRegistry>
+        <QueryProvider>
+          <ThemeRegistry>
+            <PokedexHeader />
+            {children}
+          </ThemeRegistry>
+        </QueryProvider>
       </body>
     </html>
   );

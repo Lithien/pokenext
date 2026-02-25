@@ -7,6 +7,9 @@ interface ThemeState {
     accent: string
   }
   setColors: (colors: ThemeState['colors']) => void
+  mode: 'light' | 'dark'
+  toggleTheme: () => void
+  setMode: (mode: 'light' | 'dark') => void
 }
 
 export const useThemeStore = create<ThemeState>((set) => ({
@@ -15,5 +18,8 @@ export const useThemeStore = create<ThemeState>((set) => ({
     secondary: '#64647C',
     accent: '#FFFFFF'
   },
-  setColors: (colors) => set({ colors })
+  setColors: (colors) => set({ colors }),
+  mode: 'dark',
+  toggleTheme: () => set((state) => ({ mode: state.mode === 'light' ? 'dark' : 'light' })),
+  setMode: (mode) => set({ mode })
 }))

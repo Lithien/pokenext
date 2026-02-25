@@ -1,30 +1,36 @@
 'use client'
-import { useState, useEffect } from 'react'
 
-export function useApi<T>(fetchFn: () => Promise<T>, deps: any[] = []) {
-  const [data, setData] = useState<T>()
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState<unknown>(null)
+import { useQuery } from "@tanstack/react-query";
 
-  useEffect(() => {
-    let cancelled = false
+import { api } from "@/api/client";
 
-    const fetchData = async () => {
-      setLoading(true)
-      setError(null)
-      try {
-        const result = await fetchFn()
-        if (!cancelled) setData(result)
-      } catch (err) {
-        if (!cancelled) setError(err)
-      } finally {
-        if (!cancelled) setLoading(false)
-      }
-    }
 
-    fetchData()
-    return () => { cancelled = true }
-  }, deps)
+interface UseApiProps {
+  key: string;
+  query?: Record<string, any>;
+  enabled?: boolean;
+}
 
-  return { data, loading, error }
+export function useApi<T = any>({
+  key,
+  query,
+  enabled = true,
+}: UseApiProps) {
+  const queryResult = useQuery({
+    queryKey: [key, JSON.stringify(query)],
+    enabled: enabled,
+    queryFn: async () => {
+      const res = await api.get(key, { params: query });
+      return res.data;
+    },
+    staleTime: 1000 * 60 * 5,
+    gcTime: 1000 * 60 * 30,
+    refetchOnWindowFocus: false,
+    retry: 1
+  });
+  return {
+    data: queryResult.data as T,
+    error: queryResult.error,
+    isLoading: queryResult.isLoading,
+  };
 }

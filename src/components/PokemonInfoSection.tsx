@@ -1,7 +1,8 @@
 'use client'
 import { Box, Typography } from '@mui/material'
-import { PokemonType } from '@/lib/types'
 import Image from 'next/image'
+
+import { PokemonType } from '@/lib/types'
 
 export const PokemonInfoSection = ({
   types,

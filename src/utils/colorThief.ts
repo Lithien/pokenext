@@ -1,5 +1,6 @@
-import { mapPaletteToThemeColors } from "."
 import ColorThief from "colorthief"
+
+import { mapPaletteToThemeColors } from "."
 
 export const extractColors = async (
   imageUrl: string,

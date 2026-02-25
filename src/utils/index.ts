@@ -97,17 +97,20 @@ export const mapPaletteToThemeColors = (palette: number[][]) => {
 }
 
 /**
- * @name toBase64
- * @description Converts an image URL to a Base64 encoded string
- * @param url Image URL to be converted to Base64
- * @returns Promise that resolves to a Base64 encoded string
+ * @name findByLanguage
+ * @description Finds a value in an array of objects based on the specified language and key
+ * @param entries Array of objects that contain a language property
+ * @param language Language code to search for (e.g., 'en', 'ja', etc.)
+ * @param key Key to extract from the found object (e.g., 'flavor_text', 'genus', etc.)
+ * @returns The value corresponding to the specified key in the found object, or an empty string if not found
  */
-export const toBase64 = async (url: string) => {
-  const response = await fetch(url)
-  const blob = await response.blob()
-  return new Promise<string>((resolve) => {
-    const reader = new FileReader()
-    reader.onloadend = () => resolve(reader.result as string)
-    reader.readAsDataURL(blob)
-  })
+export const findByLanguage = <T extends { language: { name: string } }>(
+  entries: T[],
+  language: string,
+  key: keyof T
+): string => {
+  const item = entries.find(e => e.language.name === language)
+  const value = item?.[key]
+
+  return typeof value === 'string' ? value : ''
 }

@@ -1,10 +1,12 @@
 'use client'
-import { useApi } from "@/hooks/useApi"
-import { fetchEvolutionChain } from "@/lib"
-import { NamedAPIResource, Pokemon, PokemonFormOption, PokemonSpecies } from "@/lib/types"
 import { Container, Grid, Skeleton } from "@mui/material"
 import { useEffect, useState } from "react"
+
 import PokemonCard from "./PokemonCard"
+
+import { API } from "@/api/endpoints"
+import { useApi } from "@/hooks/useApi"
+import { NamedAPIResource, Pokemon, PokemonSpecies } from "@/lib/types"
 import { getNumberFromUrl } from "@/utils"
 
 interface ChainEvolutionProps {
@@ -12,11 +14,10 @@ interface ChainEvolutionProps {
   species: PokemonSpecies
 }
 
-const ChainEvolution = ({ pokemon, species }: ChainEvolutionProps) => {
+const ChainEvolution = ({ species }: ChainEvolutionProps) => {
   const id = getNumberFromUrl(species?.evolution_chain.url ?? '')
-  const { data, loading: loadingPokemon } = useApi(() => fetchEvolutionChain(id), [id])
+  const { data, isLoading } = useApi({ key: API.EVOLUTION_CHAIN(String(id)) })
   const [chains, setChains] = useState<NamedAPIResource[]>([])
-  const [availableForms, setAvailableForms] = useState<PokemonFormOption[]>([])
 
   useEffect(() => {
     if (data) {
@@ -47,7 +48,7 @@ const ChainEvolution = ({ pokemon, species }: ChainEvolutionProps) => {
   return (
     <Container sx={{ py: 4 }} maxWidth="sm">
       <Grid container justifyContent="center">
-        {loadingPokemon && (
+        {isLoading && (
           <>
             <Skeleton variant="rounded" width={110} height={170} style={{ margin: '0 5px'}} />
             <Skeleton variant="rounded" width={110} height={170} style={{ margin: '0 5px'}} />

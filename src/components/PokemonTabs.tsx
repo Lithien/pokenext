@@ -7,6 +7,7 @@ export const PokemonTabs = ({ tab, onChange }: { tab: number; onChange: (val: nu
       <Tab label="Information" />
       <Tab label="Forms & Evolutions" />
       <Tab label="Colors" />
+      <Tab label="Estadísticas" />
     </Tabs>
   </Box>
 )

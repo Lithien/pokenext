@@ -1,6 +1,6 @@
 'use client'
-import { Box, Button, MenuItem, TextField } from '@mui/material'
 import { Shuffle } from '@mui/icons-material'
+import { Box, Button, TextField } from '@mui/material'
 
 export const PokemonSelector = ({
   dexNumber,

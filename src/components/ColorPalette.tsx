@@ -1,11 +1,12 @@
 'use client'
 
-import { Box, Typography, IconButton } from '@mui/material'
 import LockIcon from '@mui/icons-material/Lock'
-import { usePokeStore } from '@/store/usePokeStore'
-import { convertRGBToHex } from '@/utils'
+import { Box, Typography, IconButton } from '@mui/material'
+
 import { COLORS } from '@/constants'
+// import { usePokeStore } from '@/store/usePokeStore'
 import { useThemeStore } from '@/store/useThemeStore'
+// import { convertRGBToHex } from '@/utils'
 
 interface ColorCardProps {
   hex: string

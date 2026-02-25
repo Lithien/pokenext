@@ -1,14 +1,21 @@
 'use client'
 
 import { Grid, Container, Typography } from '@mui/material'
+
+import { API } from '@/api/endpoints'
 import PokemonCard from '@/components/PokemonCard'
-import { fetchPokemons } from '@/lib'
 import { useApi } from '@/hooks/useApi'
+import { TableResponse } from '@/lib/types'
+import { usePokeStore } from '@/store/usePokeStore'
 
 const Home = () => {
-  const { data, loading } = useApi(() => fetchPokemons({ limit: 251 }), [])
+  const { language } = usePokeStore()
+  const { data, isLoading } = useApi<TableResponse>({
+    key: API.POKEMON,
+    query: { limit: 251, lang: language }
+  })
 
-  if (loading) {
+  if (isLoading) {
     return <Typography variant="h6" align="center">Loading...</Typography>
   }
 
