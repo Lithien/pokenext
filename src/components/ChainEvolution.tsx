@@ -1,5 +1,6 @@
 'use client'
 
+import { ArrowRightAlt } from "@mui/icons-material"
 import { Box, Container, Grid, Skeleton, Typography, Chip } from "@mui/material"
 import { useTheme } from "@mui/material"
 
@@ -116,7 +117,7 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
                     animation: "arrowBounce 1.2s infinite ease-in-out",
                   }}
                 >
-                  →
+                  <ArrowRightAlt fontSize="large" />
                 </Typography>
 
                 {renderRequirements(child.evolution_details)}

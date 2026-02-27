@@ -21,7 +21,7 @@ export const PokedexHeader = () => {
       elevation={0}
       sx={{
         top: 0,
-        zIndex: 9999,
+        zIndex: 999,
         backdropFilter: 'blur(12px)',
         transition: 'background-color 0.3s ease',
         backgroundColor:

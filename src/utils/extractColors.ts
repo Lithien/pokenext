@@ -131,11 +131,12 @@ export async function applyColorsFromImage(imageUrl: string, count: number = 3) 
     const secondary = normalize(colors[1])
     const accent = normalize(colors[2])
 
-    useThemeStore.getState().setColors({
-      primary,
-      secondary,
-      accent,
-    })
+    useThemeStore.getState().setColors([
+      { name: "primary", hex: primary },
+      { name: "secondary", hex: secondary },
+      { name: "accent", hex: accent }
+    ])
+
 
   } catch (error) {
     console.error("Error applying colors:", error)

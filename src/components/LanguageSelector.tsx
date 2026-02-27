@@ -18,7 +18,7 @@ export const LanguageSelector = () => {
         size="small"
         sx={{
           minWidth: { xs: 60, sm: 150 },
-          zIndex: 10,
+          zIndex: 9999,
           fontSize: '0.85rem',
           textTransform: 'uppercase',
           borderRadius: 2,

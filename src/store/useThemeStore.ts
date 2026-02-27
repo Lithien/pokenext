@@ -1,25 +1,28 @@
 import { create } from 'zustand'
 
+interface ColorItem {
+  name: 'primary' | 'secondary' | 'accent'
+  hex: string
+}
+
 interface ThemeState {
-  colors: {
-    primary: string
-    secondary: string
-    accent: string
-  }
-  setColors: (colors: ThemeState['colors']) => void
+  colors: ColorItem[]
+  setColors: (colors: ColorItem[]) => void
+
   mode: 'light' | 'dark'
   toggleTheme: () => void
   setMode: (mode: 'light' | 'dark') => void
 }
 
 export const useThemeStore = create<ThemeState>((set) => ({
-  colors: {
-    primary: '#2F323F',
-    secondary: '#64647C',
-    accent: '#FFFFFF'
-  },
+  colors: [
+    { name: 'primary', hex: '#2F323F' },
+    { name: 'secondary', hex: '#64647C' },
+    { name: 'accent', hex: '#FFFFFF' }
+  ],
   setColors: (colors) => set({ colors }),
+
   mode: 'dark',
+  setMode: (mode) => set({ mode }),
   toggleTheme: () => set((state) => ({ mode: state.mode === 'light' ? 'dark' : 'light' })),
-  setMode: (mode) => set({ mode })
 }))

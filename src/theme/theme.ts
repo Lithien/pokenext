@@ -41,19 +41,19 @@ export const getDesignTokens = (mode: 'light' | 'dark', colors: { primary: strin
 
 export const createAppTheme = (
   mode: 'light' | 'dark',
-  colors: { primary: string; secondary: string; accent: string }
+  colors: { name: string; hex: string }[]
 ) =>
   createTheme({
     palette: {
       mode,
       primary: {
-        main: colors.primary
+        main: colors[0].hex
       },
       secondary: {
-        main: colors.secondary
+        main: colors[1].hex
       },
       accent: {
-        main: colors.accent
+        main: colors[2].hex
       },
       background: {
         default: mode === 'light' ? '#f5f5f5' : '#030711',
@@ -61,6 +61,6 @@ export const createAppTheme = (
     },
     pokedex: {
       getColorByType,
-      accent: colors.accent || '#C49F3B',
+      accent: colors[2].hex || '#C49F3B',
     },
   })
