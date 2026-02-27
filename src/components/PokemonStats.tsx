@@ -6,7 +6,7 @@ import {
   LinearProgress,
 } from '@mui/material'
 
-import { PokemonStat } from '@/lib/types'
+import { PokemonStat } from '@/api/types'
 import { formatStatName, getStatColor } from '@/utils'
 
 interface PokemonStatsProps {

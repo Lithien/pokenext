@@ -1,7 +1,7 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { LANGUAGES } from '@/constants'
+import { LANGUAGES, SpriteType } from '@/constants'
 
 interface PokemonState {
   isShiny: boolean
@@ -13,6 +13,10 @@ interface PokemonState {
 
   number: number
   setNumber: (number: number) => void
+
+  spriteType: SpriteType
+  setSpriteType: (t: SpriteType) => void
+
 }
 
 export const usePokeStore = create<PokemonState>()(
@@ -27,6 +31,10 @@ export const usePokeStore = create<PokemonState>()(
 
       number: 0,
       setNumber: (number) => set({ number }),
+
+      spriteType: "official-artwork",
+      setSpriteType: (t) => set({ spriteType: t }),
+
     }),
     {
       name: 'pokedex-store',

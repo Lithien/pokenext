@@ -1,4 +1,5 @@
-import { ArtworkKey, IMG_BASE_URL, OTHER_ARTWORK } from "@/constants"
+import { EvolutionDetail } from "@/api/types"
+import { IMG_BASE_URL, SpriteType } from "@/constants"
 
 /**
  * @name getPokemonImage
@@ -10,48 +11,47 @@ import { ArtworkKey, IMG_BASE_URL, OTHER_ARTWORK } from "@/constants"
  * @returns URL of the Pokémon image
  */
 export const getPokemonImage = (
-  number: number | string,
-  artwork: ArtworkKey = 'HOME',
-  sprite: boolean = false,
+  id: number | string,
+  type: SpriteType,
+  back: boolean = false,
   shiny: boolean = false,
-  back: boolean = false
 ): string => {
-  const id = number.toString()
+  const number = id.toString()
 
-  // 1. SPRITES CLÁSICOS (front/back)
-  if (sprite) {
-    const base = `${IMG_BASE_URL}${back ? 'back/' : ''}`
-    const shinyPath = shiny ? 'shiny/' : ''
-    return `${base}${shinyPath}${id}.png`
+  // 1. PIXEL / DEFAULT (sprites clásicos)
+  if (type === "pixel" || type === "default") {
+    const base = `${IMG_BASE_URL}${back ? "back/" : ""}`
+    const shinyPath = shiny ? "shiny/" : ""
+    return `${base}${shinyPath}${number}.png`
   }
 
-  // 2. ARTWORKS "OTHER"
-  const folder = OTHER_ARTWORK[artwork]
+  // 2. DREAM WORLD (solo front, NO shiny)
+  if (type === "dream-world") {
+    return `${IMG_BASE_URL}other/dream-world/${number}.svg`
+  }
 
-  // Extensiones según artwork
-  const extension =
-    artwork === 'DREAM_WORLD'
-      ? 'svg'
-      : artwork === 'SHOWDOWN'
-        ? 'gif'
-        : 'png'
-
-  // SHOWDOWN tiene estructura distinta
-  if (artwork === 'SHOWDOWN') {
+  // 3. SHOWDOWN (sí shiny, sí back)
+  if (type === "showdown") {
     const base = `${IMG_BASE_URL}other/showdown/`
-    const backPath = back ? 'back/' : ''
-    const shinyPath = shiny ? 'shiny/' : ''
-    return `${base}${backPath}${shinyPath}${id}.${extension}`
+    const backPath = back ? "back/" : ""
+    const shinyPath = shiny ? "shiny/" : ""
+    return `${base}${backPath}${shinyPath}${number}.gif`
   }
 
-  // DREAM WORLD solo tiene front_default
-  if (artwork === 'DREAM_WORLD') {
-    return `${IMG_BASE_URL}other/dream-world/${id}.${extension}`
+  // 4. OFFICIAL ARTWORK (sí shiny, solo front)
+  if (type === "official-artwork") {
+    const shinyPath = shiny ? "shiny/" : ""
+    return `${IMG_BASE_URL}other/official-artwork/${shinyPath}${number}.png`
   }
 
-  // OFFICIAL y HOME
-  const shinyPath = shiny ? 'shiny/' : ''
-  return `${IMG_BASE_URL}other/${folder}/${shinyPath}${id}.${extension}`
+  // 5. HOME (sí shiny, solo front)
+  if (type === "home") {
+    const shinyPath = shiny ? "shiny/" : ""
+    return `${IMG_BASE_URL}other/home/${shinyPath}${number}.png`
+  }
+
+  // fallback
+  return `${IMG_BASE_URL}${number}.png`
 }
 
 /**
@@ -141,4 +141,32 @@ export const findByLanguage = <T extends { language: { name: string } }>(
   const value = item?.[key]
 
   return typeof value === 'string' ? value : ''
+}
+
+export const getItem = (details: EvolutionDetail): string | null => {
+  if (details.item) return details.item.name
+  if (details.held_item) return details.held_item.name
+  return null
+}
+
+export const getSpriteByType = (pokemon: any, type: SpriteType) => {
+  switch (type) {
+    case "official-artwork":
+      return pokemon.sprites.other["official-artwork"].front_default
+
+    case "dream-world":
+      return pokemon.sprites.other["dream_world"].front_default
+
+    case "home":
+      return pokemon.sprites.other.home.front_default
+
+    case "showdown":
+      return pokemon.sprites.other.showdown.front_default
+
+    case "pixel":
+      return pokemon.sprites.front_default // retro
+
+    default:
+      return pokemon.sprites.front_default
+  }
 }

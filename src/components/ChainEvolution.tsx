@@ -6,7 +6,10 @@ import { useTheme } from "@mui/material"
 import useChainEvolution from "./hooks/useChainEvolution"
 import PokemonCard from "./PokemonCard"
 
-import { ChainLink, Pokemon, PokemonSpecies } from "@/lib/types"
+import { Pokemon, PokemonSpecies, ChainLink, EvolutionDetail } from "@/api/types"
+import { ITEM_IMAGE_URL } from "@/constants"
+import { getItem } from "@/utils"
+
 
 interface ChainEvolutionProps {
   pokemon: Pokemon
@@ -16,13 +19,14 @@ interface ChainEvolutionProps {
 const ChainEvolution = ({ species }: ChainEvolutionProps) => {
   const theme = useTheme()
 
-  const { requeriments, chain, pokemonTypes, isLoading } = useChainEvolution({ species })
+  const { requeriments, chain, isLoading } = useChainEvolution({ species })
 
   // ------------------------------------------------------
   // Requisitos de evolución
   // ------------------------------------------------------
-  const renderRequirements = (details: any[]) => {
+  const renderRequirements = (details: EvolutionDetail[]) => {
     const reqs: string[] | null = requeriments(details)
+    const item = getItem(details?.[0])
 
     return (
       <Box
@@ -33,10 +37,19 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
         mt={1}
         sx={{ animation: "fadeIn 0.5s ease" }}
       >
-        {reqs?.map((r) => (
+        {item && (
           <Chip
-            key={r}
-            label={r}
+            key={item}
+            label={
+              <Box display="flex" alignItems="center" gap={1}>
+                <img
+                  src={`${ITEM_IMAGE_URL}${item}.png`}
+                  alt={item}
+                  width={24}
+                  height={24}
+                />
+              </Box>
+            }
             size="small"
             sx={{
               bgcolor: "rgba(255,255,255,0.1)",
@@ -45,7 +58,23 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
               backdropFilter: "blur(4px)",
             }}
           />
-        ))}
+        )}
+
+        {reqs
+          ?.filter((r) => !r.startsWith("Item: ") && !r.startsWith("Hold"))
+          .map((r) => (
+            <Chip
+              key={r}
+              label={r}
+              size="small"
+              sx={{
+                bgcolor: "rgba(255,255,255,0.1)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                color: "inherit",
+                backdropFilter: "blur(4px)",
+              }}
+            />
+          ))}
       </Box>
     )
   }
@@ -65,6 +94,7 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
           p: 1,
           borderRadius: 2,
           animation: `fadeIn 0.6s ease ${depth * 0.2}s`,
+          
         }}
       >
         <PokemonCard {...node.species} />

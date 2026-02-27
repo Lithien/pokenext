@@ -3,7 +3,7 @@
 import LockIcon from '@mui/icons-material/Lock'
 import { Box, Typography, IconButton } from '@mui/material'
 
-import { COLORS } from '@/constants'
+import { COLORS } from '@/constants/common'
 // import { usePokeStore } from '@/store/usePokeStore'
 import { useThemeStore } from '@/store/useThemeStore'
 // import { convertRGBToHex } from '@/utils'

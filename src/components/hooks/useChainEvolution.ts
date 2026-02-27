@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react"
 
-import { API } from "@/api/endpoints"
-import { useApi } from "@/hooks/useApi"
-import { EvolutionChain, ChainLink, PokemonSpecies } from "@/lib/types"
+import { API } from "@/api"
+import { useApi } from "@/api/hooks/useApi"
+import { PokemonSpecies, EvolutionChain, ChainLink, EvolutionDetail } from "@/api/types"
 import { getNumberFromUrl } from "@/utils"
 
 const useChainEvolution = ({ species }: { species: PokemonSpecies }) => {
@@ -56,7 +56,7 @@ const useChainEvolution = ({ species }: { species: PokemonSpecies }) => {
   // ------------------------------------------------------
   // 4. Requisitos de evolución
   // ------------------------------------------------------
-  const requeriments = (details: any[]) => {
+  const requeriments = (details: EvolutionDetail[]) => {
     if (!details || details.length === 0) return null
 
     const d = details[0]
@@ -70,7 +70,6 @@ const useChainEvolution = ({ species }: { species: PokemonSpecies }) => {
     if (d.min_beauty) reqs.push(`Beauty ${d.min_beauty}+`)
     if (d.party_species) reqs.push(`Party: ${d.party_species.name}`)
     if (d.party_type) reqs.push(`Party Type: ${d.party_type.name}`)
-    if (d.min_steps) reqs.push(`Walk ${d.min_steps} steps`)
     if (d.time_of_day) reqs.push(`Time: ${d.time_of_day}`)
     if (d.gender === 1) reqs.push("♀ Only")
     if (d.gender === 2) reqs.push("♂ Only")

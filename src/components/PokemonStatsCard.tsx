@@ -3,7 +3,7 @@
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
 import { Box, Typography, IconButton, Select, MenuItem, useMediaQuery, useTheme } from '@mui/material'
 
-import { VersionGameIndex } from '@/lib/types'
+import { VersionGameIndex } from '@/api/types'
 
 
 interface PokemonDetailStatsSectionProps {

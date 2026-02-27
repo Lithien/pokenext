@@ -2,10 +2,10 @@
 
 import { Grid, Container, Typography } from '@mui/material'
 
-import { API } from '@/api/endpoints'
+import { API } from '@/api'
+import { useApi } from '@/api/hooks/useApi'
+import { TableResponse } from '@/api/types'
 import PokemonCard from '@/components/PokemonCard'
-import { useApi } from '@/hooks/useApi'
-import { TableResponse } from '@/lib/types'
 import { usePokeStore } from '@/store/usePokeStore'
 
 const Home = () => {
@@ -25,7 +25,7 @@ const Home = () => {
         Pokédex
       </Typography>
       <Grid container justifyContent="center">
-        {data?.results.map((pokemon) => (
+        {data?.results.map((pokemon) => (          
           <PokemonCard key={pokemon.name} {...pokemon} />
         ))}
       </Grid>

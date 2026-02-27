@@ -5,6 +5,7 @@ import { AppBar, Toolbar, IconButton, Typography, Box } from '@mui/material'
 import { useRouter } from 'next/navigation'
 
 import { LanguageSelector } from './LanguageSelector'
+import SpriteSelector from './SpriteSelector'
 
 import { useThemeStore } from '@/store/useThemeStore'
 
@@ -56,6 +57,7 @@ export const PokedexHeader = () => {
           <Typography
             variant="h6"
             sx={{
+              display: { xs: 'none', sm: 'block' },
               fontWeight: 'bold',
               cursor: 'pointer',
               color: mode === 'dark' ? '#fff' : '#111',
@@ -70,7 +72,7 @@ export const PokedexHeader = () => {
           </Typography>
         </Box>
         <LanguageSelector />
-
+        <SpriteSelector />
         {/* Botón Tema */}
         <IconButton
           color="inherit"

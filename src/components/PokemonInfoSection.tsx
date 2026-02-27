@@ -2,7 +2,7 @@
 import { Box, Typography } from '@mui/material'
 import Image from 'next/image'
 
-import { PokemonType } from '@/lib/types'
+import { PokemonType } from '@/api/types'
 
 export const PokemonInfoSection = ({
   types,

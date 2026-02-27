@@ -3,7 +3,7 @@
 import { Select, MenuItem, Box, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
 
-import { LANGUAGES, LANGUAGE_FLAGS } from '@/constants'
+import { LANGUAGES, LANGUAGE_FLAGS } from '@/constants/common'
 import { usePokeStore } from '@/store/usePokeStore'
 
 export const LanguageSelector = () => {
@@ -17,7 +17,7 @@ export const LanguageSelector = () => {
         onChange={(e) => setLanguage(e.target.value as LANGUAGES)}
         size="small"
         sx={{
-          minWidth: 110,
+          minWidth: { xs: 60, sm: 150 },
           zIndex: 10,
           fontSize: '0.85rem',
           textTransform: 'uppercase',

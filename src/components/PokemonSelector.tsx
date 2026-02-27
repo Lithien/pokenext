@@ -15,16 +15,9 @@ export const PokemonSelector = ({
   onChangeName: (value: string) => void
   onRandomize: () => void
 }) => (
-  <Box display="flex" gap={2} alignItems="center" flexWrap="wrap">
+  <Box display="flex" gap={1} alignItems="center">
     <TextField value={name} onChange={e => onChangeName(e.target.value)} variant="outlined" size="small" />
-    <Box display="flex" gap={1}>
-      <TextField
-        type="number"
-        value={dexNumber}
-        onChange={e => onChangeDex(Number(e.target.value))}
-        size="small"
-      />
-    </Box>
+    <TextField type="number" variant='outlined' value={dexNumber} onChange={e => onChangeDex(Number(e.target.value))} size="small" />
     <Button
       variant="contained"
       color="primary"
@@ -32,7 +25,7 @@ export const PokemonSelector = ({
       onClick={onRandomize}
       sx={{ borderRadius: 5 }}
     >
-      Randomize
+      <Box component="span" sx={{ display: { xs: 'none', sm: 'block' } }}>Randomize</Box>
     </Button>
   </Box>
 )

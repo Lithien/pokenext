@@ -18,7 +18,7 @@ import { findByLanguage, getPokemonImage } from '@/utils'
 const PokemonDetailPage = () => {
   const { id } = useParams()
   const { fn, data } = usePokemon({ id: String(id) })
-  const { pokemon, species, selectedGame, gameOptions, language, isShiny, tab } = data
+  const { pokemon, species, selectedGame, gameOptions, language, isShiny, tab, spriteType } = data
 
   if (data.loading) {
     return (
@@ -38,9 +38,9 @@ const PokemonDetailPage = () => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+    <Box display="flex" flexDirection="column" alignItems="center" gap={2} padding={3}>
       <PokemonImageHeader
-        imageUrl={getPokemonImage(pokemon.id, 'HOME', true, isShiny)}
+        imageUrl={getPokemonImage(pokemon.id, spriteType, false, isShiny)}
         name={pokemon.name}
         genere={findByLanguage(species.genera, language, 'genus') || 'Pokémon'}
       />

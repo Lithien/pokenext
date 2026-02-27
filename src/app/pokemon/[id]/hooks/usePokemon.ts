@@ -1,9 +1,9 @@
 import { useRouter } from "next/navigation"
 import { useEffect, useState } from "react"
 
-import { API } from "@/api/endpoints"
-import { useApi } from "@/hooks/useApi"
-import { Pokemon, PokemonSpecies, VersionGameIndex } from "@/lib/types"
+import { API } from "@/api"
+import { useApi } from "@/api/hooks/useApi"
+import { VersionGameIndex, Pokemon, PokemonSpecies } from "@/api/types"
 import { usePokeStore } from "@/store/usePokeStore"
 import { getNumberFromUrl } from "@/utils"
 
@@ -12,7 +12,7 @@ const usePokemon = ({ id }: { id: string }) => {
   const [selectedGame, setSelectedGame] = useState('')
   const [tab, setTab] = useState(0)
   let gameOptions: VersionGameIndex[] = []
-  const { isShiny, language } = usePokeStore()
+  const { isShiny, language, spriteType } = usePokeStore()
 
   const { data: pokemon, isLoading: loadingPokemon } = useApi<Pokemon>({ key: API.POKEMON_DETAIL(String(id)) })
   const { data: species, isLoading: loadingSpecies } = useApi<PokemonSpecies>({ key: API.POKEMON_SPECIES(String(id)) })
@@ -79,7 +79,8 @@ const usePokemon = ({ id }: { id: string }) => {
       language,
       isShiny,
       tab,
-      loading
+      loading,
+      spriteType
     }
   })
 }

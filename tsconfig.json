@@ -37,13 +37,13 @@
         "./src/components/*"
       ],
       "@/hooks/*": [
-        "./src/hooks/*"
-      ],
-      "@/lib/*": [
-        "./src/lib/*"
+        "./src/api/hooks/*"
       ],
       "@/types/*": [
-        "./src/lib/types/*"
+        "./src/api/types/*"
+      ],
+      "@/api/*": [
+        "./src/api/*"
       ],
       "@/constants/*": [
         "./src/constants/*"
