@@ -34,3 +34,5 @@ export const COLORS = [
 
 export type ArtworkKey = keyof typeof OTHER_ARTWORK
 export type LANGUAGES = typeof LANGUAGES[keyof typeof LANGUAGES]
+
+export const IMG_BASE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'

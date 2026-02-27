@@ -1,5 +1,4 @@
-import { createTheme } from '@mui/material/styles'
-
+import { createTheme } from '@mui/material'
 
 export const typeColors = {
   normal: "#A8A878",
@@ -25,22 +24,14 @@ export const typeColors = {
 
 export type PokemonType = keyof typeof typeColors
 
-export const isPokemonType = (type: string): type is PokemonType =>
-  type in typeColors
+export const isPokemonType = (type: string): type is PokemonType => type in typeColors
 
-export const getColorByType = (type: string): string =>
-  isPokemonType(type) ? typeColors[type] : '#09BC8A'
+export const getColorByType = (type: string): string => isPokemonType(type) ? typeColors[type] : '#09BC8A'
 
-export const getDesignTokens = (
-  mode: 'light' | 'dark',
-  colors: { primary: string; secondary: string; accent: string }
-) => ({
+export const getDesignTokens = (mode: 'light' | 'dark', colors: { primary: string; secondary: string; accent: string }) => ({
   palette: {
     mode,
-    
-    background: {
-      default: mode === 'light' ? '#f5f5f5' : '#030711',
-    },
+    background: { default: mode === 'light' ? '#f5f5f5' : '#030711' },
   },
   pokedex: {
     getColorByType,
@@ -70,6 +61,6 @@ export const createAppTheme = (
     },
     pokedex: {
       getColorByType,
-      
+      accent: colors.accent || '#C49F3B',
     },
   })

@@ -21,8 +21,9 @@ export default function PokemonCard({ name, url }: NamedAPIResource) {
           style={{ imageRendering: 'pixelated', height: '130px', objectFit: 'contain' }}
         />
         <CardContent>
-          <Typography variant="caption" color='accent' component="div" textAlign="center" fontWeight={600}>
-            {name.charAt(0).toUpperCase() + name.slice(1)}
+          <Typography variant="caption" color='accent' component="div" textAlign="center" textTransform='capitalize' fontWeight={600}>
+            {/* {name.charAt(0) + name.slice(1)}<br></br> */}
+            {name.split('-').join(' ')}
           </Typography>
         </CardContent>
       </Card>

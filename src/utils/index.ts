@@ -1,4 +1,4 @@
-import { ArtworkKey, OTHER_ARTWORK } from "@/constants"
+import { ArtworkKey, IMG_BASE_URL, OTHER_ARTWORK } from "@/constants"
 
 /**
  * @name getPokemonImage
@@ -9,7 +9,50 @@ import { ArtworkKey, OTHER_ARTWORK } from "@/constants"
  * @param shiny If true, returns shiny version of the image
  * @returns URL of the Pokémon image
  */
-export const getPokemonImage = (number: number | string, artwork: ArtworkKey = 'HOME', sprite: boolean = false, shiny: boolean = false): string => `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/${!sprite ? `other/${OTHER_ARTWORK[artwork]}` : `${shiny ? 'shiny' : ''}`}/${number}.png`
+export const getPokemonImage = (
+  number: number | string,
+  artwork: ArtworkKey = 'HOME',
+  sprite: boolean = false,
+  shiny: boolean = false,
+  back: boolean = false
+): string => {
+  const id = number.toString()
+
+  // 1. SPRITES CLÁSICOS (front/back)
+  if (sprite) {
+    const base = `${IMG_BASE_URL}${back ? 'back/' : ''}`
+    const shinyPath = shiny ? 'shiny/' : ''
+    return `${base}${shinyPath}${id}.png`
+  }
+
+  // 2. ARTWORKS "OTHER"
+  const folder = OTHER_ARTWORK[artwork]
+
+  // Extensiones según artwork
+  const extension =
+    artwork === 'DREAM_WORLD'
+      ? 'svg'
+      : artwork === 'SHOWDOWN'
+        ? 'gif'
+        : 'png'
+
+  // SHOWDOWN tiene estructura distinta
+  if (artwork === 'SHOWDOWN') {
+    const base = `${IMG_BASE_URL}other/showdown/`
+    const backPath = back ? 'back/' : ''
+    const shinyPath = shiny ? 'shiny/' : ''
+    return `${base}${backPath}${shinyPath}${id}.${extension}`
+  }
+
+  // DREAM WORLD solo tiene front_default
+  if (artwork === 'DREAM_WORLD') {
+    return `${IMG_BASE_URL}other/dream-world/${id}.${extension}`
+  }
+
+  // OFFICIAL y HOME
+  const shinyPath = shiny ? 'shiny/' : ''
+  return `${IMG_BASE_URL}other/${folder}/${shinyPath}${id}.${extension}`
+}
 
 /**
  * @name getNumberFromUrl
@@ -80,21 +123,6 @@ export const convertRGBToHex = (color: number[]): string => {
  * @returns RGBA color string
  */
 export const convertArrayToRGBA = (color: number[], alpha: number = 1): string => `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${alpha})`
-
-/**
- * @name mapPaletteToThemeColors
- * @description Maps a color palette to theme colors (primary, secondary, accent)
- * @param palette Array of RGB color arrays
- * @returns Object with primary, secondary, and accent color strings
- */
-export const mapPaletteToThemeColors = (palette: number[][]) => {
-  const hexColors = palette.map(convertRGBToHex)
-  return {
-    primary: hexColors[0] || '#ef5350',
-    secondary: hexColors[1] || '#1976d2',
-    accent: hexColors[2] || '#ffb300'
-  }
-}
 
 /**
  * @name findByLanguage

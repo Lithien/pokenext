@@ -57,23 +57,25 @@ export const PokemonDetailStatsSection = ({
           {flavorText || 'No description available.'}
         </Typography>
 
-        <Box>
-          <Typography variant="caption" mr={1}>
-            Version:
-          </Typography>
-          <Select
-            value={selectedGame}
-            onChange={(e) => onChangeGame(e.target.value)}
-            size="small"
-            sx={{ textTransform: 'capitalize' }}
-          >
-            {gameOptions.map((game) => (
-              <MenuItem key={game.version.name} value={game.version.name} sx={{ textTransform: 'capitalize' }}>
-                {game.version.name.replace('-', ' ')}
-              </MenuItem>
-            ))}
-          </Select>
-        </Box>
+        {gameOptions.length > 0 && (
+          <Box>
+            <Typography variant="caption" mr={1}>
+              Version:
+            </Typography>
+            <Select
+              value={selectedGame}
+              onChange={(e) => onChangeGame(e.target.value)}
+              size="small"
+              sx={{ textTransform: 'capitalize' }}
+            >
+              {gameOptions.map((game) => (
+                <MenuItem key={game.version.name} value={game.version.name} sx={{ textTransform: 'capitalize' }}>
+                  {game.version.name.replace('-', ' ')}
+                </MenuItem>
+              ))}
+            </Select>
+          </Box>
+        )}
       </Box>
 
       {/* Columna derecha: statsComponent ya creado */}

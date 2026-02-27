@@ -4,8 +4,7 @@ import { Box, CardMedia, Container, IconButton, Typography } from '@mui/material
 import { useEffect } from 'react'
 
 import { usePokeStore } from '@/store/usePokeStore'
-import { useThemeStore } from '@/store/useThemeStore'
-import { extractColors } from '@/utils/colorThief'
+import { applyColorsFromImage } from '@/utils/extractColors'
 
 interface PokemonImageHeaderProps {
   imageUrl: string
@@ -15,12 +14,11 @@ interface PokemonImageHeaderProps {
 
 export const PokemonImageHeader = ({ imageUrl, name, genere }: PokemonImageHeaderProps) => {
   const { isShiny, toggleShiny } = usePokeStore()
-  const setColors = useThemeStore((state) => state.setColors)
 
   useEffect(() => {
-    extractColors(imageUrl, setColors)
-  }, [imageUrl, setColors, isShiny])
-
+    applyColorsFromImage(imageUrl)
+  }, [imageUrl])
+  
   return (
     <Container sx={{ mb: 2, width: 'auto' }}>
       <Box display="flex" flexDirection="column" alignItems="center" gap={1}>

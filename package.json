@@ -17,8 +17,7 @@
     "@mui/material": "^7.3.8",
     "@tanstack/react-query": "^5.90.21",
     "@tanstack/react-query-devtools": "^5.91.3",
-    "axios": "^1.13.5",
-    "colorthief": "^2.6.0",
+    "axios": "^1.13.6",
     "next": "16.1.6",
     "react": "19.2.4",
     "react-dom": "19.2.4",
@@ -28,7 +27,7 @@
     "@eslint/eslintrc": "^3.3.4",
     "@eslint/js": "^9.39.3",
     "@tailwindcss/postcss": "^4.2.1",
-    "@types/node": "^24.10.13",
+    "@types/node": "^24.10.15",
     "@types/react": "^19.2.14",
     "@types/react-dom": "^19.2.3",
     "baseline-browser-mapping": "^2.10.0",
@@ -36,9 +35,9 @@
     "eslint-config-next": "16.1.6",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-react": "^7.37.5",
-    "typescript-eslint": "^8.56.0",
-    "tailwindcss": "^4.2.1",
     "globals": "^17.3.0",
-    "typescript": "^5"
+    "tailwindcss": "^4.2.1",
+    "typescript": "^5.9.3",
+    "typescript-eslint": "^8.56.1"
   }
 }
