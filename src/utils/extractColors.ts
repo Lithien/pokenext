@@ -1,6 +1,6 @@
 import { useThemeStore } from "@/store/useThemeStore";
 
-export interface ColorWithFrequency {
+interface ColorWithFrequency {
   hex: string;
   frequency: number;
   percentage: number;
@@ -12,11 +12,11 @@ export interface ColorWithFrequency {
  * @param count - Number of colors to extract (default: 3)
  * @returns Promise with array of color hex codes (for backward compatibility) or ColorWithFrequency[]
  */
-export async function extractColorsFromImage(
+const extractColorsFromImage = async (
   imageUrl: string,
   count: number = 3,
   includeFrequencies: boolean = false
-): Promise<string[] | ColorWithFrequency[]> {
+): Promise<string[] | ColorWithFrequency[]> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
     img.crossOrigin = "anonymous";
@@ -115,7 +115,7 @@ export async function extractColorsFromImage(
  * @param count Number of colors to extract (default: 3)
  * @returns Promise<void>
  */
-export async function applyColorsFromImage(imageUrl: string, count: number = 3) {
+export const applyColorsFromImage = async (imageUrl: string, count: number = 3) => {
   try {
     const colors = await extractColorsFromImage(imageUrl, count)
 
@@ -125,8 +125,10 @@ export async function applyColorsFromImage(imageUrl: string, count: number = 3) 
     }
 
     // Normalizamos: si viene como string o como objeto { hex, frequency }
-    const normalize = (c: any) => (typeof c === "string" ? c : c.hex)
-
+    const normalize = (color: string | ColorWithFrequency): string => {
+      if (typeof color === "string") return color
+      return color.hex
+    }
     const primary = normalize(colors[0])
     const secondary = normalize(colors[1])
     const accent = normalize(colors[2])
@@ -136,8 +138,6 @@ export async function applyColorsFromImage(imageUrl: string, count: number = 3) 
       { name: "secondary", hex: secondary },
       { name: "accent", hex: accent }
     ])
-
-
   } catch (error) {
     console.error("Error applying colors:", error)
   }

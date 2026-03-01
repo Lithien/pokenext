@@ -95,7 +95,7 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
           p: 1,
           borderRadius: 2,
           animation: `fadeIn 0.6s ease ${depth * 0.2}s`,
-          
+
         }}
       >
         <PokemonCard {...node.species} />

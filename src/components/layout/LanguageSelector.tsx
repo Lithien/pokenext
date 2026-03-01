@@ -2,6 +2,7 @@
 
 import { Select, MenuItem, Box, Typography } from '@mui/material'
 import { useTheme } from '@mui/material/styles'
+import Image from 'next/image'
 
 import { LANGUAGES, LANGUAGE_FLAGS } from '@/constants/common'
 import { usePokeStore } from '@/store/usePokeStore'
@@ -17,7 +18,7 @@ export const LanguageSelector = () => {
         onChange={(e) => setLanguage(e.target.value as LANGUAGES)}
         size="small"
         sx={{
-          minWidth: { xs: 60, sm: 150 },
+          minWidth: 60,
           zIndex: 9999,
           fontSize: '0.85rem',
           textTransform: 'uppercase',
@@ -53,7 +54,7 @@ export const LanguageSelector = () => {
             }}
           >
             <Typography component="span" fontSize="1.2rem">
-              <img
+              <Image
                 src={LANGUAGE_FLAGS[lang]}
                 alt={lang}
                 width={20}

@@ -8,7 +8,7 @@ const SpriteSelector = () => {
   const { spriteType, setSpriteType } = usePokeStore()
 
   return (
-    <FormControl size="small" sx={{ minWidth: { xs: 120, sm: 180 }, zIndex: 9999 } }>
+    <FormControl size="small" sx={{ minWidth: 150, zIndex: 9999 }}>
       <InputLabel>Sprite</InputLabel>
       <Select
         value={spriteType}

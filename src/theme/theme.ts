@@ -1,6 +1,6 @@
 import { createTheme } from '@mui/material'
 
-export const typeColors = {
+const typeColors = {
   normal: "#A8A878",
   fire: "#F08030",
   fighting: "#C03028",

@@ -35,8 +35,11 @@ export const COLORS = [
 export type ArtworkKey = keyof typeof OTHER_ARTWORK
 export type LANGUAGES = typeof LANGUAGES[keyof typeof LANGUAGES]
 
-export const IMG_BASE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/'
-export const ITEM_IMAGE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/dream-world/'
+const BASE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites'
+
+export const IMG_BASE_URL = `${BASE_URL}/pokemon/`
+export const ITEM_IMAGE_URL = `${BASE_URL}/items/dream-world/`
+export const TYPE_IMAGE_URL = `${BASE_URL}/types/generation-ix/scarlet-violet/`
 
 export const SPRITE_TYPES = [
   { id: "default", label: "Default" },

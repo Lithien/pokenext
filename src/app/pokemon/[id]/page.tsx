@@ -1,18 +1,15 @@
 'use client'
 
-import { Typography, Box, Skeleton } from '@mui/material'
+import { Typography, Box, Skeleton, Tab, Tabs } from '@mui/material'
 import { useParams } from 'next/navigation'
 
 import usePokemon from './hooks/usePokemon'
 
-import ChainEvolution from '@/components/ChainEvolution'
-import ColorPalette from '@/components/ColorPalette'
-import { PokemonImageHeader } from '@/components/PokemonImageHeader'
-import { PokemonInfoSection } from '@/components/PokemonInfoSection'
-import { PokemonSelector } from '@/components/PokemonSelector'
-import PokemonStats from '@/components/PokemonStats'
-import { PokemonDetailStatsSection } from '@/components/PokemonStatsCard'
-import { PokemonTabs } from '@/components/PokemonTabs'
+import ChainEvolution from '@/components/pokemon/ChainEvolution'
+import { PokemonImageHeader } from '@/components/pokemon/PokemonImageHeader'
+import { PokemonSelector } from '@/components/pokemon/PokemonSelector'
+import { PokemonDetailStatsSection } from '@/components/pokemon/PokemonStatsCard'
+import ColorPalette from '@/components/ui/ColorPalette'
 import { findByLanguage, getPokemonImage } from '@/utils'
 
 const PokemonDetailPage = () => {
@@ -53,21 +50,26 @@ const PokemonDetailPage = () => {
         onRandomize={fn.onRandomize}
       />
 
-      <PokemonTabs tab={tab} onChange={fn.setTab} />
+      <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Tabs value={tab} onChange={(_, val) => fn.setTab(val)} textColor='primary' indicatorColor='secondary'>
+          <Tab label="Information" />
+          <Tab label="Forms" />
+          <Tab label="Colors" />
+        </Tabs>
+      </Box>
 
-      {tab === 0 && (<PokemonInfoSection types={pokemon.types} height={pokemon.height / 10} weight={pokemon.weight / 10} />)}
-      {tab === 1 && (<ChainEvolution pokemon={pokemon} species={species} />)}
-      {tab === 2 && (<ColorPalette />)}
-      {tab === 3 && (
+      {tab === 0 && (
         <PokemonDetailStatsSection
           onPlayCry={fn.playCry}
           selectedGame={selectedGame}
           onChangeGame={fn.setSelectedGame}
           gameOptions={gameOptions}
-          flavorText={findByLanguage(species.flavor_text_entries, language, 'flavor_text') || 'No flavor text available in this language.'}
-          statsComponent={<PokemonStats stats={pokemon.stats} />}
+          pokemon={pokemon}
+          species={species}
         />
       )}
+      {tab === 1 && (<ChainEvolution pokemon={pokemon} species={species} />)}
+      {tab === 2 && (<ColorPalette />)}
 
       <Typography mt={4} variant="body2" color="text.secondary" textAlign="center">
         More Pokémon details coming in future updates

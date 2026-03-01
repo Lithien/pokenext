@@ -1,20 +1,17 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Roboto } from "next/font/google";
 
 import type { Metadata } from "next";
 
 import "./globals.css";
-import { PokedexHeader } from "@/components/PokemonHeader";
+import { PokedexHeader } from "@/components/layout/Header";
 import QueryProvider from "@/providers/QueryProvider";
-import ThemeRegistry from "@/theme/theme-provider";
+import ThemeRegistry from "@/theme/ThemeProvider";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const roboto = Roboto({
+  variable: "--font-roboto",
   subsets: ["latin"],
+  weight: ['100', '200', '300', '400', '500', '700', '900'],
 });
 
 export const metadata: Metadata = {
@@ -30,7 +27,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${roboto.variable} antialiased`}
       >
         <QueryProvider>
           <ThemeRegistry>

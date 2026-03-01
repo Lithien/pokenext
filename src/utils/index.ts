@@ -1,6 +1,6 @@
-import { EvolutionDetail } from "@/api/types"
-import { ColorFormat } from "@/components/ColorPalette"
-import { IMG_BASE_URL, SpriteType } from "@/constants"
+import { EvolutionDetail, PokemonType } from "@/api/types"
+import { ColorFormat } from "@/components/ui/ColorPalette"
+import { IMG_BASE_URL, SpriteType, TYPE_IMAGE_URL } from "@/constants"
 
 /**
  * @name getPokemonImage
@@ -103,29 +103,6 @@ export const getStatColor = (name: string): string => {
 }
 
 /**
- * @name convertRGBToHex
- * @description Converts an RGB color array to a HEX color string
- * @param color Array of RGB values
- * @returns HEX color string
- */
-export const convertRGBToHex = (color: number[]): string => {
-  const toHex = (n: number) => {
-    const hex = n.toString(16)
-    return hex.length === 1 ? `0${hex}` : hex
-  }
-  return `#${toHex(color[0])}${toHex(color[1])}${toHex(color[2])}`
-}
-
-/**
- * @name convertArrayToRGBA
- * @description Converts an RGB color array to an RGBA color string
- * @param color Array of RGB values
- * @param alpha Alpha value (default is 1)
- * @returns RGBA color string
- */
-export const convertArrayToRGBA = (color: number[], alpha: number = 1): string => `rgba(${color[0]}, ${color[1]}, ${color[2]}, ${alpha})`
-
-/**
  * @name findByLanguage
  * @description Finds a value in an array of objects based on the specified language and key
  * @param entries Array of objects that contain a language property
@@ -216,3 +193,5 @@ export const convertColor = (hex: string, format: ColorFormat) => {
   if (format === "hsl") return hexToHsl(hex)
   return hex.toUpperCase()
 }
+
+export const getTypeBadge = (type: PokemonType) => `${TYPE_IMAGE_URL}${getNumberFromUrl(type.type.url)}.png`
