@@ -1,7 +1,9 @@
 'use client'
 import { Shuffle } from '@mui/icons-material'
-import { Box, Button, TextField } from '@mui/material'
+import { Box, Button, TextField, useTheme } from '@mui/material'
 import { useEffect, useState } from 'react'
+
+import { getTextColor } from '@/utils'
 
 export const PokemonSelector = ({
   dexNumber,
@@ -18,6 +20,7 @@ export const PokemonSelector = ({
 }) => {
   const [localName, setLocalName] = useState(name)
   const [localDex, setLocalDex] = useState(dexNumber)
+  const theme = useTheme()
 
   // Debounce para nombre
   useEffect(() => {
@@ -42,6 +45,7 @@ export const PokemonSelector = ({
         onChange={e => setLocalName(e.target.value)}
         variant="outlined"
         size="small"
+        className='capitalize'
       />
 
       <TextField
@@ -59,7 +63,7 @@ export const PokemonSelector = ({
         onClick={onRandomize}
         sx={{ borderRadius: 5 }}
       >
-        <Box component="span" sx={{ display: { xs: 'none', sm: 'block' } }}>
+        <Box component="span" color={getTextColor(theme.palette.primary.main)} sx={{ display: { xs: 'none', sm: 'block' } }}>
           Randomize
         </Box>
       </Button>

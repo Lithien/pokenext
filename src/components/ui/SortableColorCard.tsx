@@ -5,6 +5,8 @@ import { CSS } from "@dnd-kit/utilities"
 import LockIcon from "@mui/icons-material/Lock"
 import { Box, Typography, IconButton } from "@mui/material"
 
+import { getTextColor } from "@/utils"
+
 interface Props {
   id: string
   hex: string
@@ -13,49 +15,34 @@ interface Props {
 }
 
 export default function SortableColorCard({ id, hex, displayValue }: Props) {
-  const { attributes, listeners, setNodeRef, transform, transition } =
-    useSortable({ id })
-
-  const style = {
-    transform: CSS.Transform.toString(transform),
-    transition,
-  }
+  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
 
   return (
     <Box
-      ref={setNodeRef}
-      style={style}
       {...attributes}
       {...listeners}
+      ref={setNodeRef}
+      style={{ transform: CSS.Transform.toString(transform), transition }}
       display="flex"
       alignItems="center"
       justifyContent="space-between"
-      bgcolor="#0F0F10"
+      bgcolor={hex}
       borderRadius="12px"
       p={2}
       sx={{ width: 280, cursor: "grab" }}
     >
       <Box display="flex" alignItems="center" gap={2}>
-        <Box
-          sx={{
-            width: 32,
-            height: 32,
-            bgcolor: hex,
-            borderRadius: "50%",
-            border: "2px solid #1e1e1e",
-          }}
-        />
         <Box>
-          <Typography variant="body2" color="#aaa">
+          <Typography variant="body2" className="capitalize" color={getTextColor(hex)}>
             {id}
           </Typography>
-          <Typography variant="caption" color="#777">
+          <Typography variant="caption" className="uppercase" color={getTextColor(hex)}>
             {displayValue}
           </Typography>
         </Box>
       </Box>
 
-      <IconButton size="small" sx={{ color: "#777" }}>
+      <IconButton size="small" sx={{ color: getTextColor(hex) }}>
         <LockIcon fontSize="small" />
       </IconButton>
     </Box>

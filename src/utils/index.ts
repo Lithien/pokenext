@@ -195,3 +195,17 @@ export const convertColor = (hex: string, format: ColorFormat) => {
 }
 
 export const getTypeBadge = (type: PokemonType) => `${TYPE_IMAGE_URL}${getNumberFromUrl(type.type.url)}.png`
+
+export const getTextColor = (hex: string): "#ffffff" | "#000000" => {
+  if (!hex) return "#ffffff";
+  const hexClean = hex.replace("#", "");
+  const r = parseInt(hexClean.substring(0, 2), 16);
+  const g = parseInt(hexClean.substring(2, 4), 16);
+  const b = parseInt(hexClean.substring(4, 6), 16);
+
+  // Calculate luminance
+  const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+
+  // Return white for dark colors, black for light colors
+  return luminance > 0.5 ? "#000000" : "#ffffff";
+};

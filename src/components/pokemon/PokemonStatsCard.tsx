@@ -1,14 +1,21 @@
 'use client'
 
 import VolumeUpIcon from '@mui/icons-material/VolumeUp'
-import { Box, Typography, IconButton, Select, MenuItem, useMediaQuery, useTheme } from '@mui/material'
+import {
+  Box,
+  Typography,
+  IconButton,
+  Select,
+  MenuItem,
+  useMediaQuery,
+  useTheme
+} from '@mui/material'
 
 import PokemonStats from './PokemonStats'
 
 import { Pokemon, PokemonSpecies, VersionGameIndex } from '@/api/types'
 import { usePokeStore } from '@/store/usePokeStore'
-import { findByLanguage } from '@/utils'
-
+import { findByLanguage, getTextColor } from '@/utils'
 
 interface PokemonDetailStatsSectionProps {
   onPlayCry: () => void
@@ -31,6 +38,16 @@ export const PokemonDetailStatsSection = ({
   const { language } = usePokeStore()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
+  const panelBg =
+    theme.palette.mode === 'dark'
+      ? theme.palette.grey[900]
+      : theme.palette.grey[100]
+
+  const panelBorder =
+    theme.palette.mode === 'dark'
+      ? theme.palette.grey[800]
+      : theme.palette.grey[300]
+
   return (
     <Box
       sx={{
@@ -40,78 +57,146 @@ export const PokemonDetailStatsSection = ({
         gap: 4,
         p: 4,
         borderRadius: 4,
-        bgcolor: theme.palette.grey[900],
+        bgcolor: panelBg,
+        border: `1px solid ${panelBorder}`,
         overflow: 'hidden',
         color: theme.palette.text.primary
       }}
     >
-      {/* Columna izquierda: descripción */}
+      {/* Columna izquierda */}
       <Box sx={{ flex: 1, zIndex: 1 }}>
-        {/* Nombre y número de Pokédex */}
-        <Box display="flex" gap={2} alignItems="center" justifyContent={'space-between'} mb={1}>
-          <Box display="flex" alignContent="center" alignItems="center">
-            <Typography variant='h4' fontWeight="bold" mb={2} className='capitalize'>
+        {/* Nombre + ID */}
+        <Box
+          display="flex"
+          gap={2}
+          alignItems="center"
+          justifyContent={'space-between'}
+          mb={1}
+        >
+          <Box display="flex" alignItems="center">
+            <Typography variant="h4" fontWeight="bold" mb={2} className="capitalize">
               {pokemon.name}
             </Typography>
-            <Typography variant="subtitle1" sx={{ color: theme.palette.grey[500] }} mb={2} ml={1}>
-              {`#${pokemon.id}`}
+            <Typography
+              variant="subtitle1"
+              sx={{ color: theme.palette.text.secondary }}
+              mb={2}
+              ml={1}
+            >
+              #{pokemon.id}
             </Typography>
           </Box>
+
           <IconButton onClick={onPlayCry}>
             <VolumeUpIcon />
           </IconButton>
         </Box>
+
         {/* Género */}
-        <Typography variant="subtitle1" mb={1} sx={{ color: theme.palette.grey[500] }}>
+        <Typography
+          variant="subtitle1"
+          mb={1}
+          sx={{ color: theme.palette.text.secondary }}
+        >
           {findByLanguage(species.genera, language, 'genus') || 'Pokémon'}
         </Typography>
+
         {/* Types */}
         <Box display="flex">
-          {pokemon.types.map((type, index) => (
-            <span key={index}
-              className="px-2 block py-0.5 rounded-md text-xs font-medium shadow-sm border border-black/10 capitalize mr-2.5"
-              style={{ color: theme.palette.common.black, backgroundColor: index === 0 ? theme.palette.primary.main : theme.palette.secondary.main }}
-            >
-              {type.type.name}
-            </span>
-          ))}
+          {pokemon.types.map((type, index) => {
+            const baseColor =
+              index === 0
+                ? theme.palette.primary.main
+                : theme.palette.secondary.main
+
+            const bg =
+              theme.palette.mode === 'dark'
+                ? baseColor
+                : `${baseColor}33` // pastel en claro
+
+            const text = getTextColor(bg)
+
+            return (
+              <span
+                key={index}
+                className="px-2 py-0.5 rounded-md text-xs font-medium shadow-sm border border-black/10 capitalize mr-2.5"
+                style={{
+                  backgroundColor: bg,
+                  color: text
+                }}
+              >
+                {type.type.name}
+              </span>
+            )
+          })}
         </Box>
+
         {/* Pokédex entry */}
         <Typography variant="h5" mt={6} mb={2}>
           Pokédex Entry
         </Typography>
+
         <Typography variant="body2" mb={2}>
-          {findByLanguage(species.flavor_text_entries, language, 'flavor_text') || 'No flavor text available in this language.'}
+          {findByLanguage(species.flavor_text_entries, language, 'flavor_text') ||
+            'No flavor text available in this language.'}
         </Typography>
-        {/* Altura y peso */}
+
+        {/* Height & Weight */}
         <Box display="flex" gap={4} flexWrap="wrap">
           <Box>
-            <Typography variant="body2" color="secondary">Height</Typography>
-            <Typography variant="h6" color='primary'>{pokemon.height / 10} m</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Height
+            </Typography>
+            <Typography variant="h6">{pokemon.height / 10} m</Typography>
           </Box>
+
           <Box>
-            <Typography variant="body2" color="secondary">Weight</Typography>
-            <Typography variant="h6" color='primary'>{pokemon.weight / 10} kg</Typography>
+            <Typography variant="body2" color="text.secondary">
+              Weight
+            </Typography>
+            <Typography variant="h6">{pokemon.weight / 10} kg</Typography>
           </Box>
         </Box>
-        {/* Habilidades */}
+
+        {/* Abilities */}
         <Typography variant="h6" mt={4} mb={2}>
           Abilities
         </Typography>
-        <Box display="flex" alignItems='flex-start' flexDirection="column" gap={1}>
-          {pokemon.abilities.map((abilityInfo) => (
-            <span key={abilityInfo.slot}
-              className="px-2 py-0.5 rounded-md text-xs font-medium shadow-sm border border-black/10 capitalize mr-2.5"
-              style={{ color: theme.palette.common.black, backgroundColor: abilityInfo.slot === 1 ? theme.palette.primary.main : abilityInfo.slot === 2 ? theme.palette.secondary.main : theme.palette.accent.main }}
-            >
-              {abilityInfo.ability.name} {abilityInfo.is_hidden && '(Hidden)'}
-            </span>
-          ))}
+
+        <Box display="flex" alignItems="flex-start" flexDirection="column" gap={1}>
+          {pokemon.abilities.map((abilityInfo) => {
+            const baseColor =
+              abilityInfo.slot === 1
+                ? theme.palette.primary.main
+                : abilityInfo.slot === 2
+                  ? theme.palette.secondary.main
+                  : theme.palette.accent.main
+
+            const bg =
+              theme.palette.mode === 'dark'
+                ? baseColor
+                : `${baseColor}33`
+
+            const text = getTextColor(bg)
+
+            return (
+              <span
+                key={abilityInfo.slot}
+                className="px-2 py-0.5 rounded-md text-xs font-medium shadow-sm border border-black/10 capitalize mr-2.5"
+                style={{
+                  backgroundColor: bg,
+                  color: text
+                }}
+              >
+                {abilityInfo.ability.name} {abilityInfo.is_hidden && '(Hidden)'}
+              </span>
+            )
+          })}
         </Box>
 
-
+        {/* Version selector */}
         {gameOptions.length > 0 && (
-          <Box>
+          <Box mt={2}>
             <Typography variant="caption" mr={1}>
               Version:
             </Typography>
@@ -122,7 +207,11 @@ export const PokemonDetailStatsSection = ({
               sx={{ textTransform: 'capitalize' }}
             >
               {gameOptions.map((game) => (
-                <MenuItem key={game.version.name} value={game.version.name} sx={{ textTransform: 'capitalize' }}>
+                <MenuItem
+                  key={game.version.name}
+                  value={game.version.name}
+                  sx={{ textTransform: 'capitalize' }}
+                >
                   {game.version.name.replace('-', ' ')}
                 </MenuItem>
               ))}
@@ -131,10 +220,10 @@ export const PokemonDetailStatsSection = ({
         )}
       </Box>
 
-      {/* Columna derecha: statsComponent ya creado */}
+      {/* Columna derecha: Stats */}
       <Box sx={{ flex: 1, zIndex: 1 }}>
         <PokemonStats stats={pokemon.stats} />
       </Box>
-    </Box >
+    </Box>
   )
 }

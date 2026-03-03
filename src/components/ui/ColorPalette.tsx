@@ -72,7 +72,13 @@ export default function ColorPalette() {
         >
           <Box display="flex" flexDirection="column" gap={2}>
             {colors.map((c, index) => (
-              <SortableColorCard key={c.name} id={c.name} hex={c.hex} displayValue={convertColor(c.hex, format)} index={index} />
+              <SortableColorCard
+                key={c.name}
+                id={c.name}
+                hex={c.hex}
+                displayValue={convertColor(c.hex, format)}
+                index={index}
+              />
             ))}
           </Box>
         </SortableContext>
