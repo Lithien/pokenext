@@ -2,7 +2,23 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
   images: {
-    remotePatterns: [new URL('https://raw.githubusercontent.com/'), new URL('https://pokeapi.co/'), new URL('https://img.pokemondb.net/')],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "raw.githubusercontent.com",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "pokeapi.co",
+        pathname: "**",
+      },
+      {
+        protocol: "https",
+        hostname: "img.pokemondb.net",
+        pathname: "**",
+      },
+    ],
   }
 };
 

@@ -3,6 +3,7 @@
 import { ArrowRightAlt } from "@mui/icons-material"
 import { Box, Container, Grid, Skeleton, Typography, Chip } from "@mui/material"
 import { useTheme } from "@mui/material"
+import Image from "next/image"
 
 import useChainEvolution from "./hooks/useChainEvolution"
 import PokemonCard from "./PokemonCard"
@@ -43,15 +44,16 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
             key={item}
             label={
               <Box display="flex" alignItems="center" gap={1}>
-                <img
+                <Image
                   src={`${ITEM_IMAGE_URL}${item}.png`}
                   alt={item}
-                  width={24}
-                  height={24}
+                  width={25}
+                  height={25}
+                  style={{ maxWidth: "fit-content" }}
                 />
               </Box>
             }
-            size="small"
+            size="medium"
             sx={{
               bgcolor: "rgba(255,255,255,0.1)",
               border: "1px solid rgba(255,255,255,0.2)",
@@ -193,7 +195,7 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
           </Typography>
 
           <Grid container spacing={2} justifyContent="center">
-            {species.varieties.map((variety) => (
+            {species.varieties.filter(v => !v.is_default).map((variety) => (
               <Grid key={variety.pokemon.name}>
                 <PokemonCard {...variety.pokemon} />
               </Grid>

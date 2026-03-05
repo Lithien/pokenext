@@ -1,6 +1,6 @@
 'use client'
 
-import { Card, CardContent, CardMedia, Typography } from '@mui/material'
+import { Card, CardContent, CardMedia, Typography, useTheme } from '@mui/material'
 import Link from 'next/link'
 
 import { NamedAPIResource } from '@/api/types'
@@ -8,6 +8,7 @@ import { usePokeStore } from '@/store/usePokeStore'
 import { getNumberFromUrl, getPokemonImage } from '@/utils'
 
 export default function PokemonCard({ name, url }: NamedAPIResource) {
+  const theme = useTheme()
   const { isShiny, spriteType } = usePokeStore()
   const pokemonId = getNumberFromUrl(url)
   
@@ -26,7 +27,14 @@ export default function PokemonCard({ name, url }: NamedAPIResource) {
           }}
         />
         <CardContent>
-          <Typography variant="caption" color='accent' component="div" textAlign="center" textTransform='capitalize' fontWeight={600}>
+          <Typography
+            variant="caption"
+            color={theme.palette.text.primary}
+            component="div"
+            textAlign="center"
+            textTransform='capitalize'
+            fontWeight={600}
+          >
             {name.split('-').join(' ')}
           </Typography>
         </CardContent>

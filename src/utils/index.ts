@@ -188,14 +188,40 @@ const hexToHsl = (hex: string) => {
   return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`
 }
 
-export const convertColor = (hex: string, format: ColorFormat) => {
+/**
+ * @title convertColor
+ * @description Converts a hex color code to the specified format (RGB, HSL, or returns the original hex)
+ * @param hex Hex color code (e.g., `#ff0000`)
+ * @param format Desired output format: `rgb`, `hsl`, or `hex`
+ * @returns RGB string, HSL string, or original hex code based on the specified format
+ * @example convertColor("#ff0000", "rgb") // returns "rgb(255, 0, 0)"
+ * @example convertColor("#ff0000", "hsl") // returns "hsl(0, 100%, 50%)"
+ * @example convertColor("#ff0000", "hex") // returns "#FF0000"
+ */
+export const convertColor = (hex: string, format: ColorFormat): string => {
   if (format === "rgb") return hexToRgb(hex)
   if (format === "hsl") return hexToHsl(hex)
   return hex.toUpperCase()
 }
 
-export const getTypeBadge = (type: PokemonType) => `${TYPE_IMAGE_URL}${getNumberFromUrl(type.type.url)}.png`
+/**
+ * @title getTypeBadge
+ * @description Returns the URL of the badge image for a given Pokémon type
+ * @param type Pokémon type object containing the type name and URL
+ * @returns URL of the badge image corresponding to the Pokémon type
+ * @example getTypeBadge({ type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }) 
+ * returns "https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/master/icons/fire.png"
+ */
+export const getTypeBadge = (type: PokemonType): string => `${TYPE_IMAGE_URL}${getNumberFromUrl(type.type.url)}.png`
 
+/**
+ * @title getTextColor
+ * @description Determines whether to use white or black text based on the brightness of a given hex color.
+ * @param hex Hex color code (e.g., `#ff0000`)
+ * @returns `#ffffff` for dark colors, `#000000` for light colors
+ * @example getTextColor("#ff0000") // returns "#ffffff"
+ * @example getTextColor("#00ff00") // returns "#000000"
+ */
 export const getTextColor = (hex: string): "#ffffff" | "#000000" => {
   if (!hex) return "#ffffff";
   const hexClean = hex.replace("#", "");

@@ -11,7 +11,10 @@ import {
   useTheme
 } from '@mui/material'
 
+import StatsRadarChart from '../ui/StatsRadarChart'
+
 import PokemonStats from './PokemonStats'
+import WeaknessTable from './WeaknessTable'
 
 import { Pokemon, PokemonSpecies, VersionGameIndex } from '@/api/types'
 import { usePokeStore } from '@/store/usePokeStore'
@@ -218,11 +221,13 @@ export const PokemonDetailStatsSection = ({
             </Select>
           </Box>
         )}
+        <WeaknessTable types={pokemon.types} />
       </Box>
 
       {/* Columna derecha: Stats */}
       <Box sx={{ flex: 1, zIndex: 1 }}>
         <PokemonStats stats={pokemon.stats} />
+        <StatsRadarChart stats={pokemon.stats} />
       </Box>
     </Box>
   )
