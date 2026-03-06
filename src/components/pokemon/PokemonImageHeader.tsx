@@ -24,6 +24,7 @@ export const PokemonImageHeader = ({ imageUrl, name, genere }: PokemonImageHeade
       <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
         <IconButton
           color={isShiny ? 'warning' : 'default'}
+          aria-label='IconShiny'
           onClick={toggleShiny}
           sx={{
             position: 'relative', top: '2.5rem', right: '-4.5rem', height: '2rem',

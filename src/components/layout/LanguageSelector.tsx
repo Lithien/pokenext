@@ -1,29 +1,23 @@
 'use client'
 
-import { Select, MenuItem, Box, Typography } from '@mui/material'
-import { useTheme } from '@mui/material/styles'
+import { Select, MenuItem, Box } from '@mui/material'
 import Image from 'next/image'
 
 import { LANGUAGES, LANGUAGE_FLAGS } from '@/constants/common'
 import { usePokeStore } from '@/store/usePokeStore'
 
 export const LanguageSelector = () => {
-  const theme = useTheme()
-  const { language, setLanguage } = usePokeStore()
+  const language = usePokeStore(e => e.language)
+  const setLanguage = usePokeStore(e => e.setLanguage)
 
   return (
-    <Box>
+    <Box lineHeight={0}>
       <Select
         value={language}
         onChange={(e) => setLanguage(e.target.value as LANGUAGES)}
         size="small"
-        sx={{
+        sx={theme => ({
           minWidth: 60,
-          zIndex: 9999,
-          fontSize: '0.85rem',
-          textTransform: 'uppercase',
-          borderRadius: 2,
-          color: theme.palette.mode === 'dark' ? '#fff' : '#111',
           backgroundColor:
             theme.palette.mode === 'dark'
               ? 'rgba(255,255,255,0.08)'
@@ -40,27 +34,22 @@ export const LanguageSelector = () => {
                 ? 'rgba(255,255,255,0.6)'
                 : 'rgba(0,0,0,0.6)',
           },
-        }}
+        })}
       >
         {Object.values(LANGUAGES).map((lang) => (
           <MenuItem
             key={lang}
             value={lang}
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: 1,
-              textTransform: 'uppercase',
-            }}
+            aria-label={lang}
+            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 4 }}
           >
-            <Typography component="span" fontSize="1.2rem">
-              <Image
-                src={LANGUAGE_FLAGS[lang]}
-                alt={lang}
-                width={20}
-                height={20}
-              />
-            </Typography>
+            <Image
+              src={LANGUAGE_FLAGS[lang]}
+              alt={lang}
+              width={20}
+              height={20}
+              style={{ height: '20px !important'}}
+            />
           </MenuItem>
         ))}
       </Select>

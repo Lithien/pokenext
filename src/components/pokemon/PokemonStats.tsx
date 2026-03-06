@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Typography, LinearProgress, Grid } from '@mui/material'
+import { Box, Typography, LinearProgress, Grid, useTheme } from '@mui/material'
 
 import { PokemonStat } from '@/api/types'
 import { formatStatName } from '@/utils'
@@ -11,7 +11,7 @@ interface PokemonStatsProps {
 
 export default function Stats({ stats }: PokemonStatsProps) {
   const total = stats.reduce((acc, s) => acc + s.base_stat, 0)
-
+  const theme = useTheme()
   return (
     <Box display="flex" flexDirection="column" gap={3}>
       <Grid container spacing={2}>
@@ -22,7 +22,7 @@ export default function Stats({ stats }: PokemonStatsProps) {
                 variant="body2"
                 fontWeight={600}
                 textTransform="capitalize"
-                color="#ccc"
+                color={theme.palette.text.secondary}
               >
                 {formatStatName(stat.stat.name)}
               </Typography>
@@ -30,7 +30,7 @@ export default function Stats({ stats }: PokemonStatsProps) {
               <Typography
                 variant="body2"
                 fontWeight={700}
-                color="#ccc"
+                color={theme.palette.text.primary}
               >
                 {stat.base_stat}
               </Typography>
@@ -40,10 +40,11 @@ export default function Stats({ stats }: PokemonStatsProps) {
               variant="determinate"
               value={Math.min((stat.base_stat / 255) * 100, 100)}
               color='primary'
+              aria-label={`${formatStatName(stat.stat.name)}: ${stat.base_stat}`}
               sx={{
                 height: 8,
                 borderRadius: 2,
-                backgroundColor: '#1a1a1a'
+                backgroundColor: theme.palette.accent.main,
               }}
             />
           </Grid>

@@ -1,6 +1,6 @@
 'use client'
 import { Shuffle } from '@mui/icons-material'
-import { Box, Button, TextField, useTheme } from '@mui/material'
+import { Box, Button, IconButton, TextField, useTheme } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import { getTextColor } from '@/utils'
@@ -46,6 +46,7 @@ export const PokemonSelector = ({
         variant="outlined"
         size="small"
         className='capitalize'
+        label="Name"
       />
 
       <TextField
@@ -54,6 +55,7 @@ export const PokemonSelector = ({
         value={localDex}
         onChange={e => setLocalDex(Number(e.target.value))}
         size="small"
+        label="Dex #"
       />
 
       <Button
@@ -61,12 +63,20 @@ export const PokemonSelector = ({
         color="primary"
         startIcon={<Shuffle />}
         onClick={onRandomize}
-        sx={{ borderRadius: 5 }}
+        sx={{ borderRadius: 5, display: { sm: 'flex', xs: 'none' } }}
       >
-        <Box component="span" color={getTextColor(theme.palette.primary.main)} sx={{ display: { xs: 'none', sm: 'block' } }}>
+        <Box component="span" color={getTextColor(theme.palette.primary.main)}>
           Randomize
         </Box>
       </Button>
+      <IconButton
+        onClick={onRandomize}
+        color='primary'
+        aria-label='randomize'
+        sx={{ borderRadius: 5, display: { xs: 'block', sm: 'none' } }}
+      >
+        <Shuffle />
+      </IconButton>
     </Box>
   )
 }

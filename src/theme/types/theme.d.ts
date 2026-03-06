@@ -3,9 +3,17 @@ import '@mui/material/styles';
 declare module '@mui/material/styles' {
   interface Palette {
     accent: Palette['primary'];
+    customShadows: {
+      text: string;
+      card: string;
+    }
   }
   interface PaletteOptions {
     accent?: PaletteOptions['primary'];
+    customShadows?: {
+      text?: string;
+      card?: string;
+    }
   }
 
   interface Theme {

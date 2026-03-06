@@ -53,6 +53,17 @@ const extractColorsFromImage = async (
           "#121212",
           "#010101",
           "#0f0f0f",
+          "#1a1a1a",
+          "#080808",
+          "#090909",
+          "#111111",
+          "#0a0a0a",
+          "#060606",
+          "#26124d",
+          "#31314a",
+          "#2d2d2d",
+          "#6b6574",
+          "#070707"
         ]);
 
         // Sample every 4th pixel for performance

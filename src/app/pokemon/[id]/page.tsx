@@ -6,9 +6,9 @@ import { useParams } from 'next/navigation'
 import usePokemon from './hooks/usePokemon'
 
 import ChainEvolution from '@/components/pokemon/ChainEvolution'
+import { PokemonDetailStatsSection } from '@/components/pokemon/PokemonDetailStatsSection'
 import { PokemonImageHeader } from '@/components/pokemon/PokemonImageHeader'
 import { PokemonSelector } from '@/components/pokemon/PokemonSelector'
-import { PokemonDetailStatsSection } from '@/components/pokemon/PokemonStatsCard'
 import ColorPalette from '@/components/ui/ColorPalette'
 import { findByLanguage, getPokemonImage } from '@/utils'
 
@@ -35,7 +35,13 @@ const PokemonDetailPage = () => {
   }
 
   return (
-    <Box display="flex" flexDirection="column" alignItems="center" gap={2} padding={3}>
+    <Box
+      display="flex"
+      flexDirection="column"
+      alignItems="center"
+      gap={2}
+      padding={3}
+    >
       <PokemonImageHeader
         imageUrl={getPokemonImage(pokemon.id, spriteType, false, isShiny)}
         name={pokemon.name}

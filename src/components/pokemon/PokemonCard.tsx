@@ -19,12 +19,20 @@ export default function PokemonCard({ name, url }: NamedAPIResource) {
           component="img"
           image={getPokemonImage(pokemonId, spriteType, false, isShiny)}
           alt={name}
-          style={{
-            imageRendering: spriteType === 'default' || spriteType === 'showdown' ? 'pixelated' : 'auto',
-            height: '130px',
-            width: '130px',
-            objectFit: 'contain'
+          onError={(e) => {
+            e.currentTarget.style.filter = theme.palette.mode === 'dark' ? 'invert(1)' : 'none'
+            e.currentTarget.src = '/pokeball.svg'
           }}
+          style={{
+            padding: 10,
+            imageRendering:
+              spriteType === 'default' || spriteType === 'showdown'
+                ? 'pixelated'
+                : 'auto',
+            objectFit: 'contain',
+          }}
+          width={130}
+          height={130}
         />
         <CardContent>
           <Typography
@@ -34,6 +42,7 @@ export default function PokemonCard({ name, url }: NamedAPIResource) {
             textAlign="center"
             textTransform='capitalize'
             fontWeight={600}
+            width={98}
           >
             {name.split('-').join(' ')}
           </Typography>

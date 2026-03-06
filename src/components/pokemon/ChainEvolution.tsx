@@ -2,7 +2,6 @@
 
 import { ArrowRightAlt } from "@mui/icons-material"
 import { Box, Container, Grid, Skeleton, Typography, Chip } from "@mui/material"
-import { useTheme } from "@mui/material"
 import Image from "next/image"
 
 import useChainEvolution from "./hooks/useChainEvolution"
@@ -19,23 +18,20 @@ interface ChainEvolutionProps {
 }
 
 const ChainEvolution = ({ species }: ChainEvolutionProps) => {
-  const theme = useTheme()
-
   const { requeriments, chain, isLoading } = useChainEvolution({ species })
 
   // ------------------------------------------------------
   // Requisitos de evolución
   // ------------------------------------------------------
   const renderRequirements = (details: EvolutionDetail[]) => {
+    if (details.length === 0) return null
     const reqs: string[] | null = requeriments(details)
     const item = getItem(details?.[0])
-
     return (
       <Box
         display="flex"
         gap={1}
-        flexWrap="wrap"
-        justifyContent="center"
+        flexDirection='column'
         mt={1}
         sx={{ animation: "fadeIn 0.5s ease" }}
       >
@@ -69,7 +65,7 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
             <Chip
               key={r}
               label={r}
-              size="small"
+              size="medium"
               sx={{
                 bgcolor: "rgba(255,255,255,0.1)",
                 border: "1px solid rgba(255,255,255,0.2)",
@@ -97,7 +93,6 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
           p: 1,
           borderRadius: 2,
           animation: `fadeIn 0.6s ease ${depth * 0.2}s`,
-
         }}
       >
         <PokemonCard {...node.species} />
@@ -138,47 +133,47 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
   // ------------------------------------------------------
   return (
     <Container sx={{ py: 4 }} maxWidth="md">
+      {chain && chain.evolves_to.length > 0 && (
+        <>
+          <Typography
+            variant="h6"
+            fontWeight="bold"
+            textAlign="center"
+            mb={3}
+            sx={{ opacity: 0.9 }}
+          >
+            Evolution Chain
+          </Typography>
 
-      <Typography
-        variant="h6"
-        fontWeight="bold"
-        textAlign="center"
-        mb={3}
-        sx={{ opacity: 0.9 }}
-      >
-        Evolution Chain
-      </Typography>
-
-      <Box
-        sx={{
-          background: `linear-gradient(to right, ${theme.palette.primary.main}, rgb(32, 32, 32))`,
-          p: 2,
-          borderRadius: 3,
-          width: "100%",
-          overflowX: "auto",
-          whiteSpace: "nowrap",
-        }}
-      >
-        <Box
-          sx={{
-            display: "inline-flex",
-            flexDirection: "row",
-            alignItems: "center",
-            gap: 2,
-          }}
-        >
-          {isLoading ? (
-            <Box display="flex" gap={2}>
-              <Skeleton variant="rounded" width={110} height={170} />
-              <Skeleton variant="rounded" width={110} height={170} />
-              <Skeleton variant="rounded" width={110} height={170} />
+          <Box
+            sx={theme => ({
+              background: `linear-gradient(to right, ${theme.palette.primary.main}, rgb(32, 32, 32))`,
+              p: 2,
+              borderRadius: 3,
+              width: "100%",
+              overflowX: "auto",
+              whiteSpace: "nowrap",
+            })}
+          >
+            <Box
+              sx={{
+                display: "inline-flex",
+                flexDirection: "row",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              {isLoading ? (
+                <Box display="flex" gap={2}>
+                  <Skeleton variant="rounded" width={110} height={170} />
+                  <Skeleton variant="rounded" width={110} height={170} />
+                  <Skeleton variant="rounded" width={110} height={170} />
+                </Box>
+              ) : (renderChain(chain))}
             </Box>
-          ) : (
-            chain && renderChain(chain)
-          )}
-        </Box>
-      </Box>
-
+          </Box>
+        </>
+      )}
 
       {/* Variantes */}
       {species.varieties.length > 1 && (

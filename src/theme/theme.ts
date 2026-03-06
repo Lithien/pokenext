@@ -46,6 +46,10 @@ export const createAppTheme = (
   createTheme({
     palette: {
       mode,
+      text: {
+        primary: mode === 'light' ? '#111' : '#fff',
+        secondary: mode === 'light' ? '#555' : '#ccc',
+      },
       primary: {
         main: colors[0].hex
       },
@@ -58,6 +62,17 @@ export const createAppTheme = (
       background: {
         default: mode === 'light' ? '#f5f5f5' : '#030711',
       },
+      action: {
+        hover: mode === 'light' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.1)',
+      },
+      customShadows: {
+        text: mode === 'light'
+          ? '0 1px 3px rgba(0,0,0,0.1)'
+          : '0 1px 3px rgba(255,255,255,0.2)',
+        card: mode === 'light'
+          ? '0 4px 6px rgba(0,0,0,0.1)'
+          : '0 4px 6px rgba(255,255,255,0.2)',
+      }
     },
     pokedex: {
       getColorByType,

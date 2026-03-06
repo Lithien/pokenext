@@ -38,6 +38,7 @@ const BASE_URL = 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprit
 
 export const IMG_BASE_URL = `${BASE_URL}/pokemon/`
 export const ITEM_IMAGE_URL = `${BASE_URL}/items/dream-world/`
+export const ITEM_IMAGE_URL_FALLBACK = 'https://raw.githubusercontent.com/msikma/pokesprite/master/items/evo-item/'
 export const TYPE_IMAGE_URL = `${BASE_URL}/types/generation-ix/scarlet-violet/`
 
 export const SPRITE_TYPES = [

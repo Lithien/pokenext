@@ -5,7 +5,8 @@ import { usePokeStore } from "@/store/usePokeStore"
 
 
 const SpriteSelector = () => {
-  const { spriteType, setSpriteType } = usePokeStore()
+  const spriteType = usePokeStore(e => e.spriteType)
+  const setSpriteType = usePokeStore(e => e.setSpriteType)  
 
   return (
     <FormControl size="small" sx={{ minWidth: 150, zIndex: 9999 }}>
@@ -16,7 +17,7 @@ const SpriteSelector = () => {
         onChange={(e) => setSpriteType(e.target.value as SpriteType)}
       >
         {SPRITE_TYPES.map((t) => (
-          <MenuItem key={t.id} value={t.id}>
+          <MenuItem key={t.id} value={t.id} aria-label={t.label}>
             {t.label}
           </MenuItem>
         ))}

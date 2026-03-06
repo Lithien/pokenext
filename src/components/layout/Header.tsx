@@ -2,11 +2,14 @@
 
 import HomeIcon from '@mui/icons-material/Home'
 import { AppBar, Toolbar, IconButton, Typography, Box } from '@mui/material'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 
+import GenerationSelector from './GenerationSelector'
 import { LanguageSelector } from './LanguageSelector'
 import SpriteSelector from './SpriteSelector'
 
+import { IMG_BASE_URL } from '@/constants'
 import { useThemeStore } from '@/store/useThemeStore'
 
 export const PokedexHeader = () => {
@@ -26,7 +29,7 @@ export const PokedexHeader = () => {
         transition: 'background-color 0.3s ease',
         backgroundColor:
           mode === 'dark'
-            ? 'rgba(10, 10, 20, 0.65)'
+            ? '#0a0a14a5'
             : 'rgba(255, 255, 255, 0.65)',
         borderBottom:
           mode === 'dark'
@@ -41,59 +44,44 @@ export const PokedexHeader = () => {
           <IconButton
             color="inherit"
             onClick={goHome}
-            sx={{
-              color: mode === 'dark' ? '#fff' : '#111',
+            aria-label='home'
+            sx={theme => ({
+              color: theme.palette.text.primary,
               '&:hover': {
-                backgroundColor:
-                  mode === 'dark'
-                    ? 'rgba(255,255,255,0.1)'
-                    : 'rgba(0,0,0,0.1)',
+                backgroundColor: theme.palette.action.hover,
               },
-            }}
+            })}
           >
             <HomeIcon />
           </IconButton>
 
           <Typography
             variant="h6"
-            sx={{
+            sx={theme => ({
               display: { xs: 'none', sm: 'block' },
               fontWeight: 'bold',
               cursor: 'pointer',
-              color: mode === 'dark' ? '#fff' : '#111',
-              textShadow:
-                mode === 'dark'
-                  ? '0 0 6px rgba(255,255,255,0.2)'
-                  : '0 0 6px rgba(0,0,0,0.1)',
-            }}
+              color: theme.palette.text.primary,
+              textShadow: theme.palette.customShadows.text,
+            })}
             onClick={goHome}
           >
             Pokédex
           </Typography>
         </Box>
         <LanguageSelector />
+        <GenerationSelector />
         <SpriteSelector />
-        {/* Botón Tema */}
-        <IconButton
-          color="inherit"
+        <Image
           onClick={toggleTheme}
-          sx={{
-            color: mode === 'dark' ? '#fff' : '#111',
-            '&:hover': {
-              backgroundColor:
-                mode === 'dark'
-                  ? 'rgba(255,255,255,0.1)'
-                  : 'rgba(0,0,0,0.1)',
-            },
+          src={`${IMG_BASE_URL}${mode === 'dark' ? '338' : '337'}.png`}
+          alt='Theme toggle'
+          width={60}
+          height={60}
+          style={{
+            cursor: 'pointer',
           }}
-        >
-          {mode === 'dark' ? (
-            <img className='h-15 pixel' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/338.png' />
-          ) : (
-            <img className='h-15 pixel' src='https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/337.png' />
-          )}
-        </IconButton>
-
+        />
       </Toolbar>
     </AppBar>
   )

@@ -4,15 +4,17 @@ import { Grid, Container, Typography } from '@mui/material'
 
 import { API } from '@/api'
 import { useApi } from '@/api/hooks/useApi'
-import { TableResponse } from '@/api/types'
+import { Generation } from '@/api/types'
 import PokemonCard from '@/components/pokemon/PokemonCard'
 import { usePokeStore } from '@/store/usePokeStore'
+import { getNumberFromUrl } from '@/utils'
 
 const Home = () => {
-  const { language } = usePokeStore()
-  const { data, isLoading } = useApi<TableResponse>({
-    key: API.POKEMON,
-    query: { limit: 251, lang: language }
+  const language = usePokeStore(e => e.language)
+  const generation = usePokeStore(e => e.generation)
+  const { data, isLoading } = useApi<Generation>({
+    key: API.POKEMON_GENERATION(generation),
+    query: { lang: language }
   })
 
   if (isLoading) {
@@ -25,7 +27,7 @@ const Home = () => {
         Pokédex
       </Typography>
       <Grid container justifyContent="center">
-        {data?.results.map((pokemon) => (
+        {data?.pokemon_species.sort((a, b) => Number(getNumberFromUrl(a.url)) - Number(getNumberFromUrl(b.url))).map((pokemon) => (
           <PokemonCard key={pokemon.name} {...pokemon} />
         ))}
       </Grid>

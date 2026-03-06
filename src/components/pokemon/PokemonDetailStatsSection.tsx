@@ -81,7 +81,7 @@ export const PokemonDetailStatsSection = ({
               {pokemon.name}
             </Typography>
             <Typography
-              variant="subtitle1"
+              variant="h5"
               sx={{ color: theme.palette.text.secondary }}
               mb={2}
               ml={1}
@@ -90,7 +90,7 @@ export const PokemonDetailStatsSection = ({
             </Typography>
           </Box>
 
-          <IconButton onClick={onPlayCry}>
+          <IconButton aria-label='sound' onClick={onPlayCry}>
             <VolumeUpIcon />
           </IconButton>
         </Box>

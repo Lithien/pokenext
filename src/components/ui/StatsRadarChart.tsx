@@ -117,9 +117,9 @@ export default function StatsRadarChart({ stats }: Props) {
     plugins: {
       legend: { display: false },
       tooltip: {
-        backgroundColor: '#111',
-        titleColor: '#fff',
-        bodyColor: '#fff',
+        backgroundColor: theme.palette.background.default,
+        titleColor: theme.palette.text.primary,
+        bodyColor: theme.palette.text.primary,
         borderColor: c1,
         borderWidth: 1,
         padding: 10

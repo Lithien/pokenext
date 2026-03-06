@@ -66,7 +66,7 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
           animate-[float_3s_ease-in-out_infinite]
         "
         style={{
-          backgroundColor: `${color}22`,
+          backgroundColor: `${color}11`,
           color,
           borderColor: color,
           borderWidth: 1,
