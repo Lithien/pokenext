@@ -1,15 +1,16 @@
 'use client'
 
 import HomeIcon from '@mui/icons-material/Home'
-import { AppBar, Toolbar, IconButton, Typography, Box } from '@mui/material'
-import Image from 'next/image'
+import Brightness4Icon from '@mui/icons-material/Brightness4'
+import Brightness7Icon from '@mui/icons-material/Brightness7'
+import { AppBar, Toolbar, IconButton, Typography, Box, Tooltip } from '@mui/material'
 import { useRouter } from 'next/navigation'
 
+import { MobileMenu } from './MobileMenu'
 import GenerationSelector from './GenerationSelector'
 import { LanguageSelector } from './LanguageSelector'
 import SpriteSelector from './SpriteSelector'
 
-import { IMG_BASE_URL } from '@/constants'
 import { useThemeStore } from '@/store/useThemeStore'
 
 export const PokedexHeader = () => {
@@ -37,22 +38,32 @@ export const PokedexHeader = () => {
             : '1px solid rgba(0,0,0,0.08)',
       }}
     >
-      <Toolbar sx={{ display: 'flex', justifyContent: 'space-between' }}>
-
-        {/* Botón Home */}
-        <Box display="flex" alignItems="center" gap={1}>
+      <Toolbar
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          gap: { xs: 0.5, sm: 1, md: 2 },
+          px: { xs: 0.5, sm: 1 },
+        }}
+      >
+        {/* Logo y título */}
+        <Box display="flex" alignItems="center" gap={{ xs: 0.5, sm: 1 }}>
           <IconButton
             color="inherit"
             onClick={goHome}
-            aria-label='home'
+            aria-label="home"
+            size="small"
             sx={theme => ({
               color: theme.palette.text.primary,
+              transition: 'all 0.2s ease',
               '&:hover': {
                 backgroundColor: theme.palette.action.hover,
+                transform: 'scale(1.1)',
               },
             })}
           >
-            <HomeIcon />
+            <HomeIcon fontSize="medium" />
           </IconButton>
 
           <Typography
@@ -63,25 +74,93 @@ export const PokedexHeader = () => {
               cursor: 'pointer',
               color: theme.palette.text.primary,
               textShadow: theme.palette.customShadows.text,
+              fontSize: { sm: '1.1rem', md: '1.25rem' },
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                transform: 'scale(1.05)',
+              },
             })}
             onClick={goHome}
           >
             Pokédex
           </Typography>
         </Box>
-        <LanguageSelector />
-        <GenerationSelector />
-        <SpriteSelector />
-        <Image
-          onClick={toggleTheme}
-          src={`${IMG_BASE_URL}${mode === 'dark' ? '338' : '337'}.png`}
-          alt='Theme toggle'
-          width={60}
-          height={60}
-          style={{
-            cursor: 'pointer',
+
+        {/* Selectores (Desktop/Tablet) */}
+        <Box
+          sx={{
+            display: { xs: 'none', md: 'flex' },
+            gap: { md: 1.5, lg: 2 },
+            alignItems: 'center',
           }}
-        />
+        >
+          <LanguageSelector />
+          <GenerationSelector />
+          <SpriteSelector />
+        </Box>
+
+        {/* Selectores responsivos en tablet */}
+        <Box
+          sx={{
+            display: { xs: 'none', sm: 'flex', md: 'none' },
+            gap: 1,
+            alignItems: 'center',
+            flexWrap: 'wrap',
+            justifyContent: 'flex-end',
+            flex: 1,
+          }}
+        >
+          <LanguageSelector />
+          <GenerationSelector />
+        </Box>
+
+        {/* Theme toggle - Desktop */}
+        <Tooltip title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}>
+          <IconButton
+            onClick={toggleTheme}
+            color="inherit"
+            size="small"
+            sx={{
+              display: { xs: 'none', sm: 'flex' },
+              transition: 'all 0.3s ease',
+              '&:hover': {
+                transform: 'rotate(20deg) scale(1.1)',
+              },
+            }}
+            aria-label="toggle theme"
+          >
+            {mode === 'dark' ? (
+              <Brightness7Icon fontSize="medium" />
+            ) : (
+              <Brightness4Icon fontSize="medium" />
+            )}
+          </IconButton>
+        </Tooltip>
+
+        {/* Mobile Menu + Theme toggle */}
+        <Box sx={{ display: { xs: 'flex', sm: 'none' }, alignItems: 'center', gap: 0.5 }}>
+          <Tooltip title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}>
+            <IconButton
+              onClick={toggleTheme}
+              color="inherit"
+              size="small"
+              sx={{
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'rotate(20deg) scale(1.1)',
+                },
+              }}
+              aria-label="toggle theme"
+            >
+              {mode === 'dark' ? (
+                <Brightness7Icon fontSize="small" />
+              ) : (
+                <Brightness4Icon fontSize="small" />
+              )}
+            </IconButton>
+          </Tooltip>
+          <MobileMenu />
+        </Box>
       </Toolbar>
     </AppBar>
   )

@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 
 import { API } from "@/api"
 import { useApi } from "@/api/hooks/useApi"
@@ -21,29 +21,31 @@ const usePokemon = ({ id }: { id: string }) => {
     if (pokemon) gameOptions = pokemon.game_indices
   }, [pokemon])
 
+  useEffect(() => {
+    if (pokemon?.game_indices && pokemon.game_indices.length > 0 && !selectedGame) {
+      setSelectedGame(pokemon.game_indices[0].version.name)
+    }
+  }, [pokemon])
+
   const loading = loadingPokemon || loadingSpecies || !pokemon || !species
 
-  const playCry = () => {
+  const playCry = useCallback(() => {
     const cryUrl = pokemon!.cries?.latest || pokemon!.cries?.legacy
     if (cryUrl) {
       const audio = new Audio(cryUrl)
       audio.play()
     }
-  }
+  }, [pokemon])
 
-  if (selectedGame === '' && gameOptions.length > 0) {
-    setSelectedGame(gameOptions[0].version.name)
-  }
-
-  const onChangeDex = (value: number) => {
+  const onChangeDex = useCallback((value: number) => {
     if (value < 1 || value > 1025) {
       return
     }
     router.push(`/pokemon/${value}`)
     setTab(0)
-  }
+  }, [router])
 
-  const onChangeName = (value: string) => {
+  const onChangeName = useCallback((value: string) => {
     if (value.trim() === '') {
       return
     }
@@ -54,13 +56,13 @@ const usePokemon = ({ id }: { id: string }) => {
     } else {
       console.warn('Invalid Pokémon name or ID')
     }
-  }
+  }, [router])
 
-  const onRandomize = () => {
+  const onRandomize = useCallback(() => {
     const randomId = Math.floor(Math.random() * 1025) + 1
     router.push(`/pokemon/${randomId}`)
     setTab(0)
-  }
+  }, [router])
 
   return ({
     fn: {

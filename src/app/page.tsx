@@ -1,6 +1,6 @@
 'use client'
 
-import { Grid, Container, Typography } from '@mui/material'
+import { Grid, Container, Typography, Skeleton, Box, CircularProgress } from '@mui/material'
 
 import { API } from '@/api'
 import { useApi } from '@/api/hooks/useApi'
@@ -18,18 +18,48 @@ const Home = () => {
   })
 
   if (isLoading) {
-    return <Typography variant="h6" align="center">Loading...</Typography>
+    return (
+      <Container sx={{ py: 6 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 3 }}>
+          <Typography variant="h4" align="center" sx={{ animation: 'fadeIn 0.5s ease-in-out' }}>
+            Pokédex
+          </Typography>
+          <CircularProgress size={40} />
+          <Typography variant="body1" color="textSecondary" align="center">
+            Cargando Pokémon...
+          </Typography>
+        </Box>
+      </Container>
+    )
   }
 
   return (
-    <Container sx={{ py: 4 }}>
-      <Typography variant="h4" gutterBottom align="center">
+    <Container sx={{ py: { xs: 3, sm: 4, md: 6 } }}>
+      <Typography
+        variant="h4"
+        gutterBottom
+        align="center"
+        sx={{
+          fontWeight: 700,
+          mb: { xs: 3, sm: 4 },
+          fontSize: { xs: '1.75rem', sm: '2.125rem', md: '2.5rem' },
+        }}
+      >
         Pokédex
       </Typography>
-      <Grid container justifyContent="center">
-        {data?.pokemon_species.sort((a, b) => Number(getNumberFromUrl(a.url)) - Number(getNumberFromUrl(b.url))).map((pokemon) => (
-          <PokemonCard key={pokemon.name} {...pokemon} />
-        ))}
+      <Grid
+        container
+        spacing={{ xs: 1.5, sm: 2 }}
+        justifyContent="center"
+        sx={{
+          animation: 'fadeIn 0.4s ease-in-out',
+        }}
+      >
+        {data?.pokemon_species
+          .sort((a, b) => Number(getNumberFromUrl(a.url)) - Number(getNumberFromUrl(b.url)))
+          .map((pokemon) => (
+            <PokemonCard key={pokemon.name} {...pokemon} />
+          ))}
       </Grid>
     </Container>
   )

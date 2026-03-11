@@ -28,7 +28,7 @@ export const PokemonSelector = ({
       onChangeName(localName)
     }, 300)
     return () => clearTimeout(t)
-  }, [localName])
+  }, [localName, onChangeName])
 
   // Debounce para número
   useEffect(() => {
@@ -36,17 +36,40 @@ export const PokemonSelector = ({
       onChangeDex(localDex)
     }, 300)
     return () => clearTimeout(t)
-  }, [localDex])
+  }, [localDex, onChangeDex])
 
   return (
-    <Box display="flex" gap={1} alignItems="center">
+    <Box
+      display="flex"
+      gap={{ xs: 0.75, sm: 1 }}
+      alignItems="center"
+      flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
+      justifyContent={{ xs: 'center', sm: 'flex-start' }}
+    >
       <TextField
         value={localName}
         onChange={e => setLocalName(e.target.value)}
         variant="outlined"
         size="small"
         className='capitalize'
-        label="Name"
+        label="Nombre"
+        slotProps={{
+          input: {
+            sx: {
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              transition: 'all 0.2s ease',
+              '&:hover': {
+                borderColor: (theme) => theme.palette.primary.main,
+              },
+            },
+          },
+        }}
+        sx={{
+          minWidth: { xs: 120, sm: 150 },
+          '& .MuiOutlinedInput-root': {
+            transition: 'all 0.2s ease',
+          },
+        }}
       />
 
       <TextField
@@ -56,6 +79,17 @@ export const PokemonSelector = ({
         onChange={e => setLocalDex(Number(e.target.value))}
         size="small"
         label="Dex #"
+        slotProps={{
+          input: {
+            sx: {
+              fontSize: { xs: '0.875rem', sm: '1rem' },
+              transition: 'all 0.2s ease',
+            },
+          },
+        }}
+        sx={{
+          minWidth: { xs: 90, sm: 110 },
+        }}
       />
 
       <Button
@@ -63,17 +97,38 @@ export const PokemonSelector = ({
         color="primary"
         startIcon={<Shuffle />}
         onClick={onRandomize}
-        sx={{ borderRadius: 5, display: { sm: 'flex', xs: 'none' } }}
+        sx={{
+          borderRadius: 2,
+          display: { sm: 'flex', xs: 'none' },
+          textTransform: 'none',
+          fontWeight: 500,
+          transition: 'all 0.2s ease',
+          '&:hover': {
+            transform: 'scale(1.05)',
+          },
+          '&:active': {
+            transform: 'scale(0.95)',
+          },
+        }}
       >
         <Box component="span" color={getTextColor(theme.palette.primary.main)}>
-          Randomize
+          Aleatorio
         </Box>
       </Button>
       <IconButton
         onClick={onRandomize}
         color='primary'
         aria-label='randomize'
-        sx={{ borderRadius: 5, display: { xs: 'block', sm: 'none' } }}
+        sx={{
+          display: { xs: 'flex', sm: 'none' },
+          transition: 'all 0.2s ease',
+          '&:hover': {
+            transform: 'rotate(15deg) scale(1.1)',
+          },
+          '&:active': {
+            transform: 'rotate(15deg) scale(0.95)',
+          },
+        }}
       >
         <Shuffle />
       </IconButton>

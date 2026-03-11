@@ -18,17 +18,28 @@ export const PokemonImageHeader = ({ imageUrl, name, genere }: PokemonImageHeade
   useEffect(() => {
     applyColorsFromImage(imageUrl)
   }, [imageUrl])
-  
+
   return (
-    <Container sx={{ mb: 2, width: 'auto' }}>
-      <Box display="flex" flexDirection="column" alignItems="center" gap={1}>
+    <Container sx={{ mb: { xs: 2, sm: 3 }, width: 'auto' }}>
+      <Box display="flex" flexDirection="column" alignItems="center" gap={{ xs: 0.5, sm: 1 }} sx={{ position: 'relative' }}>
         <IconButton
           color={isShiny ? 'warning' : 'default'}
-          aria-label='IconShiny'
+          aria-label="toggle shiny"
           onClick={toggleShiny}
           sx={{
-            position: 'relative', top: '2.5rem', right: '-4.5rem', height: '2rem',
-            width: '2rem',
+            position: 'absolute',
+            top: 0,
+            right: 0,
+            height: { xs: '2rem', sm: '2.5rem' },
+            width: { xs: '2rem', sm: '2.5rem' },
+            transition: 'all 0.3s ease',
+            '&:hover': {
+              transform: 'scale(1.1) rotate(10deg)',
+              color: (theme) => theme.palette.warning.main,
+            },
+            '&:active': {
+              transform: 'scale(0.95)',
+            },
           }}
         >
           <AutoAwesomeIcon />
@@ -37,9 +48,24 @@ export const PokemonImageHeader = ({ imageUrl, name, genere }: PokemonImageHeade
           component="img"
           image={imageUrl}
           alt={name}
-          style={{ imageRendering: 'pixelated', width: '160px' }}
+          style={{
+            imageRendering: 'pixelated',
+            width: 'auto',
+            height: '200px',
+            transition: 'all 0.3s ease',
+          }}
         />
-        <Typography variant="body2" color="accent">{genere}</Typography>
+        <Typography
+          variant="body2"
+          color="accent"
+          sx={{
+            fontSize: { xs: '0.875rem', sm: '1rem' },
+            fontWeight: 500,
+            transition: 'all 0.2s ease',
+          }}
+        >
+          {genere}
+        </Typography>
       </Box>
     </Container>
   )

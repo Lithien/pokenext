@@ -13,10 +13,30 @@ export const PokemonInfoSection = ({
   height: number
   weight: number
 }) => (
-  <Box display="flex" gap={6} mt={3} flexWrap="wrap">
+  <Box
+    display="flex"
+    gap={{ xs: 2, sm: 4, md: 6 }}
+    mt={3}
+    flexWrap="wrap"
+    sx={{
+      p: { xs: 2, sm: 3 },
+      backgroundColor: (theme) =>
+        theme.palette.mode === 'dark'
+          ? 'rgba(255, 255, 255, 0.05)'
+          : 'rgba(0, 0, 0, 0.02)',
+      borderRadius: 2,
+      transition: 'all 0.3s ease',
+    }}
+  >
     <Box>
-      <Typography variant="body2" color="secondary">Type</Typography>
-      <Box sx={{ display: 'flex', gap: 1, mb: 3 }}>
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        sx={{ fontWeight: 600, mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+      >
+        Tipo
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 1, mb: 1 }}>
         {types.map((t: PokemonType) => (
           <Image
             src={`/${t.type.name}.svg`}
@@ -24,17 +44,42 @@ export const PokemonInfoSection = ({
             width={40}
             height={40}
             key={t.type.name}
+            style={{ transition: 'transform 0.2s ease' }}
           />
         ))}
       </Box>
     </Box>
     <Box>
-      <Typography variant="body2" color="secondary">Height</Typography>
-      <Typography variant="h6" color='accent'>{height.toFixed(1)} m</Typography>
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        sx={{ fontWeight: 600, mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+      >
+        Altura
+      </Typography>
+      <Typography
+        variant="h6"
+        color='accent'
+        sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }, fontWeight: 600 }}
+      >
+        {height.toFixed(1)} m
+      </Typography>
     </Box>
     <Box>
-      <Typography variant="body2" color="secondary">Weight</Typography>
-      <Typography variant="h6" color='accent'>{weight.toFixed(1)} kg</Typography>
+      <Typography
+        variant="body2"
+        color="textSecondary"
+        sx={{ fontWeight: 600, mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+      >
+        Peso
+      </Typography>
+      <Typography
+        variant="h6"
+        color='accent'
+        sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }, fontWeight: 600 }}
+      >
+        {weight.toFixed(1)} kg
+      </Typography>
     </Box>
   </Box>
 )

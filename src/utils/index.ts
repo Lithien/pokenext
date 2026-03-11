@@ -149,44 +149,52 @@ export const getSpriteByType = (pokemon: any, type: SpriteType) => {
   }
 }
 
-const hexToRgb = (hex: string) => {
-  const clean = hex.replace("#", "")
-  const bigint = parseInt(clean, 16)
-  const r = (bigint >> 16) & 255
-  const g = (bigint >> 8) & 255
-  const b = bigint & 255
-  return `rgb(${r}, ${g}, ${b})`
-}
+const hexToRgb = (hex: string): string => {
+  const clean = hex.replace("#", "");
+  if (clean.length !== 6 && clean.length !== 3) {
+    console.warn(`Invalid hex color: ${hex}`);
+    return "rgb(0, 0, 0)";
+  }
+  const bigint = parseInt(clean, 16);
+  const r = (bigint >> 16) & 255;
+  const g = (bigint >> 8) & 255;
+  const b = bigint & 255;
+  return `rgb(${r}, ${g}, ${b})`;
+};
 
-const hexToHsl = (hex: string) => {
-  const clean = hex.replace("#", "")
-  const bigint = parseInt(clean, 16)
-  let r = (bigint >> 16) & 255
-  let g = (bigint >> 8) & 255
-  let b = bigint & 255
+const hexToHsl = (hex: string): string => {
+  const clean = hex.replace("#", "");
+  if (clean.length !== 6 && clean.length !== 3) {
+    console.warn(`Invalid hex color: ${hex}`);
+    return "hsl(0, 0%, 0%)";
+  }
+  const bigint = parseInt(clean, 16);
+  let r = (bigint >> 16) & 255;
+  let g = (bigint >> 8) & 255;
+  let b = bigint & 255;
 
-  r /= 255
-  g /= 255
-  b /= 255
+  r /= 255;
+  g /= 255;
+  b /= 255;
 
-  const max = Math.max(r, g, b)
-  const min = Math.min(r, g, b)
-  let h = 0, s = 0
-  const l = (max + min) / 2
+  const max = Math.max(r, g, b);
+  const min = Math.min(r, g, b);
+  let h = 0, s = 0;
+  const l = (max + min) / 2;
 
   if (max !== min) {
-    const d = max - min
-    s = l > 0.5 ? d / (2 - max - min) : d / (max + min)
+    const d = max - min;
+    s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break
-      case g: h = (b - r) / d + 2; break
-      case b: h = (r - g) / d + 4; break
+      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
+      case g: h = (b - r) / d + 2; break;
+      case b: h = (r - g) / d + 4; break;
     }
-    h /= 6
+    h /= 6;
   }
 
-  return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`
-}
+  return `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(l * 100)}%)`;
+};
 
 /**
  * @title convertColor
@@ -223,13 +231,21 @@ export const getTypeBadge = (type: PokemonType): string => `${TYPE_IMAGE_URL}${g
  * @example getTextColor("#00ff00") // returns "#000000"
  */
 export const getTextColor = (hex: string): "#ffffff" | "#000000" => {
-  if (!hex) return "#ffffff";
+  if (!hex || typeof hex !== "string") return "#ffffff";
+
   const hexClean = hex.replace("#", "");
+
+  // Validar formato hex
+  if (!/^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexClean)) {
+    console.warn(`Invalid hex color: ${hex}`);
+    return "#ffffff";
+  }
+
   const r = parseInt(hexClean.substring(0, 2), 16);
   const g = parseInt(hexClean.substring(2, 4), 16);
   const b = parseInt(hexClean.substring(4, 6), 16);
 
-  // Calculate luminance
+  // Calculate luminance (WCAG formula)
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
   // Return white for dark colors, black for light colors

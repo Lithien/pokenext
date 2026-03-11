@@ -21,7 +21,14 @@ const extractColorsFromImage = async (
     const img = new Image();
     img.crossOrigin = "anonymous";
 
+    // Timeout para evitar esperas infinitas
+    const timeoutId = setTimeout(() => {
+      img.src = ""; // Detener carga
+      reject(new Error("Image loading timeout"));
+    }, 10000);
+
     img.onload = () => {
+      clearTimeout(timeoutId);
       try {
         const canvas = document.createElement("canvas");
         const ctx = canvas.getContext("2d");
@@ -108,16 +115,35 @@ const extractColorsFromImage = async (
         }
       } catch (error) {
         reject(error);
+      } finally {
+        // Cleanup: liberar recursos del canvas
+        img.src = "";
       }
     };
 
     img.onerror = () => {
-      reject(new Error("Failed to load image"));
+      clearTimeout(timeoutId);
+      img.src = "";
+      reject(new Error("Failed to load image - CORS issue or invalid URL"));
+    };
+
+    img.onabort = () => {
+      clearTimeout(timeoutId);
+      img.src = "";
+      reject(new Error("Image loading was aborted"));
     };
 
     img.src = imageUrl;
   });
-}
+};
+
+/**
+ * Normaliza colores que pueden venir como string o como objeto
+ */
+const normalizeColor = (color: string | ColorWithFrequency): string => {
+  if (typeof color === "string") return color;
+  return color.hex;
+};
 
 /**
  * @title Apply Colors From Image
@@ -128,28 +154,23 @@ const extractColorsFromImage = async (
  */
 export const applyColorsFromImage = async (imageUrl: string, count: number = 3) => {
   try {
-    const colors = await extractColorsFromImage(imageUrl, count)
+    const colors = await extractColorsFromImage(imageUrl, count);
 
     if (!Array.isArray(colors) || colors.length < count) {
-      console.warn("Not enough colors extracted from image")
-      return
+      console.warn("Not enough colors extracted from image");
+      return;
     }
 
-    // Normalizamos: si viene como string o como objeto { hex, frequency }
-    const normalize = (color: string | ColorWithFrequency): string => {
-      if (typeof color === "string") return color
-      return color.hex
-    }
-    const primary = normalize(colors[0])
-    const secondary = normalize(colors[1])
-    const accent = normalize(colors[2])
+    const primary = normalizeColor(colors[0]);
+    const secondary = normalizeColor(colors[1]);
+    const accent = normalizeColor(colors[2]);
 
     useThemeStore.getState().setColors([
       { name: "primary", hex: primary },
       { name: "secondary", hex: secondary },
       { name: "accent", hex: accent }
-    ])
+    ]);
   } catch (error) {
-    console.error("Error applying colors:", error)
+    console.error("Error applying colors from image:", error instanceof Error ? error.message : "Unknown error");
   }
-}
+};
