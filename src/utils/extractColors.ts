@@ -98,7 +98,7 @@ const extractColorsFromImage = async (
         // Sort by frequency and get top colors
         const sortedColors = Array.from(colorMap.entries())
           .sort((a, b) => b[1] - a[1])
-          .slice(0, count);
+        .slice(0, count);
 
         if (includeFrequencies) {
           const colorsWithFreq: ColorWithFrequency[] = sortedColors.map(
@@ -113,12 +113,9 @@ const extractColorsFromImage = async (
           const hexColors = sortedColors.map(([hex]) => hex);
           resolve(hexColors);
         }
-      } catch (error) {
-        reject(error);
-      } finally {
-        // Cleanup: liberar recursos del canvas
-        img.src = "";
       }
+      catch (error) { reject(error) }
+      finally { img.src = "" }
     };
 
     img.onerror = () => {
@@ -170,6 +167,7 @@ export const applyColorsFromImage = async (imageUrl: string, count: number = 3) 
       { name: "secondary", hex: secondary },
       { name: "accent", hex: accent }
     ]);
+    useThemeStore.getState().setAllColors(colors.map(c => ({ name: "primary", hex: normalizeColor(c) })));
   } catch (error) {
     console.error("Error applying colors from image:", error instanceof Error ? error.message : "Unknown error");
   }

@@ -1,14 +1,14 @@
 'use client'
 
-import HomeIcon from '@mui/icons-material/Home'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
-import { AppBar, Toolbar, IconButton, Typography, Box, Tooltip } from '@mui/material'
+import HomeIcon from '@mui/icons-material/Home'
+import { AppBar, Toolbar, IconButton, Typography, Box, Tooltip, getLuminance } from '@mui/material'
 import { useRouter } from 'next/navigation'
 
-import { MobileMenu } from './MobileMenu'
 import GenerationSelector from './GenerationSelector'
 import { LanguageSelector } from './LanguageSelector'
+import { MobileMenu } from './MobileMenu'
 import SpriteSelector from './SpriteSelector'
 
 import { useThemeStore } from '@/store/useThemeStore'
@@ -91,12 +91,33 @@ export const PokedexHeader = () => {
           sx={{
             display: { xs: 'none', md: 'flex' },
             gap: { md: 1.5, lg: 2 },
-            alignItems: 'center',
+            alignItems: 'end',
           }}
         >
           <LanguageSelector />
           <GenerationSelector />
           <SpriteSelector />
+          <Tooltip title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}>
+            <IconButton
+              onClick={toggleTheme}
+              color="inherit"
+              size="small"
+              sx={{
+                display: { xs: 'none', sm: 'flex' },
+                transition: 'all 0.3s ease',
+                '&:hover': {
+                  transform: 'rotate(20deg) scale(1.1)',
+                },
+              }}
+              aria-label="toggle theme"
+            >
+              {mode === 'dark' ? (
+                <Brightness7Icon fontSize="medium" />
+              ) : (
+                <Brightness4Icon fontSize="medium" />
+              )}
+            </IconButton>
+          </Tooltip>
         </Box>
 
         {/* Selectores responsivos en tablet */}
@@ -114,37 +135,14 @@ export const PokedexHeader = () => {
           <GenerationSelector />
         </Box>
 
-        {/* Theme toggle - Desktop */}
-        <Tooltip title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}>
-          <IconButton
-            onClick={toggleTheme}
-            color="inherit"
-            size="small"
-            sx={{
-              display: { xs: 'none', sm: 'flex' },
-              transition: 'all 0.3s ease',
-              '&:hover': {
-                transform: 'rotate(20deg) scale(1.1)',
-              },
-            }}
-            aria-label="toggle theme"
-          >
-            {mode === 'dark' ? (
-              <Brightness7Icon fontSize="medium" />
-            ) : (
-              <Brightness4Icon fontSize="medium" />
-            )}
-          </IconButton>
-        </Tooltip>
-
         {/* Mobile Menu + Theme toggle */}
         <Box sx={{ display: { xs: 'flex', sm: 'none' }, alignItems: 'center', gap: 0.5 }}>
           <Tooltip title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}>
             <IconButton
               onClick={toggleTheme}
-              color="inherit"
               size="small"
               sx={{
+                color: (theme) => getLuminance(theme.palette.text.primary),
                 transition: 'all 0.3s ease',
                 '&:hover': {
                   transform: 'rotate(20deg) scale(1.1)',

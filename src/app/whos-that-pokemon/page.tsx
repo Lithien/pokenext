@@ -1,6 +1,6 @@
 'use client'
 
-import { Box, Typography, Button, useTheme } from '@mui/material'
+import { Box, Typography, Button } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 import { API } from '@/api'
@@ -9,8 +9,7 @@ import { Pokemon } from '@/api/types'
 import { useThemeStore } from '@/store/useThemeStore'
 
 export default function WhosThatPokemon() {
-  const theme = useTheme()
-const { mode } = useThemeStore()
+  const { mode } = useThemeStore()
   const [pokemonId, setPokemonId] = useState<number | null>(null)
   const [guess, setGuess] = useState('')
   const [isRevealed, setIsRevealed] = useState(false)
@@ -68,7 +67,7 @@ const { mode } = useThemeStore()
             src={sprite}
             alt="pokemon"
             className={`w-64 h-64 transition-all duration-500 brightness-0 ${isRevealed
-                ? 'filter-none'
+              ? 'filter-none'
               : mode === 'dark' ? 'invert' : ''
               }`}
           />

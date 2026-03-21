@@ -42,12 +42,11 @@ export const ITEM_IMAGE_URL_FALLBACK = 'https://raw.githubusercontent.com/msikma
 export const TYPE_IMAGE_URL = `${BASE_URL}/types/generation-ix/scarlet-violet/`
 
 export const SPRITE_TYPES = [
-  { id: "default", label: "Default" },
+  { id: "pixel", label: "Pixel" },
   { id: "official-artwork", label: "Official Artwork" },
   { id: "dream-world", label: "Dream World" },
   { id: "home", label: "Home" },
   { id: "showdown", label: "Showdown" },
-  { id: "pixel", label: "Pixel" },
 ] as const
 
 export type SpriteType = typeof SPRITE_TYPES[number]["id"]

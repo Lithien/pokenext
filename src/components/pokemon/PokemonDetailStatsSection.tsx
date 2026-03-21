@@ -18,6 +18,7 @@ import WeaknessTable from './WeaknessTable'
 
 import { Pokemon, PokemonSpecies, VersionGameIndex } from '@/api/types'
 import { usePokeStore } from '@/store/usePokeStore'
+import { getAugmentedTypeColor } from '@/theme/theme'
 import { findByLanguage, getTextColor } from '@/utils'
 
 interface PokemonDetailStatsSectionProps {
@@ -107,17 +108,12 @@ export const PokemonDetailStatsSection = ({
         {/* Types */}
         <Box display="flex">
           {pokemon.types.map((type, index) => {
-            const baseColor =
-              index === 0
-                ? theme.palette.primary.main
-                : theme.palette.secondary.main
+            const color = getAugmentedTypeColor(theme, type.type.name)           
 
             const bg =
               theme.palette.mode === 'dark'
-                ? baseColor
-                : `${baseColor}33` // pastel en claro
-
-            const text = getTextColor(bg)
+                ? color.main
+                : `${color.dark}33`
 
             return (
               <span
@@ -125,7 +121,7 @@ export const PokemonDetailStatsSection = ({
                 className="px-2 py-0.5 rounded-md text-xs font-medium shadow-sm border border-black/10 capitalize mr-2.5"
                 style={{
                   backgroundColor: bg,
-                  color: text
+                  color: color.contrastText,
                 }}
               >
                 {type.type.name}

@@ -45,7 +45,7 @@ export default function PokemonCard({ name, url }: NamedAPIResource) {
           style={{
             padding: '12px 8px',
             imageRendering:
-              spriteType === 'default' || spriteType === 'showdown'
+              spriteType === 'pixel' || spriteType === 'showdown'
                 ? 'pixelated'
                 : 'auto',
             objectFit: 'contain',

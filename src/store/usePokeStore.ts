@@ -19,27 +19,40 @@ interface PokemonState {
 
   generation: string
   setGeneration: (gen: string) => void
+
+  reset: () => void
+}
+
+const DEFAULT_STATE = {
+  isShiny: false,
+  language: 'en' as LANGUAGES,
+  number: 0,
+  spriteType: 'pixel' as SpriteType,
+  generation: '1',
 }
 
 export const usePokeStore = create<PokemonState>()(
   persist(
     (set) => ({
-      isShiny: false,
+      ...DEFAULT_STATE,
       toggleShiny: () => set((state) => ({ isShiny: !state.isShiny })),
       setShiny: (value) => set({ isShiny: value }),
 
-      language: 'en',
       setLanguage: (lang) => set({ language: lang }),
 
-      number: 0,
-      setNumber: (number) => set({ number }),
+      setNumber: (number) => {
+        if (number < 0) {
+          console.warn('Pokemon number cannot be negative')
+          return
+        }
+        set({ number })
+      },
 
-      spriteType: "official-artwork",
       setSpriteType: (t) => set({ spriteType: t }),
 
-      generation: "1",
-      setGeneration: (gen) => set({ generation: gen })
+      setGeneration: (gen) => set({ generation: gen }),
 
+      reset: () => set(DEFAULT_STATE),
     }),
     {
       name: 'pokedex-store',

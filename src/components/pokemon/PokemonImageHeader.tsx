@@ -16,7 +16,7 @@ export const PokemonImageHeader = ({ imageUrl, name, genere }: PokemonImageHeade
   const { isShiny, toggleShiny } = usePokeStore()
 
   useEffect(() => {
-    applyColorsFromImage(imageUrl)
+    applyColorsFromImage(imageUrl, 20)
   }, [imageUrl])
 
   return (
@@ -57,11 +57,11 @@ export const PokemonImageHeader = ({ imageUrl, name, genere }: PokemonImageHeade
         />
         <Typography
           variant="body2"
-          color="accent"
           sx={{
             fontSize: { xs: '0.875rem', sm: '1rem' },
             fontWeight: 500,
             transition: 'all 0.2s ease',
+            color: theme => theme.palette.primary.light,
           }}
         >
           {genere}

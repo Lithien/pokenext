@@ -4,6 +4,7 @@ import { MenuItem, Box, SxProps, Theme } from '@mui/material'
 import Image from 'next/image'
 
 import { SelectField } from './SelectField'
+
 import { LANGUAGES, LANGUAGE_FLAGS } from '@/constants/common'
 import { usePokeStore } from '@/store/usePokeStore'
 
@@ -59,7 +60,6 @@ export const LanguageSelector = () => {
               height={18}
               style={{ height: '18px', width: '18px' }}
             />
-            <span>{lang.toUpperCase()}</span>
           </MenuItem>
         ))}
       </SelectField>

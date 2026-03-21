@@ -19,13 +19,11 @@ declare module '@mui/material/styles' {
   interface Theme {
     pokedex: {
       getColorByType: (type: string) => string;
-      accent: string;
     };
   }
   interface ThemeOptions {
     pokedex?: {
       getColorByType?: (type: string) => string;
-      accent?: string;
     };
   }
 }

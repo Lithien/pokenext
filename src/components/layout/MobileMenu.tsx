@@ -18,6 +18,7 @@ import {
   Divider,
   Box,
   Typography,
+  getLuminance,
 } from '@mui/material'
 import Image from 'next/image'
 import { useState } from 'react'
@@ -60,8 +61,7 @@ export const MobileMenu = () => {
     <>
       <IconButton
         onClick={toggleMenu}
-        color="inherit"
-        sx={{ display: { xs: 'flex', sm: 'none' } }}
+        sx={{ color: (theme) => getLuminance(theme.palette.primary.main), display: { xs: 'flex', sm: 'none' } }}
         aria-label="menu"
       >
         <MenuIcon />
@@ -71,15 +71,17 @@ export const MobileMenu = () => {
         anchor="left"
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        PaperProps={{
-          sx: {
-            width: 320,
-            backgroundColor: (theme) =>
-              theme.palette.mode === 'dark'
-                ? 'rgba(10, 10, 20, 0.95)'
-                : 'rgba(255, 255, 255, 0.98)',
-            backdropFilter: 'blur(8px)',
-          },
+        slotProps={{
+          paper: {
+            sx: {
+              width: 320,
+              backgroundColor: (theme) =>
+                theme.palette.mode === 'dark'
+                  ? 'rgba(10, 10, 20, 0.95)'
+                  : 'rgba(255, 255, 255, 0.98)',
+              backdropFilter: 'blur(8px)',
+            }
+          }
         }}
       >
         <Box
@@ -140,13 +142,15 @@ export const MobileMenu = () => {
                   },
                 })}
               >
-                <ListItemIcon sx={{ color: (theme) => theme.palette.primary.main }}>
+                <ListItemIcon sx={{ color: (theme) => getLuminance(theme.palette.primary.main) }}>
                   <SettingsIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText
                   primary="Generación"
-                  primaryTypographyProps={{
-                    sx: { fontWeight: expandedMenu === 'generation' ? 600 : 500 },
+                  slotProps={{
+                    primary: {
+                      sx: { fontWeight: expandedMenu === 'generation' ? 600 : 500 },
+                    }
                   }}
                 />
                 {expandedMenu === 'generation' ? <ExpandLess /> : <ExpandMore />}
@@ -179,8 +183,10 @@ export const MobileMenu = () => {
                         )}
                         <ListItemText
                           primary={`Gen ${gen}`}
-                          primaryTypographyProps={{
-                            sx: { fontWeight: isSelected ? 600 : 400, fontSize: '0.95rem' },
+                          slotProps={{
+                            primary: {
+                              sx: { fontWeight: isSelected ? 600 : 400, fontSize: '0.95rem' },
+                            }
                           }}
                         />
                       </ListItemButton>
@@ -208,13 +214,15 @@ export const MobileMenu = () => {
                   },
                 })}
               >
-                <ListItemIcon sx={{ color: (theme) => theme.palette.primary.main }}>
+                <ListItemIcon sx={{ color: (theme) => getLuminance(theme.palette.primary.main) }}>
                   <PublicIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText
                   primary="Idioma"
-                  primaryTypographyProps={{
-                    sx: { fontWeight: expandedMenu === 'language' ? 600 : 500 },
+                  slotProps={{
+                    primary: {
+                      sx: { fontWeight: expandedMenu === 'language' ? 600 : 500 },
+                    }
                   }}
                 />
                 {expandedMenu === 'language' ? <ExpandLess /> : <ExpandMore />}
@@ -286,13 +294,15 @@ export const MobileMenu = () => {
                   },
                 })}
               >
-                <ListItemIcon sx={{ color: (theme) => theme.palette.primary.main }}>
+                <ListItemIcon sx={{ color: (theme) => getLuminance(theme.palette.primary.main) }}>
                   <ImageIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText
                   primary="Sprite"
-                  primaryTypographyProps={{
-                    sx: { fontWeight: expandedMenu === 'sprite' ? 600 : 500 },
+                  slotProps={{
+                    primary: {
+                      sx: { fontWeight: expandedMenu === 'sprite' ? 600 : 500 },
+                    }
                   }}
                 />
                 {expandedMenu === 'sprite' ? <ExpandLess /> : <ExpandMore />}
@@ -325,8 +335,10 @@ export const MobileMenu = () => {
                         )}
                         <ListItemText
                           primary={sprite.label}
-                          primaryTypographyProps={{
-                            sx: { fontWeight: isSelected ? 600 : 400, fontSize: '0.95rem' },
+                          slotProps={{ 
+                            primary: {
+                              sx: { fontWeight: isSelected ? 600 : 400, fontSize: '0.95rem' },
+                            }
                           }}
                         />
                       </ListItemButton>

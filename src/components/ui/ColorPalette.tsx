@@ -26,7 +26,7 @@ export type ColorFormat = "hex" | "rgb" | "hsl"
 
 
 export default function ColorPalette() {
-  const { colors, setColors } = useThemeStore()
+  const { colors, setColors, allColors } = useThemeStore()
   const [format, setFormat] = useState<ColorFormat>("hex")
 
   const sensors = useSensors(
@@ -67,14 +67,14 @@ export default function ColorPalette() {
         onDragEnd={handleDragEnd}
       >
         <SortableContext
-          items={colors.map((c) => c.name)}
+          items={allColors.map((c) => c.name)}
           strategy={verticalListSortingStrategy}
         >
           <Box display="flex" flexDirection="column" gap={2}>
-            {colors.map((c, index) => (
+            {allColors.map((c, index) => (
               <SortableColorCard
-                key={c.name}
-                id={c.name}
+                key={c.hex}
+                id={c.hex}
                 hex={c.hex}
                 displayValue={convertColor(c.hex, format)}
                 index={index}

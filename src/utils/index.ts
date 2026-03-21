@@ -20,7 +20,7 @@ export const getPokemonImage = (
   const number = id.toString()
 
   // 1. PIXEL / DEFAULT (sprites clásicos)
-  if (type === "pixel" || type === "default") {
+  if (type === "pixel") {
     const base = `${IMG_BASE_URL}${back ? "back/" : ""}`
     const shinyPath = shiny ? "shiny/" : ""
     return `${base}${shinyPath}${number}.png`

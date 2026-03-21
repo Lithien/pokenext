@@ -5,6 +5,7 @@ import Image from "next/image"
 
 import { PokemonType } from "@/api/types"
 import { TYPE_MULTIPLIERS } from "@/constants"
+import { getAugmentedTypeColor } from "@/theme/theme"
 
 type WeaknessTableProps = {
   types: PokemonType[]
@@ -12,7 +13,6 @@ type WeaknessTableProps = {
 
 export default function WeaknessTable({ types }: WeaknessTableProps) {
   const theme = useTheme()
-  const getColorByType = theme.pokedex.getColorByType
 
   const typeNames = types.map(t => t.type.name)
 
@@ -55,7 +55,7 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
 
   // --- CHIP DE TIPO ESTILO POKÉDEX ---
   const TypeChip = ({ type, multiplier }: { type: string; multiplier: number }) => {
-    const color = getColorByType(type)
+    const color = getAugmentedTypeColor(theme, type)
 
     return (
       <span
@@ -66,9 +66,9 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
           animate-[float_3s_ease-in-out_infinite]
         "
         style={{
-          backgroundColor: `${color}11`,
-          color,
-          borderColor: color,
+          backgroundColor: color.dark,
+          color: color.contrastText,
+          borderColor: color.main,
           borderWidth: 1,
         }}
       >

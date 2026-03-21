@@ -1,6 +1,6 @@
 'use client'
 
-import { Grid, Container, Typography, Skeleton, Box, CircularProgress } from '@mui/material'
+import { Grid, Container, Typography, Box, CircularProgress } from '@mui/material'
 
 import { API } from '@/api'
 import { useApi } from '@/api/hooks/useApi'
