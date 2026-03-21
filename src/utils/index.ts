@@ -115,6 +115,7 @@ export const findByLanguage = <T extends { language: { name: string } }>(
   language: string,
   key: keyof T
 ): string => {
+  if (!Array.isArray(entries)) return ''
   const item = entries.find(e => e.language.name === language)
   const value = item?.[key]
 

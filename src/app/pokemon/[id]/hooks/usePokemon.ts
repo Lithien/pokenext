@@ -5,17 +5,17 @@ import { API } from "@/api"
 import { useApi } from "@/api/hooks/useApi"
 import { VersionGameIndex, Pokemon, PokemonSpecies } from "@/api/types"
 import { usePokeStore } from "@/store/usePokeStore"
-import { getNumberFromUrl } from "@/utils"
+import { findByLanguage, getNumberFromUrl, getPokemonImage } from "@/utils"
 
 const usePokemon = ({ id }: { id: string }) => {
   const router = useRouter()
   const [selectedGame, setSelectedGame] = useState('')
-  const [tab, setTab] = useState(0)
   let gameOptions: VersionGameIndex[] = []
   const { isShiny, language, spriteType } = usePokeStore()
-
+  
   const { data: pokemon, isLoading: loadingPokemon } = useApi<Pokemon>({ key: API.POKEMON_DETAIL(String(id)) })
   const { data: species, isLoading: loadingSpecies } = useApi<PokemonSpecies>({ key: API.POKEMON_SPECIES(String(id)) })
+  const [tab, setTab] = useState(0)
 
   useEffect(() => {
     if (pokemon) gameOptions = pokemon.game_indices
@@ -27,7 +27,8 @@ const usePokemon = ({ id }: { id: string }) => {
     }
   }, [pokemon])
 
-  const loading = loadingPokemon || loadingSpecies || !pokemon || !species
+  const loadingPokemonData = loadingPokemon || !pokemon
+  const loadingSpeciesData = loadingSpecies || !species
 
   const playCry = useCallback(() => {
     const cryUrl = pokemon!.cries?.latest || pokemon!.cries?.legacy
@@ -64,6 +65,13 @@ const usePokemon = ({ id }: { id: string }) => {
     setTab(0)
   }, [router])
 
+  const getGenera = () => {
+    if (!loadingSpeciesData) return ''
+    return findByLanguage(species?.genera ?? [], language, 'genus') || 'Pokémon'
+  }
+
+  const getImage = () => getPokemonImage(pokemon.id, spriteType, false, isShiny)
+
   return ({
     fn: {
       playCry,
@@ -71,18 +79,20 @@ const usePokemon = ({ id }: { id: string }) => {
       onChangeName,
       onRandomize,
       setTab,
-      setSelectedGame
+      setSelectedGame,
+      getGenera,
+      getImage
     },
     data: {
       pokemon,
       species,
       selectedGame,
       gameOptions,
-      language,
       isShiny,
       tab,
-      loading,
-      spriteType
+      loadingPokemonData,
+      loadingSpeciesData,
+      spriteType,
     }
   })
 }

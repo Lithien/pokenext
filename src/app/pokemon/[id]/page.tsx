@@ -10,14 +10,13 @@ import { PokemonDetailStatsSection } from '@/components/pokemon/PokemonDetailSta
 import { PokemonImageHeader } from '@/components/pokemon/PokemonImageHeader'
 import { PokemonSelector } from '@/components/pokemon/PokemonSelector'
 import ColorPalette from '@/components/ui/ColorPalette'
-import { findByLanguage, getPokemonImage } from '@/utils'
 
 const PokemonDetailPage = () => {
   const { id } = useParams()
   const { fn, data } = usePokemon({ id: String(id) })
-  const { pokemon, species, selectedGame, gameOptions, language, isShiny, tab, spriteType } = data
+  const { pokemon, species, selectedGame, gameOptions, tab } = data
 
-  if (data.loading) {
+  if (data.loadingPokemonData) {
     return (
       <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
         <Skeleton variant='circular' width={130} height={130} />
@@ -43,9 +42,9 @@ const PokemonDetailPage = () => {
       padding={3}
     >
       <PokemonImageHeader
-        imageUrl={getPokemonImage(pokemon.id, spriteType, false, isShiny)}
+        imageUrl={fn.getImage()}
         name={pokemon.name}
-        genere={findByLanguage(species.genera, language, 'genus') || 'Pokémon'}
+        genere={fn.getGenera()}
       />
 
       <PokemonSelector
@@ -58,13 +57,13 @@ const PokemonDetailPage = () => {
 
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={tab} onChange={(_, val) => fn.setTab(val)} textColor='primary' indicatorColor='secondary'>
-          <Tab label="Information" />
-          <Tab label="Forms" />
+          {!data.loadingSpeciesData && <Tab label="Information" />}
+          {!data.loadingSpeciesData && <Tab label="Forms" />}
           <Tab label="Colors" />
         </Tabs>
       </Box>
 
-      {tab === 0 && (
+      {tab === 0 && !data.loadingSpeciesData && (
         <PokemonDetailStatsSection
           onPlayCry={fn.playCry}
           selectedGame={selectedGame}
@@ -74,8 +73,8 @@ const PokemonDetailPage = () => {
           species={species}
         />
       )}
-      {tab === 1 && (<ChainEvolution pokemon={pokemon} species={species} />)}
-      {tab === 2 && (<ColorPalette />)}
+      {tab === 1 && !data.loadingSpeciesData && (<ChainEvolution pokemon={pokemon} species={species} />)}
+      {tab === (!data.loadingSpeciesData ? 2 : 0) && (<ColorPalette />)}
 
       <Typography mt={4} variant="body2" color="text.secondary" textAlign="center">
         More Pokémon details coming in future updates
