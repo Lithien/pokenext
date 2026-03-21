@@ -12,10 +12,8 @@ import {
   verticalListSortingStrategy,
   arrayMove,
 } from "@dnd-kit/sortable"
-import { Box, FormControl, InputLabel, MenuItem, Select } from "@mui/material"
+import { Box, FormControl, InputLabel, MenuItem, Select, Slider, Typography } from "@mui/material"
 import { useState } from "react"
-
-
 
 import SortableColorCard from "./SortableColorCard"
 
@@ -26,7 +24,7 @@ export type ColorFormat = "hex" | "rgb" | "hsl"
 
 
 export default function ColorPalette() {
-  const { colors, setColors, allColors } = useThemeStore()
+  const { colors, setColors, similarityThreshold, setSimilarityThreshold } = useThemeStore()
   const [format, setFormat] = useState<ColorFormat>("hex")
 
   const sensors = useSensors(
@@ -47,42 +45,64 @@ export default function ColorPalette() {
 
   return (
     <Box display="flex" flexDirection="column" gap={2}>
-      <FormControl size="small" sx={{ minWidth: 120 }}>
-        <InputLabel>Formato</InputLabel>
-        <Select
-          value={format}
-          label="Formato"
-          onChange={(e) => setFormat(e.target.value as ColorFormat)}
-        >
-          <MenuItem value="hex">HEX</MenuItem>
-          <MenuItem value="rgb">RGB</MenuItem>
-          <MenuItem value="hsl">HSL</MenuItem>
-        </Select>
-      </FormControl>
-
-
-      <DndContext
-        sensors={sensors}
-        collisionDetection={closestCenter}
-        onDragEnd={handleDragEnd}
-      >
-        <SortableContext
-          items={allColors.map((c) => c.name)}
-          strategy={verticalListSortingStrategy}
-        >
-          <Box display="flex" flexDirection="column" gap={2}>
-            {allColors.map((c, index) => (
-              <SortableColorCard
-                key={c.hex}
-                id={c.hex}
-                hex={c.hex}
-                displayValue={convertColor(c.hex, format)}
-                index={index}
-              />
-            ))}
+      <Box display="flex" gap={2}>
+        <Box display="flex" flexDirection="column" gap={2}>
+          <FormControl size="small" sx={{ minWidth: 120 }}>
+            <InputLabel>Formato</InputLabel>
+            <Select
+              value={format}
+              fullWidth
+              label="Formato"
+              onChange={(e) => setFormat(e.target.value as ColorFormat)}
+            >
+              <MenuItem value="hex">HEX</MenuItem>
+              <MenuItem value="rgb">RGB</MenuItem>
+              <MenuItem value="hsl">HSL</MenuItem>
+            </Select>
+          </FormControl>
+          <Box sx={{ maxWidth: 420, px: 1 }}>
+            <Typography variant="body2" sx={{ mb: 1, fontWeight: 600 }}>
+              Diferencia mínima entre colores: {similarityThreshold}
+            </Typography>
+            <Slider
+              value={similarityThreshold}
+              onChange={(_, value) => setSimilarityThreshold(value)}
+              min={0}
+              max={442}
+              step={1}
+              valueLabelDisplay="auto"
+              aria-label="similarity-threshold"
+            />
+            <Typography variant="caption" color="text.secondary">
+              Bajo = tonos más parecidos. Alto = tonos más distintos.
+            </Typography>
           </Box>
-        </SortableContext>
-      </DndContext>
+          <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
+            <DndContext
+              sensors={sensors}
+              collisionDetection={closestCenter}
+              onDragEnd={handleDragEnd}
+            >
+              <SortableContext
+                items={colors.map((c) => c.name)}
+                strategy={verticalListSortingStrategy}
+              >
+                <Box display="flex" flexDirection="column" gap={2}>
+                  {colors.map((c, index) => (
+                    <SortableColorCard
+                      key={c.hex}
+                      id={c.name}
+                      hex={c.hex}
+                      displayValue={convertColor(c.hex, format)}
+                      index={index}
+                    />
+                  ))}
+                </Box>
+              </SortableContext>
+            </DndContext>
+          </Box>
+        </Box>
+      </Box>
     </Box>
   )
 }

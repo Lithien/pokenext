@@ -10,8 +10,8 @@ interface ThemeState {
   colors: ColorItem[]
   setColors: (colors: ColorItem[]) => void
   resetColors: () => void
-  allColors: ColorItem[]
-  setAllColors: (colors: ColorItem[]) => void
+  similarityThreshold: number
+  setSimilarityThreshold: (threshold: number) => void
 
   mode: 'light' | 'dark'
   toggleTheme: () => void
@@ -30,16 +30,6 @@ export const useThemeStore = create<ThemeState>()(
   persist(
     (set) => ({
       colors: DEFAULT_COLORS,
-      allColors: DEFAULT_COLORS,
-      setAllColors: (colors) => {
-        // Validate all colors have valid hex format
-        const validColors = colors.every((color) => isValidHex(color.hex))
-        if (!validColors) {
-          console.warn('Invalid hex color format in one or more colors')
-          return
-        }
-        set({ allColors: colors })
-      },
       setColors: (colors) => {
         // Validate all colors have valid hex format
         const validColors = colors.every((color) => isValidHex(color.hex))
@@ -50,6 +40,11 @@ export const useThemeStore = create<ThemeState>()(
         set({ colors })
       },
       resetColors: () => set({ colors: DEFAULT_COLORS }),
+      similarityThreshold: 90,
+      setSimilarityThreshold: (threshold) => {
+        const safeThreshold = Math.max(0, Math.min(442, Math.round(threshold)))
+        set({ similarityThreshold: safeThreshold })
+      },
 
       mode: 'dark',
       setMode: (mode) => set({ mode }),

@@ -143,6 +143,81 @@ const normalizeColor = (color: string | ColorWithFrequency): string => {
 };
 
 /**
+ * Convierte un color hex a RGB
+ */
+const hexToRgb = (hex: string): [number, number, number] => {
+  const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+  if (!result) return [0, 0, 0];
+  return [
+    parseInt(result[1], 16),
+    parseInt(result[2], 16),
+    parseInt(result[3], 16)
+  ];
+};
+
+/**
+ * Calcula la distancia euclidiana entre dos colores en el espacio RGB
+ * Rango: 0-442 (distancia máxima: sqrt(255^2 + 255^2 + 255^2))
+ */
+const getColorDistance = (hex1: string, hex2: string): number => {
+  const [r1, g1, b1] = hexToRgb(hex1);
+  const [r2, g2, b2] = hexToRgb(hex2);
+  
+  const rDiff = r1 - r2;
+  const gDiff = g1 - g2;
+  const bDiff = b1 - b2;
+  
+  return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
+};
+
+/**
+ * Verifica si dos colores son demasiado similares
+ * @param hex1 Primer color en hex
+ * @param hex2 Segundo color en hex
+ * @param threshold Distancia mínima para considerar que no son similares (0-442, default: 80)
+ */
+const areColorsSimilar = (hex1: string, hex2: string, threshold: number = 80): boolean => {
+  return getColorDistance(hex1, hex2) < threshold;
+};
+
+/**
+ * Selecciona 3 colores distintos de una lista, evitando similares
+ * @param colorList Lista de colores ordenados por frecuencia
+ * @param similarityThreshold Umbral de similitud (default: 80)
+ * @returns Array con 3 colores distintos
+ */
+const selectDistinctColors = (
+  colorList: string[],
+  similarityThreshold: number = 80
+): string[] => {
+  if (colorList.length === 0) return [];
+  
+  const selected: string[] = [colorList[0]];
+  let colorIndex = 1;
+  
+  while (selected.length < 3 && colorIndex < colorList.length) {
+    const currentColor = colorList[colorIndex];
+    const isSimilarToAny = selected.some(selectedColor =>
+      areColorsSimilar(currentColor, selectedColor, similarityThreshold)
+    );
+    
+    if (!isSimilarToAny) {
+      selected.push(currentColor);
+    }
+    
+    colorIndex++;
+  }
+  
+  // Si no hay suficientes colores distintos, rellenar con los disponibles
+  while (selected.length < 3 && colorIndex < colorList.length) {
+    selected.push(colorList[colorIndex]);
+    colorIndex++;
+  }
+  
+  return selected;
+};
+
+/**
  * @title Apply Colors From Image
  * @description Extracts colors from the given image URL and applies them to the theme store.
  * @param imageUrl URL of the image to extract colors from
@@ -151,23 +226,29 @@ const normalizeColor = (color: string | ColorWithFrequency): string => {
  */
 export const applyColorsFromImage = async (imageUrl: string, count: number = 3) => {
   try {
-    const colors = await extractColorsFromImage(imageUrl, count);
+    const colors = await extractColorsFromImage(imageUrl, count * 2);
 
-    if (!Array.isArray(colors) || colors.length < count) {
-      console.warn("Not enough colors extracted from image");
+    if (!Array.isArray(colors) || colors.length === 0) {
+      console.warn("No colors extracted from image");
       return;
     }
 
-    const primary = normalizeColor(colors[0]);
-    const secondary = normalizeColor(colors[1]);
-    const accent = normalizeColor(colors[2]);
+    const normalizedColors = colors.map(normalizeColor);
+    const similarityThreshold = useThemeStore.getState().similarityThreshold;
+    const distinctColors = selectDistinctColors(normalizedColors, similarityThreshold);
+
+    if (distinctColors.length < 3) {
+      console.warn("Could not extract 3 visually distinct colors");
+      return;
+    }
+
+    const [primary, secondary, accent] = distinctColors;
 
     useThemeStore.getState().setColors([
       { name: "primary", hex: primary },
       { name: "secondary", hex: secondary },
       { name: "accent", hex: accent }
     ]);
-    useThemeStore.getState().setAllColors(colors.map(c => ({ name: "primary", hex: normalizeColor(c) })));
   } catch (error) {
     console.error("Error applying colors from image:", error instanceof Error ? error.message : "Unknown error");
   }
