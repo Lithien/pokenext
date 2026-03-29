@@ -12,7 +12,7 @@ import {
   ChartOptions,
   ChartData,
 } from 'chart.js'
-import { useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { Radar } from 'react-chartjs-2'
 
 import { PokemonStat } from '@/api/types'
@@ -42,7 +42,7 @@ export default function StatsRadarChart({ stats }: Props) {
   const getStat = (name: string) =>
     stats.find(s => s.stat.name === name)?.base_stat ?? 0
 
-  const data: ChartData<'radar'> = {
+  const data: ChartData<'radar'> = useMemo(() => ({
     labels: ['HP', 'ATK', 'DEF', 'SpA', 'SpD', 'SPD'],
     datasets: [
       {
@@ -98,9 +98,9 @@ export default function StatsRadarChart({ stats }: Props) {
         pointRadius: 5
       }
     ]
-  }
+  }), [stats, c1, c2, c3])
 
-  const options: ChartOptions<'radar'> = {
+  const options: ChartOptions<'radar'> = useMemo(() => ({
     responsive: true,
     scales: {
       r: {
@@ -129,7 +129,7 @@ export default function StatsRadarChart({ stats }: Props) {
       duration: 900,
       easing: 'easeOutQuart' as const
     }
-  }
+  }), [theme.palette.text.primary, theme.palette.background.default, c1])
 
   return (
     <div className="w-full max-w-md mx-auto p-4">

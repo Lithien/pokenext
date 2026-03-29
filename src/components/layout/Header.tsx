@@ -5,6 +5,7 @@ import Brightness7Icon from '@mui/icons-material/Brightness7'
 import HomeIcon from '@mui/icons-material/Home'
 import { AppBar, Toolbar, IconButton, Typography, Box, Tooltip, getLuminance } from '@mui/material'
 import { useRouter } from 'next/navigation'
+import { useCallback } from 'react'
 
 import GenerationSelector from './GenerationSelector'
 import { LanguageSelector } from './LanguageSelector'
@@ -15,9 +16,10 @@ import { useThemeStore } from '@/store/useThemeStore'
 
 export const PokedexHeader = () => {
   const router = useRouter()
-  const { mode, toggleTheme } = useThemeStore()
+  const mode = useThemeStore((s) => s.mode)
+  const toggleTheme = useThemeStore((s) => s.toggleTheme)
 
-  const goHome = () => router.push('/')
+  const goHome = useCallback(() => router.push('/'), [router])
 
   return (
     <AppBar

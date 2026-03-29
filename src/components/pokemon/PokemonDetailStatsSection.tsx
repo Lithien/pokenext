@@ -10,6 +10,7 @@ import {
   useMediaQuery,
   useTheme
 } from '@mui/material'
+import { memo } from 'react'
 
 import StatsRadarChart from '../ui/StatsRadarChart'
 
@@ -30,16 +31,16 @@ interface PokemonDetailStatsSectionProps {
   species: PokemonSpecies
 }
 
-export const PokemonDetailStatsSection = ({
+export const PokemonDetailStatsSection = memo(function PokemonDetailStatsSection({
   onPlayCry,
   selectedGame,
   onChangeGame,
   gameOptions,
   pokemon,
   species
-}: PokemonDetailStatsSectionProps) => {
+}: PokemonDetailStatsSectionProps) {
   const theme = useTheme()
-  const { language } = usePokeStore()
+  const language = usePokeStore((s) => s.language)
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const panelBg =
@@ -108,7 +109,7 @@ export const PokemonDetailStatsSection = ({
         {/* Types */}
         <Box display="flex">
           {pokemon.types.map((type, index) => {
-            const color = getAugmentedTypeColor(theme, type.type.name)           
+            const color = getAugmentedTypeColor(theme, type.type.name)
 
             const bg =
               theme.palette.mode === 'dark'
@@ -227,4 +228,4 @@ export const PokemonDetailStatsSection = ({
       </Box>
     </Box>
   )
-}
+})

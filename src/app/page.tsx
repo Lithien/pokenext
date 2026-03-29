@@ -1,6 +1,7 @@
 'use client'
 
 import { Grid, Container, Typography, Box, CircularProgress } from '@mui/material'
+import { useMemo } from 'react'
 
 import { API } from '@/api'
 import { useApi } from '@/api/hooks/useApi'
@@ -16,6 +17,13 @@ const Home = () => {
     key: API.POKEMON_GENERATION(generation),
     query: { lang: language }
   })
+
+  const sortedSpecies = useMemo(
+    () => data?.pokemon_species
+      ?.slice()
+      .sort((a, b) => Number(getNumberFromUrl(a.url)) - Number(getNumberFromUrl(b.url))),
+    [data?.pokemon_species]
+  )
 
   if (isLoading) {
     return (
@@ -55,11 +63,9 @@ const Home = () => {
           animation: 'fadeIn 0.4s ease-in-out',
         }}
       >
-        {data?.pokemon_species
-          .sort((a, b) => Number(getNumberFromUrl(a.url)) - Number(getNumberFromUrl(b.url)))
-          .map((pokemon) => (
-            <PokemonCard key={pokemon.name} {...pokemon} />
-          ))}
+        {sortedSpecies?.map((pokemon) => (
+          <PokemonCard key={pokemon.name} {...pokemon} />
+        ))}
       </Grid>
     </Container>
   )

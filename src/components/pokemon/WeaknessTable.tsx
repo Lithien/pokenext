@@ -1,7 +1,8 @@
 'use client'
 
-import { Box, Typography, useTheme } from "@mui/material"
+import { Box, Typography, useTheme, Theme } from "@mui/material"
 import Image from "next/image"
+import { memo } from "react"
 
 import { PokemonType } from "@/api/types"
 import { TYPE_MULTIPLIERS } from "@/constants"
@@ -10,6 +11,36 @@ import { getAugmentedTypeColor } from "@/theme/theme"
 type WeaknessTableProps = {
   types: PokemonType[]
 }
+
+const TypeChip = memo(function TypeChip({ type, multiplier, theme }: { type: string; multiplier: number; theme: Theme }) {
+  const color = getAugmentedTypeColor(theme, type)
+
+  return (
+    <span
+      className="
+        flex items-center gap-2 px-3 py-1 rounded-xl text-sm font-semibold border
+        transition-all duration-300
+        hover:scale-105 hover:shadow-md
+        animate-[float_3s_ease-in-out_infinite]
+      "
+      style={{
+        backgroundColor: color.dark,
+        color: color.contrastText,
+        borderColor: color.main,
+        borderWidth: 1,
+      }}
+    >
+      <Image
+        src={`/${type}.svg`}
+        alt={type}
+        width={22}
+        height={22}
+        className="transition-transform duration-300 hover:rotate-6 hover:scale-110"
+      />
+      <span className="font-bold">{multiplier}×</span>
+    </span>
+  )
+})
 
 export default function WeaknessTable({ types }: WeaknessTableProps) {
   const theme = useTheme()
@@ -53,37 +84,6 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
 
   const strengths = Object.entries(offensive)
 
-  // --- CHIP DE TIPO ESTILO POKÉDEX ---
-  const TypeChip = ({ type, multiplier }: { type: string; multiplier: number }) => {
-    const color = getAugmentedTypeColor(theme, type)
-
-    return (
-      <span
-        className="
-          flex items-center gap-2 px-3 py-1 rounded-xl text-sm font-semibold border
-          transition-all duration-300
-          hover:scale-105 hover:shadow-md
-          animate-[float_3s_ease-in-out_infinite]
-        "
-        style={{
-          backgroundColor: color.dark,
-          color: color.contrastText,
-          borderColor: color.main,
-          borderWidth: 1,
-        }}
-      >
-        <Image
-          src={`/${type}.svg`}
-          alt={type}
-          width={22}
-          height={22}
-          className="transition-transform duration-300 hover:rotate-6 hover:scale-110"
-        />
-        <span className="font-bold">{multiplier}×</span>
-      </span>
-    )
-  }
-
   const renderRow = (title: string, items: [string, number][]) => {
     if (items.length === 0) return null
 
@@ -100,7 +100,7 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
 
         <Box className="flex gap-2 flex-wrap">
           {items.map(([type, multiplier]) => (
-            <TypeChip key={type} type={type} multiplier={multiplier} />
+            <TypeChip key={type} type={type} multiplier={multiplier} theme={theme} />
           ))}
         </Box>
       </Box>

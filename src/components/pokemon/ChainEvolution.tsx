@@ -3,6 +3,7 @@
 import { ArrowRightAlt } from "@mui/icons-material"
 import { Box, Container, Grid, Skeleton, Typography, Chip } from "@mui/material"
 import Image from "next/image"
+import { memo } from "react"
 
 import useChainEvolution from "./hooks/useChainEvolution"
 import PokemonCard from "./PokemonCard"
@@ -17,7 +18,7 @@ interface ChainEvolutionProps {
   species: PokemonSpecies
 }
 
-const ChainEvolution = ({ species }: ChainEvolutionProps) => {
+const ChainEvolution = memo(function ChainEvolution({ species }: ChainEvolutionProps) {
   const { requeriments, chain, isLoading } = useChainEvolution({ species })
 
   // ------------------------------------------------------
@@ -200,6 +201,6 @@ const ChainEvolution = ({ species }: ChainEvolutionProps) => {
       )}
     </Container>
   )
-}
+})
 
 export default ChainEvolution

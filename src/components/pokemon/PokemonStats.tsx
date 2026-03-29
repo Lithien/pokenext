@@ -1,6 +1,7 @@
 'use client'
 
 import { Box, Typography, LinearProgress, Grid, useTheme } from '@mui/material'
+import { memo } from 'react'
 
 import { PokemonStat } from '@/api/types'
 import { formatStatName } from '@/utils'
@@ -9,7 +10,7 @@ interface PokemonStatsProps {
   stats: PokemonStat[]
 }
 
-export default function Stats({ stats }: PokemonStatsProps) {
+const Stats = memo(function Stats({ stats }: PokemonStatsProps) {
   const total = stats.reduce((acc, s) => acc + s.base_stat, 0)
   const theme = useTheme()
   return (
@@ -94,4 +95,6 @@ export default function Stats({ stats }: PokemonStatsProps) {
       </Box>
     </Box>
   )
-}
+})
+
+export default Stats

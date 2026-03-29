@@ -1,5 +1,5 @@
 import { useRouter } from "next/navigation"
-import { useEffect, useState, useCallback } from "react"
+import { useEffect, useState, useCallback, useMemo } from "react"
 
 import { API } from "@/api"
 import { useApi } from "@/api/hooks/useApi"
@@ -10,16 +10,18 @@ import { findByLanguage, getNumberFromUrl, getPokemonImage } from "@/utils"
 const usePokemon = ({ id }: { id: string }) => {
   const router = useRouter()
   const [selectedGame, setSelectedGame] = useState('')
-  let gameOptions: VersionGameIndex[] = []
-  const { isShiny, language, spriteType } = usePokeStore()
-  
+  const isShiny = usePokeStore((s) => s.isShiny)
+  const language = usePokeStore((s) => s.language)
+  const spriteType = usePokeStore((s) => s.spriteType)
+
   const { data: pokemon, isLoading: loadingPokemon } = useApi<Pokemon>({ key: API.POKEMON_DETAIL(String(id)) })
   const { data: species, isLoading: loadingSpecies } = useApi<PokemonSpecies>({ key: API.POKEMON_SPECIES(String(id)) })
   const [tab, setTab] = useState(0)
 
-  useEffect(() => {
-    if (pokemon) gameOptions = pokemon.game_indices
-  }, [pokemon])
+  const gameOptions = useMemo<VersionGameIndex[]>(
+    () => pokemon?.game_indices ?? [],
+    [pokemon?.game_indices]
+  )
 
   useEffect(() => {
     if (pokemon?.game_indices && pokemon.game_indices.length > 0 && !selectedGame) {
@@ -65,12 +67,15 @@ const usePokemon = ({ id }: { id: string }) => {
     setTab(0)
   }, [router])
 
-  const getGenera = () => {
+  const getGenera = useCallback(() => {
     if (!loadingSpeciesData) return ''
     return findByLanguage(species?.genera ?? [], language, 'genus') || 'Pokémon'
-  }
+  }, [loadingSpeciesData, species?.genera, language])
 
-  const getImage = () => getPokemonImage(pokemon.id, spriteType, false, isShiny)
+  const getImage = useCallback(
+    () => getPokemonImage(pokemon?.id, spriteType, false, isShiny),
+    [pokemon?.id, spriteType, isShiny]
+  )
 
   return ({
     fn: {

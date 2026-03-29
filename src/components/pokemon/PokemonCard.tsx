@@ -2,14 +2,16 @@
 
 import { Card, CardContent, CardMedia, Typography, useTheme } from '@mui/material'
 import Link from 'next/link'
+import { memo } from 'react'
 
 import { NamedAPIResource } from '@/api/types'
 import { usePokeStore } from '@/store/usePokeStore'
 import { getNumberFromUrl, getPokemonImage } from '@/utils'
 
-export default function PokemonCard({ name, url }: NamedAPIResource) {
+const PokemonCard = memo(function PokemonCard({ name, url }: NamedAPIResource) {
   const theme = useTheme()
-  const { isShiny, spriteType } = usePokeStore()
+  const isShiny = usePokeStore((s) => s.isShiny)
+  const spriteType = usePokeStore((s) => s.spriteType)
   const pokemonId = getNumberFromUrl(url)
 
   return (
@@ -74,4 +76,6 @@ export default function PokemonCard({ name, url }: NamedAPIResource) {
       </Card>
     </Link>
   )
-}
+})
+
+export default PokemonCard

@@ -1,7 +1,7 @@
 'use client'
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
 import { Box, CardMedia, Container, IconButton, Typography } from '@mui/material'
-import { useEffect } from 'react'
+import { memo, useEffect } from 'react'
 
 import { usePokeStore } from '@/store/usePokeStore'
 import { useThemeStore } from '@/store/useThemeStore'
@@ -13,9 +13,10 @@ interface PokemonImageHeaderProps {
   genere: string
 }
 
-export const PokemonImageHeader = ({ imageUrl, name, genere }: PokemonImageHeaderProps) => {
-  const { isShiny, toggleShiny } = usePokeStore()
-  const { similarityThreshold } = useThemeStore()
+export const PokemonImageHeader = memo(function PokemonImageHeader({ imageUrl, name, genere }: PokemonImageHeaderProps) {
+  const isShiny = usePokeStore((s) => s.isShiny)
+  const toggleShiny = usePokeStore((s) => s.toggleShiny)
+  const similarityThreshold = useThemeStore((s) => s.similarityThreshold)
 
   useEffect(() => {
     applyColorsFromImage(imageUrl, 20)
@@ -71,4 +72,4 @@ export const PokemonImageHeader = ({ imageUrl, name, genere }: PokemonImageHeade
       </Box>
     </Container>
   )
-}
+})

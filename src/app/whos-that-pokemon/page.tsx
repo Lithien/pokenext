@@ -1,7 +1,7 @@
 'use client'
 
 import { Box, Typography, Button } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import { API } from '@/api'
 import { useApi } from '@/api/hooks/useApi'
@@ -9,7 +9,7 @@ import { Pokemon } from '@/api/types'
 import { useThemeStore } from '@/store/useThemeStore'
 
 export default function WhosThatPokemon() {
-  const { mode } = useThemeStore()
+  const mode = useThemeStore((s) => s.mode)
   const [pokemonId, setPokemonId] = useState<number | null>(null)
   const [guess, setGuess] = useState('')
   const [isRevealed, setIsRevealed] = useState(false)
@@ -20,12 +20,12 @@ export default function WhosThatPokemon() {
   })
 
   // Cargar un Pokémon aleatorio
-  const loadRandomPokemon = () => {
+  const loadRandomPokemon = useCallback(() => {
     const id = Math.floor(Math.random() * 1025) + 1
     setPokemonId(id)
     setGuess('')
     setIsRevealed(false)
-  }
+  }, [])
 
   // Cargar uno al entrar
   useEffect(() => {
