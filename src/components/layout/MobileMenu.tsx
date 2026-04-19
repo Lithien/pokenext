@@ -287,10 +287,12 @@ export const MobileMenu = () => {
                         </ListItemIcon>
                         <ListItemText
                           primary={lang.toUpperCase()}
-                          primaryTypographyProps={{
-                            sx: {
-                              fontWeight: isSelected ? 600 : 400,
-                              fontSize: '0.95rem',
+                          slotProps={{
+                            primary: {
+                              sx: {
+                                fontWeight: isSelected ? 600 : 400,
+                                fontSize: '0.95rem',
+                              },
                             },
                           }}
                         />

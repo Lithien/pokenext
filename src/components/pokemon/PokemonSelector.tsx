@@ -86,11 +86,13 @@ export const PokemonSelector = ({
 
   return (
     <Box
-      display="flex"
-      gap={{ xs: 0.75, sm: 1 }}
-      alignItems="center"
-      flexWrap={{ xs: 'wrap', sm: 'nowrap' }}
-      justifyContent={{ xs: 'center', sm: 'flex-start' }}
+      sx={{
+        display: 'flex',
+        gap: { xs: 0.75, sm: 1 },
+        alignItems: 'center',
+        flexWrap: { xs: 'wrap', sm: 'nowrap' },
+        justifyContent: { xs: 'center', sm: 'flex-start' },
+      }}
     >
       <Autocomplete
         options={allPokemon}
@@ -142,12 +144,12 @@ export const PokemonSelector = ({
             component="li"
             {...props}
             key={option.id}
-            display="flex"
-            justifyContent="space-between"
-            alignItems="center"
-            gap={{ xs: 1, sm: 2 }}
-            width="100%"
             sx={{
+              display: 'flex',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              gap: { xs: 1, sm: 2 },
+              width: '100%',
               px: { xs: 1.25, sm: 2 },
               py: { xs: 0.375, sm: 0.75 },
             }}

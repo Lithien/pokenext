@@ -77,10 +77,10 @@ const PokemonCard = memo(function PokemonCard({ name, url }: NamedAPIResource) {
             variant="caption"
             color={theme.palette.text.primary}
             component="div"
-            textAlign="center"
-            textTransform="capitalize"
-            fontWeight={600}
             sx={{
+              textAlign: 'center',
+              textTransform: 'capitalize',
+              fontWeight: 600,
               fontSize: { xs: '0.75rem', sm: '0.875rem' },
               transition: 'all 0.2s ease',
               wordBreak: 'break-word',

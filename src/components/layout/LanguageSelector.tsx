@@ -38,7 +38,7 @@ export const LanguageSelector = () => {
   });
 
   return (
-    <Box lineHeight={0}>
+    <Box sx={{ lineHeight: 0 }}>
       <SelectField
         label="Idioma"
         value={language}

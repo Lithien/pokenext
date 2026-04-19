@@ -52,9 +52,9 @@ export default function ColorPalette() {
   };
 
   return (
-    <Box display="flex" flexDirection="column" gap={2}>
-      <Box display="flex" gap={2}>
-        <Box display="flex" flexDirection="column" gap={2}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+      <Box sx={{ display: 'flex', gap: 2 }}>
+        <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
           <FormControl size="small" sx={{ minWidth: 120 }}>
             <InputLabel>Formato</InputLabel>
             <Select
@@ -86,10 +86,12 @@ export default function ColorPalette() {
             </Typography>
           </Box>
           <Box
-            display="flex"
-            alignItems="center"
-            flexDirection="column"
-            gap={2}
+            sx={{
+              display: 'flex',
+              alignItems: 'center',
+              flexDirection: 'column',
+              gap: 2,
+            }}
           >
             <DndContext
               sensors={sensors}
@@ -100,7 +102,7 @@ export default function ColorPalette() {
                 items={colors.map((c) => c.name)}
                 strategy={verticalListSortingStrategy}
               >
-                <Box display="flex" flexDirection="column" gap={2}>
+                <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
                   {colors.map((c, index) => (
                     <SortableColorCard
                       key={c.hex}

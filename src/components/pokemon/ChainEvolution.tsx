@@ -43,17 +43,19 @@ const ChainEvolution = memo(function ChainEvolution({
     const item = getItem(details?.[0]);
     return (
       <Box
-        display="flex"
-        gap={1}
-        flexDirection="column"
-        mt={1}
-        sx={{ animation: 'fadeIn 0.5s ease' }}
+        sx={{
+          display: 'flex',
+          gap: 1,
+          flexDirection: 'column',
+          mt: 1,
+          animation: 'fadeIn 0.5s ease',
+        }}
       >
         {item && (
           <Chip
             key={item}
             label={
-              <Box display="flex" alignItems="center" gap={1}>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Image
                   src={`${ITEM_IMAGE_URL}${item}.png`}
                   alt={item}
@@ -99,11 +101,11 @@ const ChainEvolution = memo(function ChainEvolution({
     return (
       <Box
         key={node.species.name}
-        display="flex"
-        flexDirection="row"
-        alignItems="center"
-        gap={1}
         sx={{
+          display: 'flex',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 1,
           p: 1,
           borderRadius: 2,
           animation: `fadeIn 0.6s ease ${depth * 0.2}s`,
@@ -112,14 +114,11 @@ const ChainEvolution = memo(function ChainEvolution({
         <PokemonCard {...node.species} />
 
         {node.evolves_to.length > 0 && (
-          <Box display="flex" flexDirection="row" alignItems="center" gap={1}>
+          <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
             {node.evolves_to.map((child) => (
               <Box
                 key={child.species.name}
-                display="flex"
-                flexDirection="row"
-                alignItems="center"
-                gap={1}
+                sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}
               >
                 <Typography
                   variant="h4"
@@ -151,10 +150,12 @@ const ChainEvolution = memo(function ChainEvolution({
         <>
           <Typography
             variant="h6"
-            fontWeight="bold"
-            textAlign="center"
-            mb={3}
-            sx={{ opacity: 0.9 }}
+            sx={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              mb: 3,
+              opacity: 0.9,
+            }}
           >
             Evolution Chain
           </Typography>
@@ -178,7 +179,7 @@ const ChainEvolution = memo(function ChainEvolution({
               }}
             >
               {isLoading ? (
-                <Box display="flex" gap={2}>
+                <Box sx={{ display: 'flex', gap: 2 }}>
                   <Skeleton variant="rounded" width={110} height={170} />
                   <Skeleton variant="rounded" width={110} height={170} />
                   <Skeleton variant="rounded" width={110} height={170} />
@@ -196,16 +197,18 @@ const ChainEvolution = memo(function ChainEvolution({
         <>
           <Typography
             variant="h6"
-            fontWeight="bold"
-            textAlign="center"
-            mt={6}
-            mb={3}
-            sx={{ opacity: 0.9 }}
+            sx={{
+              fontWeight: 'bold',
+              textAlign: 'center',
+              mt: 6,
+              mb: 3,
+              opacity: 0.9,
+            }}
           >
             Alternate Forms
           </Typography>
 
-          <Grid container spacing={2} justifyContent="center">
+          <Grid container spacing={2} sx={{ justifyContent: 'center' }}>
             {species.varieties
               .filter((v) => !v.is_default)
               .map((variety) => (

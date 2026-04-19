@@ -100,12 +100,15 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
     if (items.length === 0) return null;
 
     return (
-      <Box mb={3}>
+      <Box sx={{ mb: 3 }}>
         <Typography
           variant="subtitle2"
-          fontWeight={800}
-          sx={{ opacity: 0.8, letterSpacing: 1 }}
-          mb={1}
+          sx={{
+            fontWeight: 800,
+            opacity: 0.8,
+            letterSpacing: 1,
+            mb: 1,
+          }}
         >
           {title.toUpperCase()}
         </Typography>
@@ -125,8 +128,14 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
   };
 
   return (
-    <Box mt={4}>
-      <Typography variant="h6" mb={2} fontWeight={800}>
+    <Box sx={{ mt: 4 }}>
+      <Typography
+        variant="h6"
+        sx={{
+          mb: 2,
+          fontWeight: 800,
+        }}
+      >
         Efectividad de tipos
       </Typography>
 

@@ -35,11 +35,13 @@ export const PokemonImageHeader = memo(function PokemonImageHeader({
   return (
     <Container sx={{ mb: { xs: 2, sm: 3 }, width: 'auto' }}>
       <Box
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        gap={{ xs: 0.5, sm: 1 }}
-        sx={{ position: 'relative' }}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          gap: { xs: 0.5, sm: 1 },
+          position: 'relative',
+        }}
       >
         <IconButton
           color={isShiny ? 'warning' : 'default'}

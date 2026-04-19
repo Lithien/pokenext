@@ -79,9 +79,9 @@ const Home = () => {
       <Grid
         container
         spacing={{ xs: 1.5, sm: 2 }}
-        justifyContent="center"
         sx={{
           animation: 'fadeIn 0.4s ease-in-out',
+          justifyContent: 'center',
         }}
       >
         {sortedSpecies?.map((pokemon) => (

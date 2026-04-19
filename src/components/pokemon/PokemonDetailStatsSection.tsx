@@ -73,26 +73,29 @@ export const PokemonDetailStatsSection = memo(
         <Box sx={{ flex: 1, zIndex: 1 }}>
           {/* Nombre + ID */}
           <Box
-            display="flex"
-            gap={2}
-            alignItems="center"
-            justifyContent={'space-between'}
-            mb={1}
+            sx={{
+              display: 'flex',
+              gap: 2,
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              mb: 1,
+            }}
           >
-            <Box display="flex" alignItems="center">
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
               <Typography
                 variant="h4"
-                fontWeight="bold"
-                mb={2}
+                sx={{ fontWeight: 'bold', mb: 2 }}
                 className="capitalize"
               >
                 {pokemon.name}
               </Typography>
               <Typography
                 variant="h5"
-                sx={{ color: theme.palette.text.secondary }}
-                mb={2}
-                ml={1}
+                sx={{
+                  color: theme.palette.text.secondary,
+                  mb: 2,
+                  ml: 1,
+                }}
               >
                 #{pokemon.id}
               </Typography>
@@ -106,14 +109,16 @@ export const PokemonDetailStatsSection = memo(
           {/* Género */}
           <Typography
             variant="subtitle1"
-            mb={1}
-            sx={{ color: theme.palette.text.secondary }}
+            sx={{
+              color: theme.palette.text.secondary,
+              mb: 1,
+            }}
           >
             {findByLanguage(species.genera, language, 'genus') || 'Pokémon'}
           </Typography>
 
           {/* Types */}
-          <Box display="flex">
+          <Box sx={{ display: 'flex' }}>
             {pokemon.types.map((type, index) => {
               const color = getAugmentedTypeColor(theme, type.type.name);
 
@@ -136,11 +141,11 @@ export const PokemonDetailStatsSection = memo(
           </Box>
 
           {/* Pokédex entry */}
-          <Typography variant="h5" mt={6} mb={2}>
+          <Typography variant="h5" sx={{ mt: 6, mb: 2 }}>
             Pokédex Entry
           </Typography>
 
-          <Typography variant="body2" mb={2}>
+          <Typography variant="body2" sx={{ mb: 2 }}>
             {findByLanguage(
               species.flavor_text_entries,
               language,
@@ -149,7 +154,7 @@ export const PokemonDetailStatsSection = memo(
           </Typography>
 
           {/* Height & Weight */}
-          <Box display="flex" gap={4} flexWrap="wrap">
+          <Box sx={{ display: 'flex', gap: 4, flexWrap: 'wrap' }}>
             <Box>
               <Typography variant="body2" color="text.secondary">
                 Height
@@ -166,15 +171,17 @@ export const PokemonDetailStatsSection = memo(
           </Box>
 
           {/* Abilities */}
-          <Typography variant="h6" mt={4} mb={2}>
+          <Typography variant="h6" sx={{ mt: 4, mb: 2 }}>
             Abilities
           </Typography>
 
           <Box
-            display="flex"
-            alignItems="flex-start"
-            flexDirection="column"
-            gap={1}
+            sx={{
+              display: 'flex',
+              alignItems: 'flex-start',
+              flexDirection: 'column',
+              gap: 1,
+            }}
           >
             {pokemon.abilities.map((abilityInfo) => {
               const baseColor =
@@ -207,8 +214,8 @@ export const PokemonDetailStatsSection = memo(
 
           {/* Version selector */}
           {gameOptions.length > 0 && (
-            <Box mt={2}>
-              <Typography variant="caption" mr={1}>
+            <Box sx={{ mt: 2 }}>
+              <Typography variant="caption" sx={{ mr: 1 }}>
                 Version:
               </Typography>
               <Select

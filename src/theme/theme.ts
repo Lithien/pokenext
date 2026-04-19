@@ -1,4 +1,4 @@
-import { createTheme, getContrastRatio } from '@mui/material';
+import { extendTheme, getContrastRatio } from '@mui/material/styles';
 
 import type { Theme, PaletteColor } from '@mui/material/styles';
 
@@ -62,43 +62,68 @@ export const createAppTheme = (
   mode: 'light' | 'dark',
   colors: { name: string; hex: string }[]
 ) =>
-  createTheme({
-    palette: {
-      mode,
-      text: {
-        primary: mode === 'light' ? '#111' : '#fff',
-        secondary: mode === 'light' ? '#555' : '#ccc',
+  extendTheme({
+    defaultColorScheme: mode,
+    colorSchemes: {
+      light: {
+        palette: {
+          text: {
+            primary: '#111',
+            secondary: '#555',
+          },
+          primary: {
+            main: colors[0].hex,
+            contrastText: getContrastTextByColor(colors[0].hex),
+          },
+          secondary: {
+            main: colors[1].hex,
+            contrastText: getContrastTextByColor(colors[1].hex),
+          },
+          accent: {
+            main: colors[2].hex,
+            contrastText: getContrastTextByColor(colors[2].hex),
+          },
+          background: {
+            default: '#f5f5f5',
+          },
+          action: {
+            hover: 'rgba(0,0,0,0.08)',
+          },
+          customShadows: {
+            text: '0 1px 3px rgba(0,0,0,0.1)',
+            card: '0 4px 6px rgba(0,0,0,0.1)',
+          },
+        },
       },
-      primary: {
-        main: colors[0].hex,
-        contrastText: getContrastTextByColor(colors[0].hex),
+      dark: {
+        palette: {
+          text: {
+            primary: '#fff',
+            secondary: '#ccc',
+          },
+          primary: {
+            main: colors[0].hex,
+            contrastText: getContrastTextByColor(colors[0].hex),
+          },
+          secondary: {
+            main: colors[1].hex,
+            contrastText: getContrastTextByColor(colors[1].hex),
+          },
+          accent: {
+            main: colors[2].hex,
+            contrastText: getContrastTextByColor(colors[2].hex),
+          },
+          background: {
+            default: '#030711',
+          },
+          action: {
+            hover: 'rgba(255,255,255,0.1)',
+          },
+          customShadows: {
+            text: '0 1px 3px rgba(255,255,255,0.2)',
+            card: '0 4px 6px rgba(255,255,255,0.2)',
+          },
+        },
       },
-      secondary: {
-        main: colors[1].hex,
-        contrastText: getContrastTextByColor(colors[1].hex),
-      },
-      accent: {
-        main: colors[2].hex,
-        contrastText: getContrastTextByColor(colors[2].hex),
-      },
-      background: {
-        default: mode === 'light' ? '#f5f5f5' : '#030711',
-      },
-      action: {
-        hover: mode === 'light' ? 'rgba(0,0,0,0.08)' : 'rgba(255,255,255,0.1)',
-      },
-      customShadows: {
-        text:
-          mode === 'light'
-            ? '0 1px 3px rgba(0,0,0,0.1)'
-            : '0 1px 3px rgba(255,255,255,0.2)',
-        card:
-          mode === 'light'
-            ? '0 4px 6px rgba(0,0,0,0.1)'
-            : '0 4px 6px rgba(255,255,255,0.2)',
-      },
-    },
-    pokedex: {
-      getColorByType,
     },
   });

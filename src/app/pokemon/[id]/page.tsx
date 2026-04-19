@@ -18,12 +18,12 @@ const PokemonDetailPage = () => {
 
   if (data.loadingPokemonData) {
     return (
-      <Box display="flex" flexDirection="column" alignItems="center" gap={2}>
+      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
         <Skeleton variant="circular" width={130} height={130} />
         <Skeleton variant="text" width={130} />
         <Skeleton variant="rounded" width={700} height={40} />
         <Skeleton variant="rounded" width={300} height={40} />
-        <Box display="flex" gap={2} flexWrap="wrap">
+        <Box sx={{ display: 'flex', gap: 2, flexWrap: 'wrap' }}>
           <Skeleton variant="rounded" width={50} height={80} />
           <Skeleton variant="rounded" width={50} height={80} />
           <Skeleton variant="rounded" width={50} height={80} />
@@ -35,11 +35,13 @@ const PokemonDetailPage = () => {
 
   return (
     <Box
-      display="flex"
-      flexDirection="column"
-      alignItems="center"
-      gap={2}
-      padding={3}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: 2,
+        padding: 3,
+      }}
     >
       <PokemonImageHeader
         imageUrl={fn.getImage()}
@@ -84,10 +86,9 @@ const PokemonDetailPage = () => {
       {tab === (!data.loadingSpeciesData ? 2 : 0) && <ColorPalette />}
 
       <Typography
-        mt={4}
         variant="body2"
         color="text.secondary"
-        textAlign="center"
+        sx={{ mt: 4, textAlign: 'center' }}
       >
         More Pokémon details coming in future updates
       </Typography>

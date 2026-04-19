@@ -56,7 +56,14 @@ export const PokedexHeader = () => {
         }}
       >
         {/* Logo y título */}
-        <Box display="flex" alignItems="center" gap={{ xs: 0.5, sm: 1 }}>
+        <Box
+          component="div"
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: { xs: 0.5, sm: 1 },
+          }}
+        >
           <IconButton
             color="inherit"
             onClick={goHome}

@@ -24,15 +24,18 @@ export default function SortableColorCard({ id, hex, displayValue }: Props) {
       {...listeners}
       ref={setNodeRef}
       style={{ transform: CSS.Transform.toString(transform), transition }}
-      display="flex"
-      alignItems="center"
-      justifyContent="space-between"
-      bgcolor={hex}
-      borderRadius="12px"
-      p={2}
-      sx={{ width: 280, cursor: 'grab' }}
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        bgcolor: hex,
+        borderRadius: '12px',
+        p: 2,
+        width: 280,
+        cursor: 'grab',
+      }}
     >
-      <Box display="flex" alignItems="center" gap={2}>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
         <Box>
           <Typography
             variant="body2"

@@ -14,11 +14,11 @@ export const PokemonInfoSection = ({
   weight: number;
 }) => (
   <Box
-    display="flex"
-    gap={{ xs: 2, sm: 4, md: 6 }}
-    mt={3}
-    flexWrap="wrap"
     sx={{
+      display: 'flex',
+      gap: { xs: 2, sm: 4, md: 6 },
+      mt: 3,
+      flexWrap: 'wrap',
       p: { xs: 2, sm: 3 },
       backgroundColor: (theme) =>
         theme.palette.mode === 'dark'

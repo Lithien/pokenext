@@ -14,26 +14,30 @@ const Stats = memo(function Stats({ stats }: PokemonStatsProps) {
   const total = stats.reduce((acc, s) => acc + s.base_stat, 0);
   const theme = useTheme();
   return (
-    <Box display="flex" flexDirection="column" gap={3}>
+    <Box sx={{ display: 'flex', flexDirection: 'column', gap: 3 }}>
       <Grid container spacing={{ xs: 1.5, sm: 2 }}>
         {stats.map((stat) => (
           <Grid size={{ xs: 12 }} key={stat.stat.name}>
-            <Box display="flex" justifyContent="space-between" mb={0.75}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.75 }}>
               <Typography
                 variant="body2"
-                fontWeight={600}
-                textTransform="capitalize"
+                sx={{
+                  fontWeight: 600,
+                  textTransform: 'capitalize',
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                }}
                 color={theme.palette.text.secondary}
-                sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
               >
                 {formatStatName(stat.stat.name)}
               </Typography>
 
               <Typography
                 variant="body2"
-                fontWeight={700}
+                sx={{
+                  fontWeight: 700,
+                  fontSize: { xs: '0.75rem', sm: '0.875rem' },
+                }}
                 color={theme.palette.text.primary}
-                sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
               >
                 {stat.base_stat}
               </Typography>
@@ -60,13 +64,13 @@ const Stats = memo(function Stats({ stats }: PokemonStatsProps) {
 
       {/* TOTAL */}
       <Box
-        mt={1}
-        pt={2}
-        borderTop={`1px solid ${theme.palette.divider}`}
-        display="flex"
-        justifyContent="space-between"
-        alignItems="center"
         sx={{
+          mt: 1,
+          pt: 2,
+          borderTop: `1px solid ${theme.palette.divider}`,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
           p: { xs: 1.5, sm: 2 },
           backgroundColor: (theme) =>
             theme.palette.mode === 'dark'
@@ -78,18 +82,22 @@ const Stats = memo(function Stats({ stats }: PokemonStatsProps) {
       >
         <Typography
           variant="body1"
-          fontWeight={700}
+          sx={{
+            fontWeight: 700,
+            fontSize: { xs: '0.875rem', sm: '1rem' },
+          }}
           color={theme.palette.text.secondary}
-          sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}
         >
           Total
         </Typography>
 
         <Typography
           variant="h6"
-          fontWeight={800}
+          sx={{
+            fontWeight: 800,
+            fontSize: { xs: '1rem', sm: '1.25rem' },
+          }}
           color={theme.palette.primary.main}
-          sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}
         >
           {total}
         </Typography>

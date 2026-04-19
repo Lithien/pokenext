@@ -58,7 +58,7 @@ export default function WhosThatPokemon() {
 
   return (
     <Box className="flex flex-col items-center gap-6 p-6">
-      <Typography variant="h4" fontWeight="bold">
+      <Typography variant="h4" sx={{ fontWeight: 'bold' }}>
         ¿Quién es este Pokémon?
       </Typography>
 
@@ -68,9 +68,8 @@ export default function WhosThatPokemon() {
           <img
             src={sprite}
             alt="pokemon"
-            className={`w-64 h-64 transition-all duration-500 brightness-0 ${
-              isRevealed ? 'filter-none' : mode === 'dark' ? 'invert' : ''
-            }`}
+            className={`w-64 h-64 transition-all duration-500 brightness-0 ${isRevealed ? 'filter-none' : mode === 'dark' ? 'invert' : ''
+              }`}
           />
         )}
       </div>
