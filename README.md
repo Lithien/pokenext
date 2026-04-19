@@ -67,6 +67,7 @@
 │       └── index.ts
 └── ...
 ```
+
 ## 🔗 Llamadas a la API
 
 Las llamadas a la API se gestionan mediante axios y react-query, usando el archivo `src/api/client.ts` y el hook `useApi`. Los endpoints principales definidos en `src/api/endpoints.ts` son:
@@ -81,9 +82,10 @@ Ejemplo de uso:
 
 ```tsx
 const { data: pokemon } = useApi<Pokemon>({
-   key: API.POKEMON_DETAIL(String(pokemonId))
+  key: API.POKEMON_DETAIL(String(pokemonId)),
 });
 ```
+
 ## 🛠️ Tecnologías utilizadas
 
 - Next.js
@@ -121,4 +123,5 @@ const { data: pokemon } = useApi<Pokemon>({
 - [Material UI](https://mui.com/material-ui/getting-started/)
 
 ---
+
 ¡Atrápalos a todos!

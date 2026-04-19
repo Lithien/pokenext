@@ -1,15 +1,8 @@
 {
   "compilerOptions": {
-    "typeRoots": [
-      "src/theme/types",
-      "./node_modules/@types"
-    ],
+    "typeRoots": ["src/theme/types", "./node_modules/@types"],
     "target": "ES2017",
-    "lib": [
-      "dom",
-      "dom.iterable",
-      "esnext"
-    ],
+    "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -27,33 +20,15 @@
       }
     ],
     "paths": {
-      "@/*": [
-        "./src/*"
-      ],
-      "@/theme": [
-        "./src/theme/*"
-      ],
-      "@/components/*": [
-        "./src/components/*"
-      ],
-      "@/hooks/*": [
-        "./src/api/hooks/*"
-      ],
-      "@/types/*": [
-        "./src/api/types/*"
-      ],
-      "@/api/*": [
-        "./src/api/*"
-      ],
-      "@/constants/*": [
-        "./src/constants/*"
-      ],
-      "@/utils/*": [
-        "./src/utils/*"
-      ],
-      "@/app/*": [
-        "./src/app/*"
-      ]
+      "@/*": ["./src/*"],
+      "@/theme": ["./src/theme/*"],
+      "@/components/*": ["./src/components/*"],
+      "@/hooks/*": ["./src/api/hooks/*"],
+      "@/types/*": ["./src/api/types/*"],
+      "@/api/*": ["./src/api/*"],
+      "@/constants/*": ["./src/constants/*"],
+      "@/utils/*": ["./src/utils/*"],
+      "@/app/*": ["./src/app/*"]
     }
   },
   "include": [
@@ -63,7 +38,5 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts"
   ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": ["node_modules"]
 }

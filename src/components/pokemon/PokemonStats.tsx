@@ -1,18 +1,18 @@
-'use client'
+'use client';
 
-import { Box, Typography, LinearProgress, Grid, useTheme } from '@mui/material'
-import { memo } from 'react'
+import { Box, Typography, LinearProgress, Grid, useTheme } from '@mui/material';
+import { memo } from 'react';
 
-import { PokemonStat } from '@/api/types'
-import { formatStatName } from '@/utils'
+import { PokemonStat } from '@/api/types';
+import { formatStatName } from '@/utils';
 
 interface PokemonStatsProps {
-  stats: PokemonStat[]
+  stats: PokemonStat[];
 }
 
 const Stats = memo(function Stats({ stats }: PokemonStatsProps) {
-  const total = stats.reduce((acc, s) => acc + s.base_stat, 0)
-  const theme = useTheme()
+  const total = stats.reduce((acc, s) => acc + s.base_stat, 0);
+  const theme = useTheme();
   return (
     <Box display="flex" flexDirection="column" gap={3}>
       <Grid container spacing={{ xs: 1.5, sm: 2 }}>
@@ -42,14 +42,15 @@ const Stats = memo(function Stats({ stats }: PokemonStatsProps) {
             <LinearProgress
               variant="determinate"
               value={Math.min((stat.base_stat / 255) * 100, 100)}
-              color='primary'
+              color="primary"
               aria-label={`${formatStatName(stat.stat.name)}: ${stat.base_stat}`}
               sx={{
                 height: 8,
                 borderRadius: 2,
-                backgroundColor: theme.palette.mode === 'dark'
-                  ? 'rgba(255, 255, 255, 0.1)'
-                  : 'rgba(0, 0, 0, 0.1)',
+                backgroundColor:
+                  theme.palette.mode === 'dark'
+                    ? 'rgba(255, 255, 255, 0.1)'
+                    : 'rgba(0, 0, 0, 0.1)',
                 transition: 'all 0.3s ease',
               }}
             />
@@ -94,7 +95,7 @@ const Stats = memo(function Stats({ stats }: PokemonStatsProps) {
         </Typography>
       </Box>
     </Box>
-  )
-})
+  );
+});
 
-export default Stats
+export default Stats;

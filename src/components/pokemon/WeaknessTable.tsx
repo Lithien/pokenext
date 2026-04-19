@@ -1,19 +1,27 @@
-'use client'
+'use client';
 
-import { Box, Typography, useTheme, Theme } from "@mui/material"
-import Image from "next/image"
-import { memo } from "react"
+import { Box, Typography, useTheme, Theme } from '@mui/material';
+import Image from 'next/image';
+import { memo } from 'react';
 
-import { PokemonType } from "@/api/types"
-import { TYPE_MULTIPLIERS } from "@/constants"
-import { getAugmentedTypeColor } from "@/theme/theme"
+import { PokemonType } from '@/api/types';
+import { TYPE_MULTIPLIERS } from '@/constants';
+import { getAugmentedTypeColor } from '@/theme/theme';
 
 type WeaknessTableProps = {
-  types: PokemonType[]
-}
+  types: PokemonType[];
+};
 
-const TypeChip = memo(function TypeChip({ type, multiplier, theme }: { type: string; multiplier: number; theme: Theme }) {
-  const color = getAugmentedTypeColor(theme, type)
+const TypeChip = memo(function TypeChip({
+  type,
+  multiplier,
+  theme,
+}: {
+  type: string;
+  multiplier: number;
+  theme: Theme;
+}) {
+  const color = getAugmentedTypeColor(theme, type);
 
   return (
     <span
@@ -39,53 +47,57 @@ const TypeChip = memo(function TypeChip({ type, multiplier, theme }: { type: str
       />
       <span className="font-bold">{multiplier}×</span>
     </span>
-  )
-})
+  );
+});
 
 export default function WeaknessTable({ types }: WeaknessTableProps) {
-  const theme = useTheme()
+  const theme = useTheme();
 
-  const typeNames = types.map(t => t.type.name)
+  const typeNames = types.map((t) => t.type.name);
 
   // --- DEFENSIVO ---
-  const defensive: Record<string, number> = {}
+  const defensive: Record<string, number> = {};
 
   for (const attackType in TYPE_MULTIPLIERS) {
-    let multiplier = 1
+    let multiplier = 1;
 
-    typeNames.forEach(defType => {
-      const chart = TYPE_MULTIPLIERS[defType]
+    typeNames.forEach((defType) => {
+      const chart = TYPE_MULTIPLIERS[defType];
 
       // IMPORTANTE: permitir 0×
       if (chart && chart[attackType] !== undefined) {
-        multiplier *= chart[attackType]
+        multiplier *= chart[attackType];
       }
-    })
+    });
 
-    defensive[attackType] = multiplier
+    defensive[attackType] = multiplier;
   }
 
-  const weaknesses = Object.entries(defensive).filter(([, m]) => m === 2 || m === 4)
-  const resistances = Object.entries(defensive).filter(([, m]) => m === 0.5 || m === 0.25)
-  const immunities = Object.entries(defensive).filter(([, m]) => m === 0)
+  const weaknesses = Object.entries(defensive).filter(
+    ([, m]) => m === 2 || m === 4
+  );
+  const resistances = Object.entries(defensive).filter(
+    ([, m]) => m === 0.5 || m === 0.25
+  );
+  const immunities = Object.entries(defensive).filter(([, m]) => m === 0);
 
   // --- OFENSIVO ---
-  const offensive: Record<string, number> = {}
+  const offensive: Record<string, number> = {};
 
-  typeNames.forEach(attType => {
-    const chart = TYPE_MULTIPLIERS[attType]
-    if (!chart) return
+  typeNames.forEach((attType) => {
+    const chart = TYPE_MULTIPLIERS[attType];
+    if (!chart) return;
 
     for (const defType in chart) {
-      const mult = chart[defType]
-      if (mult > 1) offensive[defType] = mult
+      const mult = chart[defType];
+      if (mult > 1) offensive[defType] = mult;
     }
-  })
+  });
 
-  const strengths = Object.entries(offensive)
+  const strengths = Object.entries(offensive);
 
   const renderRow = (title: string, items: [string, number][]) => {
-    if (items.length === 0) return null
+    if (items.length === 0) return null;
 
     return (
       <Box mb={3}>
@@ -100,12 +112,17 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
 
         <Box className="flex gap-2 flex-wrap">
           {items.map(([type, multiplier]) => (
-            <TypeChip key={type} type={type} multiplier={multiplier} theme={theme} />
+            <TypeChip
+              key={type}
+              type={type}
+              multiplier={multiplier}
+              theme={theme}
+            />
           ))}
         </Box>
       </Box>
-    )
-  }
+    );
+  };
 
   return (
     <Box mt={4}>
@@ -113,10 +130,10 @@ export default function WeaknessTable({ types }: WeaknessTableProps) {
         Efectividad de tipos
       </Typography>
 
-      {renderRow("Débil a", weaknesses)}
-      {renderRow("Resistente a", resistances)}
-      {renderRow("Inmune a", immunities)}
-      {renderRow("Fuerte contra (ofensivo)", strengths)}
+      {renderRow('Débil a', weaknesses)}
+      {renderRow('Resistente a', resistances)}
+      {renderRow('Inmune a', immunities)}
+      {renderRow('Fuerte contra (ofensivo)', strengths)}
     </Box>
-  )
+  );
 }

@@ -1,4 +1,4 @@
-import type { NamedAPIResource } from "../Common";
+import type { NamedAPIResource } from '../Common';
 
 /**
  * ## Machine

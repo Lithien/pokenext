@@ -1,12 +1,12 @@
-'use client'
+'use client';
 
-import CheckIcon from '@mui/icons-material/Check'
-import ExpandLess from '@mui/icons-material/ExpandLess'
-import ExpandMore from '@mui/icons-material/ExpandMore'
-import ImageIcon from '@mui/icons-material/Image'
-import MenuIcon from '@mui/icons-material/Menu'
-import PublicIcon from '@mui/icons-material/Public'
-import SettingsIcon from '@mui/icons-material/Settings'
+import CheckIcon from '@mui/icons-material/Check';
+import ExpandLess from '@mui/icons-material/ExpandLess';
+import ExpandMore from '@mui/icons-material/ExpandMore';
+import ImageIcon from '@mui/icons-material/Image';
+import MenuIcon from '@mui/icons-material/Menu';
+import PublicIcon from '@mui/icons-material/Public';
+import SettingsIcon from '@mui/icons-material/Settings';
 import {
   Drawer,
   IconButton,
@@ -19,49 +19,52 @@ import {
   Box,
   Typography,
   getLuminance,
-} from '@mui/material'
-import Image from 'next/image'
-import { useState } from 'react'
+} from '@mui/material';
+import Image from 'next/image';
+import { useState } from 'react';
 
-import { LANGUAGES, LANGUAGE_FLAGS, SPRITE_TYPES } from '@/constants'
-import { usePokeStore } from '@/store/usePokeStore'
+import { LANGUAGES, LANGUAGE_FLAGS, SPRITE_TYPES } from '@/constants';
+import { usePokeStore } from '@/store/usePokeStore';
 
 export const MobileMenu = () => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [expandedMenu, setExpandedMenu] = useState<string | null>(null)
+  const [isOpen, setIsOpen] = useState(false);
+  const [expandedMenu, setExpandedMenu] = useState<string | null>(null);
 
-  const generation = usePokeStore((s) => s.generation)
-  const setGeneration = usePokeStore((s) => s.setGeneration)
-  const language = usePokeStore((e) => e.language)
-  const setLanguage = usePokeStore((e) => e.setLanguage)
-  const spriteType = usePokeStore((e) => e.spriteType)
-  const setSpriteType = usePokeStore((e) => e.setSpriteType)
+  const generation = usePokeStore((s) => s.generation);
+  const setGeneration = usePokeStore((s) => s.setGeneration);
+  const language = usePokeStore((e) => e.language);
+  const setLanguage = usePokeStore((e) => e.setLanguage);
+  const spriteType = usePokeStore((e) => e.spriteType);
+  const setSpriteType = usePokeStore((e) => e.setSpriteType);
 
-  const toggleMenu = () => setIsOpen(!isOpen)
+  const toggleMenu = () => setIsOpen(!isOpen);
   const toggleSubmenu = (menu: string) => {
-    setExpandedMenu(expandedMenu === menu ? null : menu)
-  }
+    setExpandedMenu(expandedMenu === menu ? null : menu);
+  };
 
   const handleGenerationSelect = (gen: string) => {
-    setGeneration(gen)
-    setIsOpen(false)
-  }
+    setGeneration(gen);
+    setIsOpen(false);
+  };
 
   const handleLanguageSelect = (lang: LANGUAGES) => {
-    setLanguage(lang)
-    setIsOpen(false)
-  }
+    setLanguage(lang);
+    setIsOpen(false);
+  };
 
-  const handleSpriteSelect = (sprite: typeof SPRITE_TYPES[number]['id']) => {
-    setSpriteType(sprite)
-    setIsOpen(false)
-  }
+  const handleSpriteSelect = (sprite: (typeof SPRITE_TYPES)[number]['id']) => {
+    setSpriteType(sprite);
+    setIsOpen(false);
+  };
 
   return (
     <>
       <IconButton
         onClick={toggleMenu}
-        sx={{ color: (theme) => getLuminance(theme.palette.primary.main), display: { xs: 'flex', sm: 'none' } }}
+        sx={{
+          color: (theme) => getLuminance(theme.palette.primary.main),
+          display: { xs: 'flex', sm: 'none' },
+        }}
         aria-label="menu"
       >
         <MenuIcon />
@@ -80,8 +83,8 @@ export const MobileMenu = () => {
                   ? 'rgba(10, 10, 20, 0.95)'
                   : 'rgba(255, 255, 255, 0.98)',
               backdropFilter: 'blur(8px)',
-            }
-          }
+            },
+          },
         }}
       >
         <Box
@@ -142,23 +145,33 @@ export const MobileMenu = () => {
                   },
                 })}
               >
-                <ListItemIcon sx={{ color: (theme) => getLuminance(theme.palette.primary.main) }}>
+                <ListItemIcon
+                  sx={{
+                    color: (theme) => getLuminance(theme.palette.primary.main),
+                  }}
+                >
                   <SettingsIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText
                   primary="Generación"
                   slotProps={{
                     primary: {
-                      sx: { fontWeight: expandedMenu === 'generation' ? 600 : 500 },
-                    }
+                      sx: {
+                        fontWeight: expandedMenu === 'generation' ? 600 : 500,
+                      },
+                    },
                   }}
                 />
-                {expandedMenu === 'generation' ? <ExpandLess /> : <ExpandMore />}
+                {expandedMenu === 'generation' ? (
+                  <ExpandLess />
+                ) : (
+                  <ExpandMore />
+                )}
               </ListItemButton>
               <Collapse in={expandedMenu === 'generation'} timeout="auto">
                 <List component="div" disablePadding>
                   {[1, 2, 3, 4, 5, 6, 7, 8, 9].map((gen) => {
-                    const isSelected = String(generation) === String(gen)
+                    const isSelected = String(generation) === String(gen);
                     return (
                       <ListItemButton
                         key={gen}
@@ -166,7 +179,9 @@ export const MobileMenu = () => {
                           pl: 5,
                           pr: 2,
                           py: 1,
-                          backgroundColor: isSelected ? 'action.selected' : 'transparent',
+                          backgroundColor: isSelected
+                            ? 'action.selected'
+                            : 'transparent',
                           transition: 'background-color 0.2s ease',
                           '&:hover': {
                             backgroundColor: isSelected
@@ -177,7 +192,9 @@ export const MobileMenu = () => {
                         onClick={() => handleGenerationSelect(String(gen))}
                       >
                         {isSelected && (
-                          <ListItemIcon sx={{ minWidth: 32, color: 'success.main' }}>
+                          <ListItemIcon
+                            sx={{ minWidth: 32, color: 'success.main' }}
+                          >
                             <CheckIcon fontSize="small" />
                           </ListItemIcon>
                         )}
@@ -185,12 +202,15 @@ export const MobileMenu = () => {
                           primary={`Gen ${gen}`}
                           slotProps={{
                             primary: {
-                              sx: { fontWeight: isSelected ? 600 : 400, fontSize: '0.95rem' },
-                            }
+                              sx: {
+                                fontWeight: isSelected ? 600 : 400,
+                                fontSize: '0.95rem',
+                              },
+                            },
                           }}
                         />
                       </ListItemButton>
-                    )
+                    );
                   })}
                 </List>
               </Collapse>
@@ -214,15 +234,21 @@ export const MobileMenu = () => {
                   },
                 })}
               >
-                <ListItemIcon sx={{ color: (theme) => getLuminance(theme.palette.primary.main) }}>
+                <ListItemIcon
+                  sx={{
+                    color: (theme) => getLuminance(theme.palette.primary.main),
+                  }}
+                >
                   <PublicIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText
                   primary="Idioma"
                   slotProps={{
                     primary: {
-                      sx: { fontWeight: expandedMenu === 'language' ? 600 : 500 },
-                    }
+                      sx: {
+                        fontWeight: expandedMenu === 'language' ? 600 : 500,
+                      },
+                    },
                   }}
                 />
                 {expandedMenu === 'language' ? <ExpandLess /> : <ExpandMore />}
@@ -230,7 +256,7 @@ export const MobileMenu = () => {
               <Collapse in={expandedMenu === 'language'} timeout="auto">
                 <List component="div" disablePadding>
                   {Object.values(LANGUAGES).map((lang) => {
-                    const isSelected = language === lang
+                    const isSelected = language === lang;
                     return (
                       <ListItemButton
                         key={lang}
@@ -238,7 +264,9 @@ export const MobileMenu = () => {
                           pl: 2,
                           pr: 2,
                           py: 1,
-                          backgroundColor: isSelected ? 'action.selected' : 'transparent',
+                          backgroundColor: isSelected
+                            ? 'action.selected'
+                            : 'transparent',
                           transition: 'background-color 0.2s ease',
                           '&:hover': {
                             backgroundColor: isSelected
@@ -260,7 +288,10 @@ export const MobileMenu = () => {
                         <ListItemText
                           primary={lang.toUpperCase()}
                           primaryTypographyProps={{
-                            sx: { fontWeight: isSelected ? 600 : 400, fontSize: '0.95rem' },
+                            sx: {
+                              fontWeight: isSelected ? 600 : 400,
+                              fontSize: '0.95rem',
+                            },
                           }}
                         />
                         {isSelected && (
@@ -270,7 +301,7 @@ export const MobileMenu = () => {
                           />
                         )}
                       </ListItemButton>
-                    )
+                    );
                   })}
                 </List>
               </Collapse>
@@ -294,7 +325,11 @@ export const MobileMenu = () => {
                   },
                 })}
               >
-                <ListItemIcon sx={{ color: (theme) => getLuminance(theme.palette.primary.main) }}>
+                <ListItemIcon
+                  sx={{
+                    color: (theme) => getLuminance(theme.palette.primary.main),
+                  }}
+                >
                   <ImageIcon fontSize="small" />
                 </ListItemIcon>
                 <ListItemText
@@ -302,7 +337,7 @@ export const MobileMenu = () => {
                   slotProps={{
                     primary: {
                       sx: { fontWeight: expandedMenu === 'sprite' ? 600 : 500 },
-                    }
+                    },
                   }}
                 />
                 {expandedMenu === 'sprite' ? <ExpandLess /> : <ExpandMore />}
@@ -310,7 +345,7 @@ export const MobileMenu = () => {
               <Collapse in={expandedMenu === 'sprite'} timeout="auto">
                 <List component="div" disablePadding>
                   {SPRITE_TYPES.map((sprite) => {
-                    const isSelected = spriteType === sprite.id
+                    const isSelected = spriteType === sprite.id;
                     return (
                       <ListItemButton
                         key={sprite.id}
@@ -318,7 +353,9 @@ export const MobileMenu = () => {
                           pl: 5,
                           pr: 2,
                           py: 1,
-                          backgroundColor: isSelected ? 'action.selected' : 'transparent',
+                          backgroundColor: isSelected
+                            ? 'action.selected'
+                            : 'transparent',
                           transition: 'background-color 0.2s ease',
                           '&:hover': {
                             backgroundColor: isSelected
@@ -329,20 +366,25 @@ export const MobileMenu = () => {
                         onClick={() => handleSpriteSelect(sprite.id)}
                       >
                         {isSelected && (
-                          <ListItemIcon sx={{ minWidth: 32, color: 'success.main' }}>
+                          <ListItemIcon
+                            sx={{ minWidth: 32, color: 'success.main' }}
+                          >
                             <CheckIcon fontSize="small" />
                           </ListItemIcon>
                         )}
                         <ListItemText
                           primary={sprite.label}
-                          slotProps={{ 
+                          slotProps={{
                             primary: {
-                              sx: { fontWeight: isSelected ? 600 : 400, fontSize: '0.95rem' },
-                            }
+                              sx: {
+                                fontWeight: isSelected ? 600 : 400,
+                                fontSize: '0.95rem',
+                              },
+                            },
                           }}
                         />
                       </ListItemButton>
-                    )
+                    );
                   })}
                 </List>
               </Collapse>
@@ -351,5 +393,5 @@ export const MobileMenu = () => {
         </Box>
       </Drawer>
     </>
-  )
-}
+  );
+};

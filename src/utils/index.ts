@@ -1,6 +1,6 @@
-import { EvolutionDetail, PokemonType } from "@/api/types"
-import { ColorFormat } from "@/components/ui/ColorPalette"
-import { IMG_BASE_URL, SpriteType, TYPE_IMAGE_URL } from "@/constants"
+import { EvolutionDetail, PokemonType } from '@/api/types';
+import { ColorFormat } from '@/components/ui/ColorPalette';
+import { IMG_BASE_URL, SpriteType, TYPE_IMAGE_URL } from '@/constants';
 
 /**
  * @name getPokemonImage
@@ -15,56 +15,57 @@ export const getPokemonImage = (
   id: number | string,
   type: SpriteType,
   back: boolean = false,
-  shiny: boolean = false,
+  shiny: boolean = false
 ): string => {
-  const number = id.toString()
+  const number = id.toString();
 
   // 1. PIXEL / DEFAULT (sprites clásicos)
-  if (type === "pixel") {
-    const base = `${IMG_BASE_URL}${back ? "back/" : ""}`
-    const shinyPath = shiny ? "shiny/" : ""
-    return `${base}${shinyPath}${number}.png`
+  if (type === 'pixel') {
+    const base = `${IMG_BASE_URL}${back ? 'back/' : ''}`;
+    const shinyPath = shiny ? 'shiny/' : '';
+    return `${base}${shinyPath}${number}.png`;
   }
 
   // 2. DREAM WORLD (solo front, NO shiny)
-  if (type === "dream-world") {
-    return `${IMG_BASE_URL}other/dream-world/${number}.svg`
+  if (type === 'dream-world') {
+    return `${IMG_BASE_URL}other/dream-world/${number}.svg`;
   }
 
   // 3. SHOWDOWN (sí shiny, sí back)
-  if (type === "showdown") {
-    const base = `${IMG_BASE_URL}other/showdown/`
-    const backPath = back ? "back/" : ""
-    const shinyPath = shiny ? "shiny/" : ""
-    return `${base}${backPath}${shinyPath}${number}.gif`
+  if (type === 'showdown') {
+    const base = `${IMG_BASE_URL}other/showdown/`;
+    const backPath = back ? 'back/' : '';
+    const shinyPath = shiny ? 'shiny/' : '';
+    return `${base}${backPath}${shinyPath}${number}.gif`;
   }
 
   // 4. OFFICIAL ARTWORK (sí shiny, solo front)
-  if (type === "official-artwork") {
-    const shinyPath = shiny ? "shiny/" : ""
-    return `${IMG_BASE_URL}other/official-artwork/${shinyPath}${number}.png`
+  if (type === 'official-artwork') {
+    const shinyPath = shiny ? 'shiny/' : '';
+    return `${IMG_BASE_URL}other/official-artwork/${shinyPath}${number}.png`;
   }
 
   // 5. HOME (sí shiny, solo front)
-  if (type === "home") {
-    const shinyPath = shiny ? "shiny/" : ""
-    return `${IMG_BASE_URL}other/home/${shinyPath}${number}.png`
+  if (type === 'home') {
+    const shinyPath = shiny ? 'shiny/' : '';
+    return `${IMG_BASE_URL}other/home/${shinyPath}${number}.png`;
   }
 
   // fallback
-  return `${IMG_BASE_URL}${number}.png`
-}
+  return `${IMG_BASE_URL}${number}.png`;
+};
 
 /**
  * @name getNumberFromUrl
  * @param url  URL of a Pokémon resource
  * @description Extracts the Pokémon number from a URL
- * @example getNumberFromUrl('https://pokeapi.co/api/v2/pokemon/1/') 
+ * @example getNumberFromUrl('https://pokeapi.co/api/v2/pokemon/1/')
  * @returns '1'
  */
-export const getNumberFromUrl = (url: string): string => url.split('/').filter(Boolean).pop() ?? ''
+export const getNumberFromUrl = (url: string): string =>
+  url.split('/').filter(Boolean).pop() ?? '';
 
-export const formatStatName = (name: string): string => name.replace('-', ' ')
+export const formatStatName = (name: string): string => name.replace('-', ' ');
 
 /**
  * @name getStatColor
@@ -73,34 +74,34 @@ export const formatStatName = (name: string): string => name.replace('-', ' ')
  * @returns Color code as a string
  */
 export const getStatColor = (name: string): string => {
-  let color = ''
+  let color = '';
   switch (name) {
     case 'hp':
-      color = '#14CC60'
-      break
+      color = '#14CC60';
+      break;
     case 'attack':
-      color = '#EF3E33'
-      break
+      color = '#EF3E33';
+      break;
     case 'defense':
-      color = '#004E98'
-      break
+      color = '#004E98';
+      break;
     case 'special-attack':
-      color = '#C589E8'
-      break
+      color = '#C589E8';
+      break;
     case 'special-defence':
-      color = '#2589BD'
-      break
+      color = '#2589BD';
+      break;
     case 'speed':
-      color = '#E4C811'
-      break
+      color = '#E4C811';
+      break;
 
     default:
-      color = '#09BC8A'
-      break
+      color = '#09BC8A';
+      break;
   }
 
-  return color
-}
+  return color;
+};
 
 /**
  * @name findByLanguage
@@ -115,46 +116,46 @@ export const findByLanguage = <T extends { language: { name: string } }>(
   language: string,
   key: keyof T
 ): string => {
-  if (!Array.isArray(entries)) return ''
-  const item = entries.find(e => e.language.name === language)
-  const value = item?.[key]
+  if (!Array.isArray(entries)) return '';
+  const item = entries.find((e) => e.language.name === language);
+  const value = item?.[key];
 
-  return typeof value === 'string' ? value : ''
-}
+  return typeof value === 'string' ? value : '';
+};
 
 export const getItem = (details: EvolutionDetail): string | null => {
-  if (details.item) return details.item.name
-  if (details.held_item) return details.held_item.name
-  return null
-}
+  if (details.item) return details.item.name;
+  if (details.held_item) return details.held_item.name;
+  return null;
+};
 
 export const getSpriteByType = (pokemon: any, type: SpriteType) => {
   switch (type) {
-    case "official-artwork":
-      return pokemon.sprites.other["official-artwork"].front_default
+    case 'official-artwork':
+      return pokemon.sprites.other['official-artwork'].front_default;
 
-    case "dream-world":
-      return pokemon.sprites.other["dream_world"].front_default
+    case 'dream-world':
+      return pokemon.sprites.other['dream_world'].front_default;
 
-    case "home":
-      return pokemon.sprites.other.home.front_default
+    case 'home':
+      return pokemon.sprites.other.home.front_default;
 
-    case "showdown":
-      return pokemon.sprites.other.showdown.front_default
+    case 'showdown':
+      return pokemon.sprites.other.showdown.front_default;
 
-    case "pixel":
-      return pokemon.sprites.front_default // retro
+    case 'pixel':
+      return pokemon.sprites.front_default; // retro
 
     default:
-      return pokemon.sprites.front_default
+      return pokemon.sprites.front_default;
   }
-}
+};
 
 const hexToRgb = (hex: string): string => {
-  const clean = hex.replace("#", "");
+  const clean = hex.replace('#', '');
   if (clean.length !== 6 && clean.length !== 3) {
     console.warn(`Invalid hex color: ${hex}`);
-    return "rgb(0, 0, 0)";
+    return 'rgb(0, 0, 0)';
   }
   const bigint = parseInt(clean, 16);
   const r = (bigint >> 16) & 255;
@@ -164,10 +165,10 @@ const hexToRgb = (hex: string): string => {
 };
 
 const hexToHsl = (hex: string): string => {
-  const clean = hex.replace("#", "");
+  const clean = hex.replace('#', '');
   if (clean.length !== 6 && clean.length !== 3) {
     console.warn(`Invalid hex color: ${hex}`);
-    return "hsl(0, 0%, 0%)";
+    return 'hsl(0, 0%, 0%)';
   }
   const bigint = parseInt(clean, 16);
   let r = (bigint >> 16) & 255;
@@ -180,16 +181,23 @@ const hexToHsl = (hex: string): string => {
 
   const max = Math.max(r, g, b);
   const min = Math.min(r, g, b);
-  let h = 0, s = 0;
+  let h = 0,
+    s = 0;
   const l = (max + min) / 2;
 
   if (max !== min) {
     const d = max - min;
     s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
     switch (max) {
-      case r: h = (g - b) / d + (g < b ? 6 : 0); break;
-      case g: h = (b - r) / d + 2; break;
-      case b: h = (r - g) / d + 4; break;
+      case r:
+        h = (g - b) / d + (g < b ? 6 : 0);
+        break;
+      case g:
+        h = (b - r) / d + 2;
+        break;
+      case b:
+        h = (r - g) / d + 4;
+        break;
     }
     h /= 6;
   }
@@ -208,20 +216,21 @@ const hexToHsl = (hex: string): string => {
  * @example convertColor("#ff0000", "hex") // returns "#FF0000"
  */
 export const convertColor = (hex: string, format: ColorFormat): string => {
-  if (format === "rgb") return hexToRgb(hex)
-  if (format === "hsl") return hexToHsl(hex)
-  return hex.toUpperCase()
-}
+  if (format === 'rgb') return hexToRgb(hex);
+  if (format === 'hsl') return hexToHsl(hex);
+  return hex.toUpperCase();
+};
 
 /**
  * @title getTypeBadge
  * @description Returns the URL of the badge image for a given Pokémon type
  * @param type Pokémon type object containing the type name and URL
  * @returns URL of the badge image corresponding to the Pokémon type
- * @example getTypeBadge({ type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } }) 
+ * @example getTypeBadge({ type: { name: "fire", url: "https://pokeapi.co/api/v2/type/10/" } })
  * returns "https://raw.githubusercontent.com/duiker101/pokemon-type-svg-icons/master/icons/fire.png"
  */
-export const getTypeBadge = (type: PokemonType): string => `${TYPE_IMAGE_URL}${getNumberFromUrl(type.type.url)}.png`
+export const getTypeBadge = (type: PokemonType): string =>
+  `${TYPE_IMAGE_URL}${getNumberFromUrl(type.type.url)}.png`;
 
 /**
  * @title getTextColor
@@ -231,15 +240,15 @@ export const getTypeBadge = (type: PokemonType): string => `${TYPE_IMAGE_URL}${g
  * @example getTextColor("#ff0000") // returns "#ffffff"
  * @example getTextColor("#00ff00") // returns "#000000"
  */
-export const getTextColor = (hex: string): "#ffffff" | "#000000" => {
-  if (!hex || typeof hex !== "string") return "#ffffff";
+export const getTextColor = (hex: string): '#ffffff' | '#000000' => {
+  if (!hex || typeof hex !== 'string') return '#ffffff';
 
-  const hexClean = hex.replace("#", "");
+  const hexClean = hex.replace('#', '');
 
   // Validar formato hex
   if (!/^([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/.test(hexClean)) {
     console.warn(`Invalid hex color: ${hex}`);
-    return "#ffffff";
+    return '#ffffff';
   }
 
   const r = parseInt(hexClean.substring(0, 2), 16);
@@ -250,5 +259,5 @@ export const getTextColor = (hex: string): "#ffffff" | "#000000" => {
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
 
   // Return white for dark colors, black for light colors
-  return luminance > 0.5 ? "#000000" : "#ffffff";
+  return luminance > 0.5 ? '#000000' : '#ffffff';
 };

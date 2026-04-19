@@ -1,4 +1,4 @@
-import type { NamedAPIResource, VersionEncounterDetail } from "../Common";
+import type { NamedAPIResource, VersionEncounterDetail } from '../Common';
 
 /**
  * Method in which Pokémon may be encountered in the given area

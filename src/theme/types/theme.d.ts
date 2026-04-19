@@ -6,14 +6,14 @@ declare module '@mui/material/styles' {
     customShadows: {
       text: string;
       card: string;
-    }
+    };
   }
   interface PaletteOptions {
     accent?: PaletteOptions['primary'];
     customShadows?: {
       text?: string;
       card?: string;
-    }
+    };
   }
 
   interface Theme {

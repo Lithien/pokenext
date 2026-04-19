@@ -1,40 +1,53 @@
-'use client'
+'use client';
 
-import { ArrowRightAlt } from "@mui/icons-material"
-import { Box, Container, Grid, Skeleton, Typography, Chip } from "@mui/material"
-import Image from "next/image"
-import { memo } from "react"
+import { ArrowRightAlt } from '@mui/icons-material';
+import {
+  Box,
+  Container,
+  Grid,
+  Skeleton,
+  Typography,
+  Chip,
+} from '@mui/material';
+import Image from 'next/image';
+import { memo } from 'react';
 
-import useChainEvolution from "./hooks/useChainEvolution"
-import PokemonCard from "./PokemonCard"
+import useChainEvolution from './hooks/useChainEvolution';
+import PokemonCard from './PokemonCard';
 
-import { Pokemon, PokemonSpecies, ChainLink, EvolutionDetail } from "@/api/types"
-import { ITEM_IMAGE_URL } from "@/constants"
-import { getItem } from "@/utils"
-
+import {
+  Pokemon,
+  PokemonSpecies,
+  ChainLink,
+  EvolutionDetail,
+} from '@/api/types';
+import { ITEM_IMAGE_URL } from '@/constants';
+import { getItem } from '@/utils';
 
 interface ChainEvolutionProps {
-  pokemon: Pokemon
-  species: PokemonSpecies
+  pokemon: Pokemon;
+  species: PokemonSpecies;
 }
 
-const ChainEvolution = memo(function ChainEvolution({ species }: ChainEvolutionProps) {
-  const { requeriments, chain, isLoading } = useChainEvolution({ species })
+const ChainEvolution = memo(function ChainEvolution({
+  species,
+}: ChainEvolutionProps) {
+  const { requeriments, chain, isLoading } = useChainEvolution({ species });
 
   // ------------------------------------------------------
   // Requisitos de evolución
   // ------------------------------------------------------
   const renderRequirements = (details: EvolutionDetail[]) => {
-    if (details.length === 0) return null
-    const reqs: string[] | null = requeriments(details)
-    const item = getItem(details?.[0])
+    if (details.length === 0) return null;
+    const reqs: string[] | null = requeriments(details);
+    const item = getItem(details?.[0]);
     return (
       <Box
         display="flex"
         gap={1}
-        flexDirection='column'
+        flexDirection="column"
         mt={1}
-        sx={{ animation: "fadeIn 0.5s ease" }}
+        sx={{ animation: 'fadeIn 0.5s ease' }}
       >
         {item && (
           <Chip
@@ -46,38 +59,38 @@ const ChainEvolution = memo(function ChainEvolution({ species }: ChainEvolutionP
                   alt={item}
                   width={25}
                   height={25}
-                  style={{ maxWidth: "fit-content" }}
+                  style={{ maxWidth: 'fit-content' }}
                 />
               </Box>
             }
             size="medium"
             sx={{
-              bgcolor: "rgba(255,255,255,0.1)",
-              border: "1px solid rgba(255,255,255,0.2)",
-              color: "inherit",
-              backdropFilter: "blur(4px)",
+              bgcolor: 'rgba(255,255,255,0.1)',
+              border: '1px solid rgba(255,255,255,0.2)',
+              color: 'inherit',
+              backdropFilter: 'blur(4px)',
             }}
           />
         )}
 
         {reqs
-          ?.filter((r) => !r.startsWith("Item: ") && !r.startsWith("Hold"))
+          ?.filter((r) => !r.startsWith('Item: ') && !r.startsWith('Hold'))
           .map((r) => (
             <Chip
               key={r}
               label={r}
               size="medium"
               sx={{
-                bgcolor: "rgba(255,255,255,0.1)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: "inherit",
-                backdropFilter: "blur(4px)",
+                bgcolor: 'rgba(255,255,255,0.1)',
+                border: '1px solid rgba(255,255,255,0.2)',
+                color: 'inherit',
+                backdropFilter: 'blur(4px)',
               }}
             />
           ))}
       </Box>
-    )
-  }
+    );
+  };
 
   // ------------------------------------------------------
   // Renderizado recursivo del árbol evolutivo (horizontal)
@@ -112,7 +125,7 @@ const ChainEvolution = memo(function ChainEvolution({ species }: ChainEvolutionP
                   variant="h4"
                   sx={{
                     opacity: 0.6,
-                    animation: "arrowBounce 1.2s infinite ease-in-out",
+                    animation: 'arrowBounce 1.2s infinite ease-in-out',
                   }}
                 >
                   <ArrowRightAlt fontSize="large" />
@@ -126,8 +139,8 @@ const ChainEvolution = memo(function ChainEvolution({ species }: ChainEvolutionP
           </Box>
         )}
       </Box>
-    )
-  }
+    );
+  };
 
   // ------------------------------------------------------
   // Render principal
@@ -147,20 +160,20 @@ const ChainEvolution = memo(function ChainEvolution({ species }: ChainEvolutionP
           </Typography>
 
           <Box
-            sx={theme => ({
+            sx={(theme) => ({
               background: `linear-gradient(to right, ${theme.palette.primary.main}, rgb(32, 32, 32))`,
               p: 2,
               borderRadius: 3,
-              width: "100%",
-              overflowX: "auto",
-              whiteSpace: "nowrap",
+              width: '100%',
+              overflowX: 'auto',
+              whiteSpace: 'nowrap',
             })}
           >
             <Box
               sx={{
-                display: "inline-flex",
-                flexDirection: "row",
-                alignItems: "center",
+                display: 'inline-flex',
+                flexDirection: 'row',
+                alignItems: 'center',
                 gap: 2,
               }}
             >
@@ -170,7 +183,9 @@ const ChainEvolution = memo(function ChainEvolution({ species }: ChainEvolutionP
                   <Skeleton variant="rounded" width={110} height={170} />
                   <Skeleton variant="rounded" width={110} height={170} />
                 </Box>
-              ) : (renderChain(chain))}
+              ) : (
+                renderChain(chain)
+              )}
             </Box>
           </Box>
         </>
@@ -191,16 +206,18 @@ const ChainEvolution = memo(function ChainEvolution({ species }: ChainEvolutionP
           </Typography>
 
           <Grid container spacing={2} justifyContent="center">
-            {species.varieties.filter(v => !v.is_default).map((variety) => (
-              <Grid key={variety.pokemon.name}>
-                <PokemonCard {...variety.pokemon} />
-              </Grid>
-            ))}
+            {species.varieties
+              .filter((v) => !v.is_default)
+              .map((variety) => (
+                <Grid key={variety.pokemon.name}>
+                  <PokemonCard {...variety.pokemon} />
+                </Grid>
+              ))}
           </Grid>
         </>
       )}
     </Container>
-  )
-})
+  );
+});
 
-export default ChainEvolution
+export default ChainEvolution;

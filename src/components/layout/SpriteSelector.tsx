@@ -1,15 +1,15 @@
-'use client'
+'use client';
 
-import { MenuItem } from '@mui/material'
+import { MenuItem } from '@mui/material';
 
-import { SelectField } from './SelectField'
+import { SelectField } from './SelectField';
 
-import { SpriteType, SPRITE_TYPES } from '@/constants'
-import { usePokeStore } from '@/store/usePokeStore'
+import { SpriteType, SPRITE_TYPES } from '@/constants';
+import { usePokeStore } from '@/store/usePokeStore';
 
 const SpriteSelector = () => {
-  const spriteType = usePokeStore((e) => e.spriteType)
-  const setSpriteType = usePokeStore((e) => e.setSpriteType)
+  const spriteType = usePokeStore((e) => e.spriteType);
+  const setSpriteType = usePokeStore((e) => e.setSpriteType);
 
   return (
     <SelectField
@@ -32,7 +32,7 @@ const SpriteSelector = () => {
         </MenuItem>
       ))}
     </SelectField>
-  )
-}
+  );
+};
 
-export default SpriteSelector
+export default SpriteSelector;

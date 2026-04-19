@@ -1,21 +1,22 @@
-'use client'
+'use client';
 
-import { useSortable } from "@dnd-kit/sortable"
-import { CSS } from "@dnd-kit/utilities"
-import LockIcon from "@mui/icons-material/Lock"
-import { Box, Typography, IconButton } from "@mui/material"
+import { useSortable } from '@dnd-kit/sortable';
+import { CSS } from '@dnd-kit/utilities';
+import LockIcon from '@mui/icons-material/Lock';
+import { Box, Typography, IconButton } from '@mui/material';
 
-import { getTextColor } from "@/utils"
+import { getTextColor } from '@/utils';
 
 interface Props {
-  id: string
-  hex: string
-  index: number
-  displayValue: string
+  id: string;
+  hex: string;
+  index: number;
+  displayValue: string;
 }
 
 export default function SortableColorCard({ id, hex, displayValue }: Props) {
-  const { attributes, listeners, setNodeRef, transform, transition } = useSortable({ id })
+  const { attributes, listeners, setNodeRef, transform, transition } =
+    useSortable({ id });
 
   return (
     <Box
@@ -29,14 +30,22 @@ export default function SortableColorCard({ id, hex, displayValue }: Props) {
       bgcolor={hex}
       borderRadius="12px"
       p={2}
-      sx={{ width: 280, cursor: "grab" }}
+      sx={{ width: 280, cursor: 'grab' }}
     >
       <Box display="flex" alignItems="center" gap={2}>
         <Box>
-          <Typography variant="body2" className="capitalize" color={getTextColor(hex)}>
+          <Typography
+            variant="body2"
+            className="capitalize"
+            color={getTextColor(hex)}
+          >
             {id}
           </Typography>
-          <Typography variant="caption" className="uppercase" color={getTextColor(hex)}>
+          <Typography
+            variant="caption"
+            className="uppercase"
+            color={getTextColor(hex)}
+          >
             {displayValue}
           </Typography>
         </Box>
@@ -46,5 +55,5 @@ export default function SortableColorCard({ id, hex, displayValue }: Props) {
         <LockIcon fontSize="small" />
       </IconButton>
     </Box>
-  )
+  );
 }

@@ -1,14 +1,14 @@
-'use client'
+'use client';
 
-import { MenuItem } from '@mui/material'
+import { MenuItem } from '@mui/material';
 
-import { SelectField } from './SelectField'
+import { SelectField } from './SelectField';
 
-import { usePokeStore } from '@/store/usePokeStore'
+import { usePokeStore } from '@/store/usePokeStore';
 
 const GenerationSelector = () => {
-  const generation = usePokeStore((s) => s.generation)
-  const setGeneration = usePokeStore((s) => s.setGeneration)
+  const generation = usePokeStore((s) => s.generation);
+  const setGeneration = usePokeStore((s) => s.setGeneration);
 
   return (
     <SelectField
@@ -30,7 +30,7 @@ const GenerationSelector = () => {
         </MenuItem>
       ))}
     </SelectField>
-  )
-}
+  );
+};
 
-export default GenerationSelector
+export default GenerationSelector;

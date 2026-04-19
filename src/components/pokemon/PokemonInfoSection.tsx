@@ -1,17 +1,17 @@
-'use client'
-import { Box, Typography } from '@mui/material'
-import Image from 'next/image'
+'use client';
+import { Box, Typography } from '@mui/material';
+import Image from 'next/image';
 
-import { PokemonType } from '@/api/types'
+import { PokemonType } from '@/api/types';
 
 export const PokemonInfoSection = ({
   types,
   height,
-  weight
+  weight,
 }: {
-  types: PokemonType[]
-  height: number
-  weight: number
+  types: PokemonType[];
+  height: number;
+  weight: number;
 }) => (
   <Box
     display="flex"
@@ -32,7 +32,11 @@ export const PokemonInfoSection = ({
       <Typography
         variant="body2"
         color="textSecondary"
-        sx={{ fontWeight: 600, mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+        sx={{
+          fontWeight: 600,
+          mb: 1,
+          fontSize: { xs: '0.75rem', sm: '0.875rem' },
+        }}
       >
         Tipo
       </Typography>
@@ -53,13 +57,17 @@ export const PokemonInfoSection = ({
       <Typography
         variant="body2"
         color="textSecondary"
-        sx={{ fontWeight: 600, mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+        sx={{
+          fontWeight: 600,
+          mb: 1,
+          fontSize: { xs: '0.75rem', sm: '0.875rem' },
+        }}
       >
         Altura
       </Typography>
       <Typography
         variant="h6"
-        color='accent'
+        color="accent"
         sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }, fontWeight: 600 }}
       >
         {height.toFixed(1)} m
@@ -69,17 +77,21 @@ export const PokemonInfoSection = ({
       <Typography
         variant="body2"
         color="textSecondary"
-        sx={{ fontWeight: 600, mb: 1, fontSize: { xs: '0.75rem', sm: '0.875rem' } }}
+        sx={{
+          fontWeight: 600,
+          mb: 1,
+          fontSize: { xs: '0.75rem', sm: '0.875rem' },
+        }}
       >
         Peso
       </Typography>
       <Typography
         variant="h6"
-        color='accent'
+        color="accent"
         sx={{ fontSize: { xs: '1rem', sm: '1.25rem' }, fontWeight: 600 }}
       >
         {weight.toFixed(1)} kg
       </Typography>
     </Box>
   </Box>
-)
+);

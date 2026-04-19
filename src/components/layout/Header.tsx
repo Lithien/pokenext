@@ -1,25 +1,33 @@
-'use client'
+'use client';
 
-import Brightness4Icon from '@mui/icons-material/Brightness4'
-import Brightness7Icon from '@mui/icons-material/Brightness7'
-import HomeIcon from '@mui/icons-material/Home'
-import { AppBar, Toolbar, IconButton, Typography, Box, Tooltip, getLuminance } from '@mui/material'
-import { useRouter } from 'next/navigation'
-import { useCallback } from 'react'
+import Brightness4Icon from '@mui/icons-material/Brightness4';
+import Brightness7Icon from '@mui/icons-material/Brightness7';
+import HomeIcon from '@mui/icons-material/Home';
+import {
+  AppBar,
+  Toolbar,
+  IconButton,
+  Typography,
+  Box,
+  Tooltip,
+  getLuminance,
+} from '@mui/material';
+import { useRouter } from 'next/navigation';
+import { useCallback } from 'react';
 
-import GenerationSelector from './GenerationSelector'
-import { LanguageSelector } from './LanguageSelector'
-import { MobileMenu } from './MobileMenu'
-import SpriteSelector from './SpriteSelector'
+import GenerationSelector from './GenerationSelector';
+import { LanguageSelector } from './LanguageSelector';
+import { MobileMenu } from './MobileMenu';
+import SpriteSelector from './SpriteSelector';
 
-import { useThemeStore } from '@/store/useThemeStore'
+import { useThemeStore } from '@/store/useThemeStore';
 
 export const PokedexHeader = () => {
-  const router = useRouter()
-  const mode = useThemeStore((s) => s.mode)
-  const toggleTheme = useThemeStore((s) => s.toggleTheme)
+  const router = useRouter();
+  const mode = useThemeStore((s) => s.mode);
+  const toggleTheme = useThemeStore((s) => s.toggleTheme);
 
-  const goHome = useCallback(() => router.push('/'), [router])
+  const goHome = useCallback(() => router.push('/'), [router]);
 
   return (
     <AppBar
@@ -31,9 +39,7 @@ export const PokedexHeader = () => {
         backdropFilter: 'blur(12px)',
         transition: 'background-color 0.3s ease',
         backgroundColor:
-          mode === 'dark'
-            ? '#0a0a14a5'
-            : 'rgba(255, 255, 255, 0.65)',
+          mode === 'dark' ? '#0a0a14a5' : 'rgba(255, 255, 255, 0.65)',
         borderBottom:
           mode === 'dark'
             ? '1px solid rgba(255,255,255,0.08)'
@@ -56,7 +62,7 @@ export const PokedexHeader = () => {
             onClick={goHome}
             aria-label="home"
             size="small"
-            sx={theme => ({
+            sx={(theme) => ({
               color: theme.palette.text.primary,
               transition: 'all 0.2s ease',
               '&:hover': {
@@ -70,7 +76,7 @@ export const PokedexHeader = () => {
 
           <Typography
             variant="h6"
-            sx={theme => ({
+            sx={(theme) => ({
               display: { xs: 'none', sm: 'block' },
               fontWeight: 'bold',
               cursor: 'pointer',
@@ -99,7 +105,9 @@ export const PokedexHeader = () => {
           <LanguageSelector />
           <GenerationSelector />
           <SpriteSelector />
-          <Tooltip title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}>
+          <Tooltip
+            title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}
+          >
             <IconButton
               onClick={toggleTheme}
               color="inherit"
@@ -138,8 +146,16 @@ export const PokedexHeader = () => {
         </Box>
 
         {/* Mobile Menu + Theme toggle */}
-        <Box sx={{ display: { xs: 'flex', sm: 'none' }, alignItems: 'center', gap: 0.5 }}>
-          <Tooltip title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}>
+        <Box
+          sx={{
+            display: { xs: 'flex', sm: 'none' },
+            alignItems: 'center',
+            gap: 0.5,
+          }}
+        >
+          <Tooltip
+            title={`Cambiar a tema ${mode === 'dark' ? 'claro' : 'oscuro'}`}
+          >
             <IconButton
               onClick={toggleTheme}
               size="small"
@@ -163,5 +179,5 @@ export const PokedexHeader = () => {
         </Box>
       </Toolbar>
     </AppBar>
-  )
-}
+  );
+};

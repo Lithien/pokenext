@@ -1,4 +1,4 @@
-import type { NamedAPIResource } from "./resource";
+import type { NamedAPIResource } from './resource';
 
 /**
  * The localized effect for an API resource

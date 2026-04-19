@@ -1,4 +1,4 @@
-'use client'
+'use client';
 
 import {
   DndContext,
@@ -6,42 +6,50 @@ import {
   PointerSensor,
   useSensor,
   useSensors,
-} from "@dnd-kit/core"
+} from '@dnd-kit/core';
 import {
   SortableContext,
   verticalListSortingStrategy,
   arrayMove,
-} from "@dnd-kit/sortable"
-import { Box, FormControl, InputLabel, MenuItem, Select, Slider, Typography } from "@mui/material"
-import { useState } from "react"
+} from '@dnd-kit/sortable';
+import {
+  Box,
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  Slider,
+  Typography,
+} from '@mui/material';
+import { useState } from 'react';
 
-import SortableColorCard from "./SortableColorCard"
+import SortableColorCard from './SortableColorCard';
 
-import { useThemeStore } from "@/store/useThemeStore"
-import { convertColor } from "@/utils"
+import { useThemeStore } from '@/store/useThemeStore';
+import { convertColor } from '@/utils';
 
-export type ColorFormat = "hex" | "rgb" | "hsl"
-
+export type ColorFormat = 'hex' | 'rgb' | 'hsl';
 
 export default function ColorPalette() {
-  const { colors, setColors, similarityThreshold, setSimilarityThreshold } = useThemeStore()
-  const [format, setFormat] = useState<ColorFormat>("hex")
+  const { colors, setColors, similarityThreshold, setSimilarityThreshold } =
+    useThemeStore();
+  const [format, setFormat] = useState<ColorFormat>('hex');
 
   const sensors = useSensors(
     useSensor(PointerSensor, { activationConstraint: { distance: 5 } })
-  )
+  );
 
   const handleDragEnd = (event: any) => {
-    const { active, over } = event
-    if (!over || active.id === over.id) return
+    const { active, over } = event;
+    if (!over || active.id === over.id) return;
 
-    const oldIndex = colors.findIndex((c) => c.name === active.id)
-    const newIndex = colors.findIndex((c) => c.name === over.id)
+    const oldIndex = colors.findIndex((c) => c.name === active.id);
+    const newIndex = colors.findIndex((c) => c.name === over.id);
 
-    const newOrder = arrayMove(colors, oldIndex, newIndex)
+    const newOrder = arrayMove(colors, oldIndex, newIndex);
 
-    setColors(newOrder)
-  }
+    setColors(newOrder);
+  };
 
   return (
     <Box display="flex" flexDirection="column" gap={2}>
@@ -77,7 +85,12 @@ export default function ColorPalette() {
               Bajo = tonos más parecidos. Alto = tonos más distintos.
             </Typography>
           </Box>
-          <Box display="flex" alignItems="center" flexDirection="column" gap={2}>
+          <Box
+            display="flex"
+            alignItems="center"
+            flexDirection="column"
+            gap={2}
+          >
             <DndContext
               sensors={sensors}
               collisionDetection={closestCenter}
@@ -104,5 +117,5 @@ export default function ColorPalette() {
         </Box>
       </Box>
     </Box>
-  )
+  );
 }

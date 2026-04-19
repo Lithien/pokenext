@@ -5,8 +5,8 @@ import type {
   Name,
   NamedAPIResource,
   VerboseEffect,
-} from "../Common";
-import type { AbilityEffectChange } from "../Pokemon";
+} from '../Common';
+import type { AbilityEffectChange } from '../Pokemon';
 
 /**
  * ## Move Target
@@ -83,7 +83,7 @@ export interface MoveBattleStyle {
   /** The identifier for this resource. */
   id: number;
   /** The name for this resource. */
-  name: "attack" | "defense" | "support";
+  name: 'attack' | 'defense' | 'support';
   /** The name of this resource listed in different languages. */
   names: Name[];
 }
@@ -213,7 +213,24 @@ export interface Move {
    * A value between -8 and 8. Sets the order in which moves are executed during battle.
    * See [Bulbapedia](https://bulbapedia.bulbagarden.net/wiki/Priority) for greater detail
    */
-  priority: -8 | -7 | -6 | -5 | -4 | -3 | -2 | -1 | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8;
+  priority:
+    | -8
+    | -7
+    | -6
+    | -5
+    | -4
+    | -3
+    | -2
+    | -1
+    | 0
+    | 1
+    | 2
+    | 3
+    | 4
+    | 5
+    | 6
+    | 7
+    | 8;
   /** The base power of this move with a value of 0 if it does not have a base power */
   power: number | null;
   /** A detail of normal and super contest combos that require this move */

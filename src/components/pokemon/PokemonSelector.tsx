@@ -1,37 +1,45 @@
-'use client'
-import { Shuffle } from '@mui/icons-material'
-import { Autocomplete, Box, Button, IconButton, TextField, Typography, useTheme } from '@mui/material'
-import { useEffect, useState } from 'react'
+'use client';
+import { Shuffle } from '@mui/icons-material';
+import {
+  Autocomplete,
+  Box,
+  Button,
+  IconButton,
+  TextField,
+  Typography,
+  useTheme,
+} from '@mui/material';
+import { useEffect, useState } from 'react';
 
-import { allPokemon } from '@/data/pokemons'
-import { getTextColor } from '@/utils'
+import { allPokemon } from '@/data/pokemons';
+import { getTextColor } from '@/utils';
 
 const getGenerationLabel = (id: number) => {
-  if (id <= 151) return 'Gen I'
-  if (id <= 251) return 'Gen II'
-  if (id <= 386) return 'Gen III'
-  if (id <= 493) return 'Gen IV'
-  if (id <= 649) return 'Gen V'
-  if (id <= 721) return 'Gen VI'
-  if (id <= 809) return 'Gen VII'
-  if (id <= 905) return 'Gen VIII'
-  if (id <= 1025) return 'Gen IX'
-  return 'Formas especiales'
-}
+  if (id <= 151) return 'Gen I';
+  if (id <= 251) return 'Gen II';
+  if (id <= 386) return 'Gen III';
+  if (id <= 493) return 'Gen IV';
+  if (id <= 649) return 'Gen V';
+  if (id <= 721) return 'Gen VI';
+  if (id <= 809) return 'Gen VII';
+  if (id <= 905) return 'Gen VIII';
+  if (id <= 1025) return 'Gen IX';
+  return 'Formas especiales';
+};
 
 const formatPokemonLabel = (label: string) => {
   const formatted = label
     .split('-')
     .map((part) => {
-      if (part === 'mr') return 'Mr.'
-      if (part === 'jr') return 'Jr.'
-      if (part === 'f') return 'F'
-      if (part === 'm') return 'M'
-      if (/^\d+$/.test(part)) return part
+      if (part === 'mr') return 'Mr.';
+      if (part === 'jr') return 'Jr.';
+      if (part === 'f') return 'F';
+      if (part === 'm') return 'M';
+      if (/^\d+$/.test(part)) return part;
 
-      return part.charAt(0).toUpperCase() + part.slice(1)
+      return part.charAt(0).toUpperCase() + part.slice(1);
     })
-    .join(' ')
+    .join(' ');
 
   return formatted
     .replace(/^Mr\. Mime$/, 'Mr. Mime')
@@ -40,41 +48,41 @@ const formatPokemonLabel = (label: string) => {
     .replace(/^Porygon Z$/, 'Porygon-Z')
     .replace(/^Jangmo O$/, 'Jangmo-o')
     .replace(/^Hakamo O$/, 'Hakamo-o')
-    .replace(/^Kommo O$/, 'Kommo-o')
-}
+    .replace(/^Kommo O$/, 'Kommo-o');
+};
 
 export const PokemonSelector = ({
   dexNumber,
   onChangeDex,
   name,
   onChangeName,
-  onRandomize
+  onRandomize,
 }: {
-  dexNumber: number
-  name: string
-  onChangeDex: (value: number) => void
-  onChangeName: (value: string) => void
-  onRandomize: () => void
+  dexNumber: number;
+  name: string;
+  onChangeDex: (value: number) => void;
+  onChangeName: (value: string) => void;
+  onRandomize: () => void;
 }) => {
-  const [localName, setLocalName] = useState(name)
-  const [localDex, setLocalDex] = useState(dexNumber)
-  const theme = useTheme()
+  const [localName, setLocalName] = useState(name);
+  const [localDex, setLocalDex] = useState(dexNumber);
+  const theme = useTheme();
 
   // Debounce para nombre
   useEffect(() => {
     const t = setTimeout(() => {
-      onChangeName(localName)
-    }, 300)
-    return () => clearTimeout(t)
-  }, [localName, onChangeName])
+      onChangeName(localName);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [localName, onChangeName]);
 
   // Debounce para número
   useEffect(() => {
     const t = setTimeout(() => {
-      onChangeDex(localDex)
-    }, 300)
-    return () => clearTimeout(t)
-  }, [localDex, onChangeDex])
+      onChangeDex(localDex);
+    }, 300);
+    return () => clearTimeout(t);
+  }, [localDex, onChangeDex]);
 
   return (
     <Box
@@ -88,11 +96,11 @@ export const PokemonSelector = ({
         options={allPokemon}
         getOptionLabel={(option) => formatPokemonLabel(option.label)}
         isOptionEqualToValue={(option, value) => option.id === value.id}
-        value={allPokemon.find(p => p.id === localDex) || null}
+        value={allPokemon.find((p) => p.id === localDex) || null}
         onChange={(_, newValue) => {
           if (newValue) {
-            setLocalDex(newValue.id)
-            setLocalName(newValue.label)
+            setLocalDex(newValue.id);
+            setLocalName(newValue.label);
           }
         }}
         sx={{ minWidth: { xs: 220, sm: 320 } }}
@@ -144,10 +152,24 @@ export const PokemonSelector = ({
               py: { xs: 0.375, sm: 0.75 },
             }}
           >
-            <Typography key={option.id} variant="body2" sx={{ fontSize: { xs: '0.8125rem', sm: '0.875rem' }, lineHeight: 1.2 }}>
+            <Typography
+              key={option.id}
+              variant="body2"
+              sx={{
+                fontSize: { xs: '0.8125rem', sm: '0.875rem' },
+                lineHeight: 1.2,
+              }}
+            >
               {formatPokemonLabel(option.label)}
             </Typography>
-            <Typography variant="caption" color="text.secondary" sx={{ fontSize: { xs: '0.6875rem', sm: '0.75rem' }, lineHeight: 1 }}>
+            <Typography
+              variant="caption"
+              color="text.secondary"
+              sx={{
+                fontSize: { xs: '0.6875rem', sm: '0.75rem' },
+                lineHeight: 1,
+              }}
+            >
               #{option.id}
             </Typography>
           </Box>
@@ -185,7 +207,7 @@ export const PokemonSelector = ({
         type="number"
         variant="outlined"
         value={localDex}
-        onChange={e => setLocalDex(Number(e.target.value))}
+        onChange={(e) => setLocalDex(Number(e.target.value))}
         size="small"
         label="Dex #"
         slotProps={{
@@ -226,8 +248,8 @@ export const PokemonSelector = ({
       </Button>
       <IconButton
         onClick={onRandomize}
-        color='primary'
-        aria-label='randomize'
+        color="primary"
+        aria-label="randomize"
         sx={{
           display: { xs: 'flex', sm: 'none' },
           transition: 'all 0.2s ease',
@@ -242,5 +264,5 @@ export const PokemonSelector = ({
         <Shuffle />
       </IconButton>
     </Box>
-  )
-}
+  );
+};

@@ -1,16 +1,16 @@
-'use client'
+'use client';
 
-import { MenuItem, Box, SxProps, Theme } from '@mui/material'
-import Image from 'next/image'
+import { MenuItem, Box, SxProps, Theme } from '@mui/material';
+import Image from 'next/image';
 
-import { SelectField } from './SelectField'
+import { SelectField } from './SelectField';
 
-import { LANGUAGES, LANGUAGE_FLAGS } from '@/constants/common'
-import { usePokeStore } from '@/store/usePokeStore'
+import { LANGUAGES, LANGUAGE_FLAGS } from '@/constants/common';
+import { usePokeStore } from '@/store/usePokeStore';
 
 export const LanguageSelector = () => {
-  const language = usePokeStore((e) => e.language)
-  const setLanguage = usePokeStore((e) => e.setLanguage)
+  const language = usePokeStore((e) => e.language);
+  const setLanguage = usePokeStore((e) => e.setLanguage);
 
   const selectSx: SxProps<Theme> = (theme) => ({
     minWidth: { xs: 50, sm: 70 },
@@ -35,7 +35,7 @@ export const LanguageSelector = () => {
       fontSize: { xs: '0.875rem', sm: '1rem' },
     },
     transition: 'all 0.2s ease',
-  })
+  });
 
   return (
     <Box lineHeight={0}>
@@ -51,7 +51,12 @@ export const LanguageSelector = () => {
             key={lang}
             value={lang}
             aria-label={lang}
-            style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: 6 }}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+              gap: 6,
+            }}
           >
             <Image
               src={LANGUAGE_FLAGS[lang]}
@@ -64,5 +69,5 @@ export const LanguageSelector = () => {
         ))}
       </SelectField>
     </Box>
-  )
-}
+  );
+};

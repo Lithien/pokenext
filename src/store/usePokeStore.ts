@@ -1,26 +1,26 @@
-import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
+import { create } from 'zustand';
+import { persist } from 'zustand/middleware';
 
-import { LANGUAGES, SpriteType } from '@/constants'
+import { LANGUAGES, SpriteType } from '@/constants';
 
 interface PokemonState {
-  isShiny: boolean
-  toggleShiny: () => void
-  setShiny: (value: boolean) => void
+  isShiny: boolean;
+  toggleShiny: () => void;
+  setShiny: (value: boolean) => void;
 
-  language: LANGUAGES
-  setLanguage: (lang: LANGUAGES) => void
+  language: LANGUAGES;
+  setLanguage: (lang: LANGUAGES) => void;
 
-  number: number
-  setNumber: (number: number) => void
+  number: number;
+  setNumber: (number: number) => void;
 
-  spriteType: SpriteType
-  setSpriteType: (t: SpriteType) => void
+  spriteType: SpriteType;
+  setSpriteType: (t: SpriteType) => void;
 
-  generation: string
-  setGeneration: (gen: string) => void
+  generation: string;
+  setGeneration: (gen: string) => void;
 
-  reset: () => void
+  reset: () => void;
 }
 
 const DEFAULT_STATE = {
@@ -29,7 +29,7 @@ const DEFAULT_STATE = {
   number: 0,
   spriteType: 'pixel' as SpriteType,
   generation: '1',
-}
+};
 
 export const usePokeStore = create<PokemonState>()(
   persist(
@@ -42,10 +42,10 @@ export const usePokeStore = create<PokemonState>()(
 
       setNumber: (number) => {
         if (number < 0) {
-          console.warn('Pokemon number cannot be negative')
-          return
+          console.warn('Pokemon number cannot be negative');
+          return;
         }
-        set({ number })
+        set({ number });
       },
 
       setSpriteType: (t) => set({ spriteType: t }),
@@ -58,4 +58,4 @@ export const usePokeStore = create<PokemonState>()(
       name: 'pokedex-store',
     }
   )
-)
+);

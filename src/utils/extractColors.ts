@@ -1,4 +1,4 @@
-import { useThemeStore } from "@/store/useThemeStore";
+import { useThemeStore } from '@/store/useThemeStore';
 
 interface ColorWithFrequency {
   hex: string;
@@ -19,22 +19,22 @@ const extractColorsFromImage = async (
 ): Promise<string[] | ColorWithFrequency[]> => {
   return new Promise((resolve, reject) => {
     const img = new Image();
-    img.crossOrigin = "anonymous";
+    img.crossOrigin = 'anonymous';
 
     // Timeout para evitar esperas infinitas
     const timeoutId = setTimeout(() => {
-      img.src = ""; // Detener carga
-      reject(new Error("Image loading timeout"));
+      img.src = ''; // Detener carga
+      reject(new Error('Image loading timeout'));
     }, 10000);
 
     img.onload = () => {
       clearTimeout(timeoutId);
       try {
-        const canvas = document.createElement("canvas");
-        const ctx = canvas.getContext("2d");
+        const canvas = document.createElement('canvas');
+        const ctx = canvas.getContext('2d');
 
         if (!ctx) {
-          reject(new Error("Could not get canvas context"));
+          reject(new Error('Could not get canvas context'));
           return;
         }
 
@@ -55,22 +55,22 @@ const extractColorsFromImage = async (
 
         // Colors to exclude (black/near-black colors)
         const excludedColors = new Set([
-          "#000000",
-          "#101010",
-          "#121212",
-          "#010101",
-          "#0f0f0f",
-          "#1a1a1a",
-          "#080808",
-          "#090909",
-          "#111111",
-          "#0a0a0a",
-          "#060606",
-          "#26124d",
-          "#31314a",
-          "#2d2d2d",
-          "#6b6574",
-          "#070707"
+          '#000000',
+          '#101010',
+          '#121212',
+          '#010101',
+          '#0f0f0f',
+          '#1a1a1a',
+          '#080808',
+          '#090909',
+          '#111111',
+          '#0a0a0a',
+          '#060606',
+          '#26124d',
+          '#31314a',
+          '#2d2d2d',
+          '#6b6574',
+          '#070707',
         ]);
 
         // Sample every 4th pixel for performance
@@ -85,8 +85,8 @@ const extractColorsFromImage = async (
 
           // Convert to hex
           const hex = `#${[r, g, b]
-            .map((x) => x.toString(16).padStart(2, "0"))
-            .join("")}`;
+            .map((x) => x.toString(16).padStart(2, '0'))
+            .join('')}`;
 
           // Skip excluded colors
           if (excludedColors.has(hex)) continue;
@@ -98,7 +98,7 @@ const extractColorsFromImage = async (
         // Sort by frequency and get top colors
         const sortedColors = Array.from(colorMap.entries())
           .sort((a, b) => b[1] - a[1])
-        .slice(0, count);
+          .slice(0, count);
 
         if (includeFrequencies) {
           const colorsWithFreq: ColorWithFrequency[] = sortedColors.map(
@@ -113,21 +113,23 @@ const extractColorsFromImage = async (
           const hexColors = sortedColors.map(([hex]) => hex);
           resolve(hexColors);
         }
+      } catch (error) {
+        reject(error);
+      } finally {
+        img.src = '';
       }
-      catch (error) { reject(error) }
-      finally { img.src = "" }
     };
 
     img.onerror = () => {
       clearTimeout(timeoutId);
-      img.src = "";
-      reject(new Error("Failed to load image - CORS issue or invalid URL"));
+      img.src = '';
+      reject(new Error('Failed to load image - CORS issue or invalid URL'));
     };
 
     img.onabort = () => {
       clearTimeout(timeoutId);
-      img.src = "";
-      reject(new Error("Image loading was aborted"));
+      img.src = '';
+      reject(new Error('Image loading was aborted'));
     };
 
     img.src = imageUrl;
@@ -138,7 +140,7 @@ const extractColorsFromImage = async (
  * Normaliza colores que pueden venir como string o como objeto
  */
 const normalizeColor = (color: string | ColorWithFrequency): string => {
-  if (typeof color === "string") return color;
+  if (typeof color === 'string') return color;
   return color.hex;
 };
 
@@ -151,7 +153,7 @@ const hexToRgb = (hex: string): [number, number, number] => {
   return [
     parseInt(result[1], 16),
     parseInt(result[2], 16),
-    parseInt(result[3], 16)
+    parseInt(result[3], 16),
   ];
 };
 
@@ -162,11 +164,11 @@ const hexToRgb = (hex: string): [number, number, number] => {
 const getColorDistance = (hex1: string, hex2: string): number => {
   const [r1, g1, b1] = hexToRgb(hex1);
   const [r2, g2, b2] = hexToRgb(hex2);
-  
+
   const rDiff = r1 - r2;
   const gDiff = g1 - g2;
   const bDiff = b1 - b2;
-  
+
   return Math.sqrt(rDiff * rDiff + gDiff * gDiff + bDiff * bDiff);
 };
 
@@ -176,7 +178,11 @@ const getColorDistance = (hex1: string, hex2: string): number => {
  * @param hex2 Segundo color en hex
  * @param threshold Distancia mínima para considerar que no son similares (0-442, default: 80)
  */
-const areColorsSimilar = (hex1: string, hex2: string, threshold: number = 80): boolean => {
+const areColorsSimilar = (
+  hex1: string,
+  hex2: string,
+  threshold: number = 80
+): boolean => {
   return getColorDistance(hex1, hex2) < threshold;
 };
 
@@ -191,29 +197,29 @@ const selectDistinctColors = (
   similarityThreshold: number = 80
 ): string[] => {
   if (colorList.length === 0) return [];
-  
+
   const selected: string[] = [colorList[0]];
   let colorIndex = 1;
-  
+
   while (selected.length < 3 && colorIndex < colorList.length) {
     const currentColor = colorList[colorIndex];
-    const isSimilarToAny = selected.some(selectedColor =>
+    const isSimilarToAny = selected.some((selectedColor) =>
       areColorsSimilar(currentColor, selectedColor, similarityThreshold)
     );
-    
+
     if (!isSimilarToAny) {
       selected.push(currentColor);
     }
-    
+
     colorIndex++;
   }
-  
+
   // Si no hay suficientes colores distintos, rellenar con los disponibles
   while (selected.length < 3 && colorIndex < colorList.length) {
     selected.push(colorList[colorIndex]);
     colorIndex++;
   }
-  
+
   return selected;
 };
 
@@ -224,32 +230,41 @@ const selectDistinctColors = (
  * @param count Number of colors to extract (default: 3)
  * @returns Promise<void>
  */
-export const applyColorsFromImage = async (imageUrl: string, count: number = 3) => {
+export const applyColorsFromImage = async (
+  imageUrl: string,
+  count: number = 3
+) => {
   try {
     const colors = await extractColorsFromImage(imageUrl, count * 2);
 
     if (!Array.isArray(colors) || colors.length === 0) {
-      console.warn("No colors extracted from image");
+      console.warn('No colors extracted from image');
       return;
     }
 
     const normalizedColors = colors.map(normalizeColor);
     const similarityThreshold = useThemeStore.getState().similarityThreshold;
-    const distinctColors = selectDistinctColors(normalizedColors, similarityThreshold);
+    const distinctColors = selectDistinctColors(
+      normalizedColors,
+      similarityThreshold
+    );
 
     if (distinctColors.length < 3) {
-      console.warn("Could not extract 3 visually distinct colors");
+      console.warn('Could not extract 3 visually distinct colors');
       return;
     }
 
     const [primary, secondary, accent] = distinctColors;
 
     useThemeStore.getState().setColors([
-      { name: "primary", hex: primary },
-      { name: "secondary", hex: secondary },
-      { name: "accent", hex: accent }
+      { name: 'primary', hex: primary },
+      { name: 'secondary', hex: secondary },
+      { name: 'accent', hex: accent },
     ]);
   } catch (error) {
-    console.error("Error applying colors from image:", error instanceof Error ? error.message : "Unknown error");
+    console.error(
+      'Error applying colors from image:',
+      error instanceof Error ? error.message : 'Unknown error'
+    );
   }
 };

@@ -1,8 +1,8 @@
 // mui.d.ts
-import '@mui/material/styles'
+import '@mui/material/styles';
 
 declare module '@mui/material/Button' {
   interface ButtonPropsColorOverrides {
-    accent: true
+    accent: true;
   }
 }

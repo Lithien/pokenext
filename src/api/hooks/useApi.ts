@@ -1,7 +1,7 @@
-'use client'
-import { useQuery } from "@tanstack/react-query";
+'use client';
+import { useQuery } from '@tanstack/react-query';
 
-import { api } from "@/api";
+import { api } from '@/api';
 
 interface UseApiProps {
   key: string;
@@ -9,11 +9,7 @@ interface UseApiProps {
   enabled?: boolean;
 }
 
-export function useApi<T = any>({
-  key,
-  query,
-  enabled = true,
-}: UseApiProps) {
+export function useApi<T = any>({ key, query, enabled = true }: UseApiProps) {
   const queryResult = useQuery({
     queryKey: [key, query],
     enabled: enabled && !!key,

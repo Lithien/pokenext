@@ -1,30 +1,46 @@
-'use client'
-import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome'
-import { Box, CardMedia, Container, IconButton, Typography } from '@mui/material'
-import { memo, useEffect } from 'react'
+'use client';
+import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import {
+  Box,
+  CardMedia,
+  Container,
+  IconButton,
+  Typography,
+} from '@mui/material';
+import { memo, useEffect } from 'react';
 
-import { usePokeStore } from '@/store/usePokeStore'
-import { useThemeStore } from '@/store/useThemeStore'
-import { applyColorsFromImage } from '@/utils/extractColors'
+import { usePokeStore } from '@/store/usePokeStore';
+import { useThemeStore } from '@/store/useThemeStore';
+import { applyColorsFromImage } from '@/utils/extractColors';
 
 interface PokemonImageHeaderProps {
-  imageUrl: string
-  name: string
-  genere: string
+  imageUrl: string;
+  name: string;
+  genere: string;
 }
 
-export const PokemonImageHeader = memo(function PokemonImageHeader({ imageUrl, name, genere }: PokemonImageHeaderProps) {
-  const isShiny = usePokeStore((s) => s.isShiny)
-  const toggleShiny = usePokeStore((s) => s.toggleShiny)
-  const similarityThreshold = useThemeStore((s) => s.similarityThreshold)
+export const PokemonImageHeader = memo(function PokemonImageHeader({
+  imageUrl,
+  name,
+  genere,
+}: PokemonImageHeaderProps) {
+  const isShiny = usePokeStore((s) => s.isShiny);
+  const toggleShiny = usePokeStore((s) => s.toggleShiny);
+  const similarityThreshold = useThemeStore((s) => s.similarityThreshold);
 
   useEffect(() => {
-    applyColorsFromImage(imageUrl, 20)
-  }, [imageUrl, similarityThreshold])
+    applyColorsFromImage(imageUrl, 20);
+  }, [imageUrl, similarityThreshold]);
 
   return (
     <Container sx={{ mb: { xs: 2, sm: 3 }, width: 'auto' }}>
-      <Box display="flex" flexDirection="column" alignItems="center" gap={{ xs: 0.5, sm: 1 }} sx={{ position: 'relative' }}>
+      <Box
+        display="flex"
+        flexDirection="column"
+        alignItems="center"
+        gap={{ xs: 0.5, sm: 1 }}
+        sx={{ position: 'relative' }}
+      >
         <IconButton
           color={isShiny ? 'warning' : 'default'}
           aria-label="toggle shiny"
@@ -64,12 +80,12 @@ export const PokemonImageHeader = memo(function PokemonImageHeader({ imageUrl, n
             fontSize: { xs: '0.875rem', sm: '1rem' },
             fontWeight: 500,
             transition: 'all 0.2s ease',
-            color: theme => theme.palette.primary.light,
+            color: (theme) => theme.palette.primary.light,
           }}
         >
           {genere}
         </Typography>
       </Box>
     </Container>
-  )
-})
+  );
+});

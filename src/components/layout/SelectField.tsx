@@ -1,16 +1,24 @@
-'use client'
+'use client';
 
-import { FormControl, InputLabel, MenuItem, Select, SelectChangeEvent, SxProps, Theme } from '@mui/material'
-import { ReactNode } from 'react'
+import {
+  FormControl,
+  InputLabel,
+  MenuItem,
+  Select,
+  SelectChangeEvent,
+  SxProps,
+  Theme,
+} from '@mui/material';
+import { ReactNode } from 'react';
 
 interface SelectFieldProps {
-  label: string
-  value: string | number
-  onChange: (value: string | number) => void
-  options: Array<{ id: string | number; label: string }>
-  size?: 'small' | 'medium'
-  sx?: SxProps<Theme>
-  children?: ReactNode
+  label: string;
+  value: string | number;
+  onChange: (value: string | number) => void;
+  options: Array<{ id: string | number; label: string }>;
+  size?: 'small' | 'medium';
+  sx?: SxProps<Theme>;
+  children?: ReactNode;
 }
 
 export const SelectField = ({
@@ -38,5 +46,5 @@ export const SelectField = ({
           ))}
       </Select>
     </FormControl>
-  )
-}
+  );
+};
