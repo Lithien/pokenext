@@ -1,15 +1,21 @@
 import axios from 'axios';
 
-export const api = axios.create({
-  baseURL: `${process.env.NEXT_PUBLIC_API_URL}`,
-  headers: { 'Content-Type': 'application/json' },
+export const pokeApi = axios.create({
+  baseURL: '/api/pokeapi',
+  headers: {
+    Accept: 'application/json',
+    'X-Client-Name': 'PokedexApp-NextJS-ReactQuery',
+  },
 });
 
-// Interceptor de errores global
-api.interceptors.response.use(
+pokeApi.interceptors.response.use(
   (res) => res,
-  (err) => {
-    const message = err.response?.data?.error || 'Error en la API';
-    throw new Error(message);
+  (error: unknown) => {
+    if (axios.isAxiosError<{ error?: string }>(error)) {
+      throw new Error(
+        error.response?.data?.error ?? error.message ?? 'Error en la API'
+      );
+    }
+    throw error;
   }
 );

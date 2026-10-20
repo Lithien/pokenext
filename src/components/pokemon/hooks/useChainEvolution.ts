@@ -1,11 +1,10 @@
-import { useState, useEffect, useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 
 import { API } from '@/api';
 import { useApi } from '@/api/hooks/useApi';
 import {
   PokemonSpecies,
   EvolutionChain,
-  ChainLink,
   EvolutionDetail,
 } from '@/api/types';
 import { getNumberFromUrl } from '@/utils';
@@ -16,94 +15,7 @@ const useChainEvolution = ({ species }: { species: PokemonSpecies }) => {
     key: API.EVOLUTION_CHAIN(String(id)),
   });
 
-  const [chain, setChain] = useState<ChainLink | null>(null);
-  const [pokemonTypes, setPokemonTypes] = useState<Record<string, string>>({});
-  const isMountedRef = useRef(true);
-
-  const extractSpeciesNames = useCallback((node: ChainLink): string[] => {
-    const names = [node.species.name];
-    node.evolves_to.forEach((child) => {
-      names.push(...extractSpeciesNames(child));
-    });
-    return names;
-  }, []);
-
-  // ------------------------------------------------------
-  // 2. Guardar la cadena evolutiva
-  // ------------------------------------------------------
-  useEffect(() => {
-    if (data) {
-      setChain(data.chain);
-    }
-  }, [data]);
-
-  // Cleanup al desmontar: marcar como no montado
-  useEffect(() => {
-    isMountedRef.current = true;
-    return () => {
-      isMountedRef.current = false;
-    };
-  }, []);
-
-  // ------------------------------------------------------
-  // 3. Cargar tipos de TODOS los Pokémon del árbol CON CLEANUP
-  // ------------------------------------------------------
-  useEffect(() => {
-    if (!chain) return;
-
-    // Crear AbortController para cancelar requests pendientes
-    const abortController = new AbortController();
-
-    const fetchPokemonTypes = async () => {
-      try {
-        const names = extractSpeciesNames(chain);
-
-        // Usar Promise.allSettled en lugar de Promise.all para evitar que falte uno falle todo
-        const results = await Promise.allSettled(
-          names.map((name) =>
-            fetch(API.POKEMON_DETAIL(name), { signal: abortController.signal })
-              .then((res) => {
-                if (!res.ok) throw new Error(`Failed to fetch ${name}`);
-                return res.json();
-              })
-              .then((data) => ({
-                name,
-                type: data.types?.[0]?.type?.name ?? 'normal',
-              }))
-              .catch((error) => {
-                console.warn(`Error fetching ${name}:`, error.message);
-                return null;
-              })
-          )
-        );
-
-        // Solo actualizar si el componente sigue montado
-        if (!isMountedRef.current) return;
-
-        // Procesar resultados exitosos
-        const map: Record<string, string> = {};
-        results.forEach((result) => {
-          if (result.status === 'fulfilled' && result.value) {
-            map[result.value.name] = result.value.type;
-          }
-        });
-
-        setPokemonTypes(map);
-      } catch (error) {
-        // AbortError es normal cuando se cancela, no loguear como error
-        if (error instanceof Error && error.name !== 'AbortError') {
-          console.error('Error in fetchPokemonTypes:', error);
-        }
-      }
-    };
-
-    fetchPokemonTypes();
-
-    // Cleanup: cancelar requests pendientes al desmontar o cambiar chain
-    return () => {
-      abortController.abort();
-    };
-  }, [chain, extractSpeciesNames]);
+  const chain = data?.chain ?? null;
 
   // ------------------------------------------------------
   // 4. Requisitos de evolución
@@ -136,7 +48,6 @@ const useChainEvolution = ({ species }: { species: PokemonSpecies }) => {
   return {
     requeriments,
     chain,
-    pokemonTypes,
     isLoading,
   };
 };

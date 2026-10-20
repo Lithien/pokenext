@@ -1,5 +1,7 @@
 'use client';
 import AutoAwesomeIcon from '@mui/icons-material/AutoAwesome';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import {
   Box,
   CardMedia,
@@ -14,18 +16,22 @@ import { useThemeStore } from '@/store/useThemeStore';
 import { applyColorsFromImage } from '@/utils/extractColors';
 
 interface PokemonImageHeaderProps {
+  pokemonId: number;
   imageUrl: string;
   name: string;
   genere: string;
 }
 
 export const PokemonImageHeader = memo(function PokemonImageHeader({
+  pokemonId,
   imageUrl,
   name,
   genere,
 }: PokemonImageHeaderProps) {
   const isShiny = usePokeStore((s) => s.isShiny);
   const toggleShiny = usePokeStore((s) => s.toggleShiny);
+  const isFavorite = usePokeStore((s) => s.favoriteIds.includes(pokemonId));
+  const toggleFavorite = usePokeStore((s) => s.toggleFavorite);
   const similarityThreshold = useThemeStore((s) => s.similarityThreshold);
 
   useEffect(() => {
@@ -45,7 +51,7 @@ export const PokemonImageHeader = memo(function PokemonImageHeader({
       >
         <IconButton
           color={isShiny ? 'warning' : 'default'}
-          aria-label="toggle shiny"
+          aria-label={isShiny ? 'Desactivar variocolor' : 'Activar variocolor'}
           onClick={toggleShiny}
           sx={{
             position: 'absolute',
@@ -64,6 +70,23 @@ export const PokemonImageHeader = memo(function PokemonImageHeader({
           }}
         >
           <AutoAwesomeIcon />
+        </IconButton>
+        <IconButton
+          color={isFavorite ? 'error' : 'default'}
+          aria-label={
+            isFavorite
+              ? `Quitar ${name} de favoritos`
+              : `Añadir ${name} a favoritos`
+          }
+          aria-pressed={isFavorite}
+          onClick={() => toggleFavorite(pokemonId)}
+          sx={{
+            position: 'absolute',
+            top: 0,
+            right: { xs: '2.5rem', sm: '3rem' },
+          }}
+        >
+          {isFavorite ? <FavoriteIcon /> : <FavoriteBorderIcon />}
         </IconButton>
         <CardMedia
           component="img"

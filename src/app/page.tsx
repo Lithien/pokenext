@@ -6,6 +6,9 @@ import {
   Typography,
   Box,
   CircularProgress,
+  Checkbox,
+  FormControlLabel,
+  TextField,
 } from '@mui/material';
 import { useMemo } from 'react';
 
@@ -19,7 +22,12 @@ import { getNumberFromUrl } from '@/utils';
 const Home = () => {
   const language = usePokeStore((e) => e.language);
   const generation = usePokeStore((e) => e.generation);
-  const { data, isLoading } = useApi<Generation>({
+  const searchTerm = usePokeStore((state) => state.searchTerm);
+  const setSearchTerm = usePokeStore((state) => state.setSearchTerm);
+  const showFavorites = usePokeStore((state) => state.showFavorites);
+  const setShowFavorites = usePokeStore((state) => state.setShowFavorites);
+  const favoriteIds = usePokeStore((state) => state.favoriteIds);
+  const { data, isLoading, isError } = useApi<Generation>({
     key: API.POKEMON_GENERATION(generation),
     query: { lang: language },
   });
@@ -34,6 +42,18 @@ const Home = () => {
         ),
     [data?.pokemon_species]
   );
+
+  const filteredSpecies = useMemo(() => {
+    const term = searchTerm.trim().toLowerCase();
+    return sortedSpecies?.filter((pokemon) => {
+      const pokemonId = Number(getNumberFromUrl(pokemon.url));
+      const matchesSearch =
+        !term ||
+        pokemon.name.toLowerCase().includes(term) ||
+        String(pokemonId).includes(term);
+      return matchesSearch && (!showFavorites || favoriteIds.includes(pokemonId));
+    });
+  }, [favoriteIds, searchTerm, showFavorites, sortedSpecies]);
 
   if (isLoading) {
     return (
@@ -62,6 +82,14 @@ const Home = () => {
     );
   }
 
+  if (isError) {
+    return (
+      <Container role="alert" sx={{ py: 6, textAlign: 'center' }}>
+        <Typography>No se pudo cargar la Pokédex. Inténtalo de nuevo.</Typography>
+      </Container>
+    );
+  }
+
   return (
     <Container sx={{ py: { xs: 3, sm: 4, md: 6 } }}>
       <Typography
@@ -76,6 +104,34 @@ const Home = () => {
       >
         Pokédex
       </Typography>
+      <Box
+        component="section"
+        aria-label="Filtros de la Pokédex"
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          flexWrap: 'wrap',
+          gap: 2,
+          mb: 3,
+        }}
+      >
+        <TextField
+          label="Buscar por nombre o número"
+          value={searchTerm}
+          onChange={(event) => setSearchTerm(event.target.value)}
+          size="small"
+        />
+        <FormControlLabel
+          control={
+            <Checkbox
+              checked={showFavorites}
+              onChange={(event) => setShowFavorites(event.target.checked)}
+            />
+          }
+          label="Mostrar favoritos"
+        />
+      </Box>
       <Grid
         container
         spacing={{ xs: 1.5, sm: 2 }}
@@ -84,10 +140,15 @@ const Home = () => {
           justifyContent: 'center',
         }}
       >
-        {sortedSpecies?.map((pokemon) => (
+        {filteredSpecies?.map((pokemon) => (
           <PokemonCard key={pokemon.name} {...pokemon} />
         ))}
       </Grid>
+      {filteredSpecies?.length === 0 && (
+        <Typography role="status" align="center" sx={{ mt: 3 }}>
+          No se encontraron Pokémon con esos filtros.
+        </Typography>
+      )}
     </Container>
   );
 };

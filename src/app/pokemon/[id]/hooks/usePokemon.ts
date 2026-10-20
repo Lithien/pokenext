@@ -3,7 +3,8 @@ import { useEffect, useState, useCallback, useMemo } from 'react';
 
 import { API } from '@/api';
 import { useApi } from '@/api/hooks/useApi';
-import { VersionGameIndex, Pokemon, PokemonSpecies } from '@/api/types';
+import { usePokemonQuery } from '@/api/hooks/usePokemonQuery';
+import { VersionGameIndex, PokemonSpecies } from '@/api/types';
 import { usePokeStore } from '@/store/usePokeStore';
 import { findByLanguage, getNumberFromUrl, getPokemonImage } from '@/utils';
 
@@ -14,10 +15,16 @@ const usePokemon = ({ id }: { id: string }) => {
   const language = usePokeStore((s) => s.language);
   const spriteType = usePokeStore((s) => s.spriteType);
 
-  const { data: pokemon, isLoading: loadingPokemon } = useApi<Pokemon>({
-    key: API.POKEMON_DETAIL(String(id)),
-  });
-  const { data: species, isLoading: loadingSpecies } = useApi<PokemonSpecies>({
+  const {
+    data: pokemon,
+    isLoading: loadingPokemon,
+    error: pokemonError,
+  } = usePokemonQuery(id);
+  const {
+    data: species,
+    isLoading: loadingSpecies,
+    error: speciesError,
+  } = useApi<PokemonSpecies>({
     key: API.POKEMON_SPECIES(String(id)),
   });
   const [tab, setTab] = useState(0);
@@ -41,7 +48,7 @@ const usePokemon = ({ id }: { id: string }) => {
   const loadingSpeciesData = loadingSpecies || !species;
 
   const playCry = useCallback(() => {
-    const cryUrl = pokemon!.cries?.latest || pokemon!.cries?.legacy;
+    const cryUrl = pokemon?.cries?.latest || pokemon?.cries?.legacy;
     if (cryUrl) {
       const audio = new Audio(cryUrl);
       audio.play();
@@ -82,14 +89,17 @@ const usePokemon = ({ id }: { id: string }) => {
   }, [router]);
 
   const getGenera = useCallback(() => {
-    if (!loadingSpeciesData) return '';
+    if (loadingSpeciesData) return '';
     return (
       findByLanguage(species?.genera ?? [], language, 'genus') || 'Pokémon'
     );
   }, [loadingSpeciesData, species?.genera, language]);
 
   const getImage = useCallback(
-    () => getPokemonImage(pokemon?.id, spriteType, false, isShiny),
+    () =>
+      pokemon
+        ? getPokemonImage(pokemon.id, spriteType, false, isShiny)
+        : '',
     [pokemon?.id, spriteType, isShiny]
   );
 
@@ -106,7 +116,9 @@ const usePokemon = ({ id }: { id: string }) => {
     },
     data: {
       pokemon,
+      pokemonError,
       species,
+      speciesError,
       selectedGame,
       gameOptions,
       isShiny,

@@ -16,7 +16,16 @@ const PokemonDetailPage = () => {
   const { fn, data } = usePokemon({ id: String(id) });
   const { pokemon, species, selectedGame, gameOptions, tab } = data;
 
-  if (data.loadingPokemonData) {
+  if (data.pokemonError || data.speciesError) {
+    return (
+      <Box role="alert" sx={{ p: 4, textAlign: 'center' }}>
+        No se pudieron cargar los datos del Pokémon. Inténtalo de nuevo más
+        tarde.
+      </Box>
+    );
+  }
+
+  if (data.loadingPokemonData || !pokemon) {
     return (
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 2 }}>
         <Skeleton variant="circular" width={130} height={130} />
@@ -44,6 +53,7 @@ const PokemonDetailPage = () => {
       }}
     >
       <PokemonImageHeader
+        pokemonId={pokemon.id}
         imageUrl={fn.getImage()}
         name={pokemon.name}
         genere={fn.getGenera()}
@@ -64,13 +74,13 @@ const PokemonDetailPage = () => {
           textColor="primary"
           indicatorColor="secondary"
         >
-          {!data.loadingSpeciesData && <Tab label="Information" />}
-          {!data.loadingSpeciesData && <Tab label="Forms" />}
+          {!data.loadingSpeciesData && species && <Tab label="Information" />}
+          {!data.loadingSpeciesData && species && <Tab label="Forms" />}
           <Tab label="Colors" />
         </Tabs>
       </Box>
 
-      {tab === 0 && !data.loadingSpeciesData && (
+      {tab === 0 && !data.loadingSpeciesData && species && (
         <PokemonDetailStatsSection
           onPlayCry={fn.playCry}
           selectedGame={selectedGame}
@@ -80,10 +90,12 @@ const PokemonDetailPage = () => {
           species={species}
         />
       )}
-      {tab === 1 && !data.loadingSpeciesData && (
+      {tab === 1 && !data.loadingSpeciesData && species && (
         <ChainEvolution pokemon={pokemon} species={species} />
       )}
-      {tab === (!data.loadingSpeciesData ? 2 : 0) && <ColorPalette />}
+      {tab === (!data.loadingSpeciesData && species ? 2 : 0) && (
+        <ColorPalette />
+      )}
 
       <Typography
         variant="body2"

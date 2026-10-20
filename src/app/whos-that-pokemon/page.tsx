@@ -15,7 +15,11 @@ export default function WhosThatPokemon() {
   const [isRevealed, setIsRevealed] = useState(false);
 
   // Llamada a la API usando tu hook
-  const { data: pokemon, isLoading: loadingPokemon } = useApi<Pokemon>({
+  const {
+    data: pokemon,
+    isLoading: loadingPokemon,
+    error,
+  } = useApi<Pokemon>({
     key: pokemonId ? API.POKEMON_DETAIL(String(pokemonId)) : '',
   });
 
@@ -43,6 +47,16 @@ export default function WhosThatPokemon() {
       setIsRevealed(true);
     }
   }, [guess, pokemon]);
+
+  if (error) {
+    return (
+      <Box role="alert" className="flex items-center justify-center h-[70vh]">
+        <Typography variant="h5">
+          No se pudo cargar el Pokémon. Inténtalo de nuevo.
+        </Typography>
+      </Box>
+    );
+  }
 
   if (loadingPokemon || !pokemon) {
     return (

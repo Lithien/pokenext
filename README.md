@@ -30,9 +30,11 @@
 │   │   ├── client.ts
 │   │   ├── endpoints.ts
 │   │   ├── hooks/
-│   │   │   └── useApi.ts
+│   │   │   ├── useApi.ts
+│   │   │   └── usePokemonQuery.ts
 │   │   └── types/
 │   ├── 📁 app/
+│   │   ├── api/pokeapi/[...path]/route.ts
 │   │   ├── layout.tsx
 │   │   ├── page.tsx
 │   │   ├── pokemon/
@@ -68,23 +70,50 @@
 └── ...
 ```
 
-## 🔗 Llamadas a la API
+## 🔗 Arquitectura de datos y estado
 
-Las llamadas a la API se gestionan mediante axios y react-query, usando el archivo `src/api/client.ts` y el hook `useApi`. Los endpoints principales definidos en `src/api/endpoints.ts` son:
+La instancia Axios `pokeApi` usa la ruta relativa `/api/pokeapi` y no se conecta
+directamente desde el navegador al upstream. El Route Handler
+`src/app/api/pokeapi/[...path]/route.ts` reenvía únicamente peticiones GET a un
+origen fijo (`https://pokeapi.co/api/v2`), añade `User-Agent` en el servidor y
+devuelve los errores HTTP del upstream. El navegador no puede establecer de
+forma fiable la cabecera protegida `User-Agent`; por eso se define en el BFF y
+no en Axios. La instancia envía `X-Client-Name` como identificador adicional.
+Esto no puede evitar un 403 originado por límites o políticas de PokéAPI; esos
+errores se propagan para que la interfaz pueda mostrarlos.
 
-- `/pokemon` — Lista de Pokémon
-- `/pokemon/{id}` — Detalle de Pokémon
-- `/pokemon-species/{id}` — Especie de Pokémon
-- `/evolution-chain/{id}` — Cadena de evolución
-- `/generation/{id}` — Generación
-
-Ejemplo de uso:
+TanStack Query es la fuente de verdad para los datos remotos: administra caché,
+sincronización y cancelación. La configuración y los hooks usan `staleTime` y
+`gcTime` de 24 horas; se deshabilitan revalidaciones por montaje, foco y
+reconexión y los reintentos automáticos para evitar tráfico innecesario. La
+caché de TanStack Query vive en memoria en el cliente. El BFF además usa la
+caché de datos de Next.js con revalidación cada 24 horas y permite caché
+compartida de respuestas exitosas; los errores no se almacenan. Zustand queda
+para estado de interfaz persistente: preferencias, búsqueda/filtro de favoritos,
+identificadores de favoritos y el orden del equipo de hasta seis Pokémon para
+una interfaz con `@dnd-kit`. No se copian respuestas de la API a Zustand.
 
 ```tsx
-const { data: pokemon } = useApi<Pokemon>({
-  key: API.POKEMON_DETAIL(String(pokemonId)),
-});
+const { data: pokemon, isPending, error } = usePokemonQuery(pokemonId);
 ```
+
+`usePokemonQuery` está tipado con `Pokemon`, usa una clave estable
+`['pokemon', id]` y propaga el `AbortSignal` para cancelar solicitudes obsoletas.
+Para el resto de recursos, `useApi<T>` permite tipar la respuesta y comparte
+el mismo cliente, BFF y ciclo de vida de TanStack Query.
+
+En componentes, selecciona solo el estado necesario de Zustand para evitar
+renders por cambios en otras preferencias:
+
+```tsx
+const favoriteIds = usePokeStore((state) => state.favoriteIds);
+const toggleFavorite = usePokeStore((state) => state.toggleFavorite);
+const isFavorite = favoriteIds.includes(pokemon.id);
+```
+
+La ficha de Pokémon incluye un control de favoritos con nombre accesible y
+`aria-pressed`. Los fallos al cargar el detalle se muestran como un mensaje de
+error en lugar de mantener un estado de carga indefinido.
 
 ## 🛠️ Tecnologías utilizadas
 
